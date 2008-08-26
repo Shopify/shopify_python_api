@@ -98,7 +98,7 @@ class ActiveResource(object):
             connection.Error: On any communications errors.
             Error: On any other errors.
         """
-        if id:
+        if id_:
             return cls._find_single(id_, **kwargs)
 
         return cls._find_every(from_=from_, **kwargs)
