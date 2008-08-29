@@ -201,6 +201,7 @@ class ActiveResource(object):
         """
         if from_:
             path = from_ + cls._query_string(kwargs)
+            prefix_options = None
         else:
             prefix_options, query_options = cls._split_options(kwargs)
             path = cls._collection_path(prefix_options, query_options)
