@@ -4,6 +4,7 @@
 """Connect to and interact with a REST server and its objects."""
 
 
+import new
 import re
 import urllib
 import urlparse
@@ -11,23 +12,8 @@ from string import Template
 from pyactiveresource import connection
 from pyactiveresource import util
 
-try:
-    from xml.etree import cElementTree as ET
-except ImportError:
-    try:
-        import cElementTree as ET
-    except ImportError:
-        try:
-            from xml.etree import ElementTree as ET
-        except ImportError:
-            from elementtree import ElementTree as ET
 
 VALID_NAME = re.compile('[a-z_]\w*')  # Valid python attribute names
-
-# A global registry of known resource types
-# TODO(mrroach). Track new object types in the metaclass, this is to
-# provide a feature similar to the ruby implementation's find_or_create_*
-_all_resources = {}
 
 
 class Error(Exception):
@@ -38,11 +24,15 @@ class Error(Exception):
 class ResourceMeta(type):
     """A metaclass to handle singular/plural attributes."""
 
+    # A global registry of known resource types this is to
+    # provide a feature similar to the ruby implementation's find_or_create_*
+    _all_resources = {}
+
     def __new__(mcs, name, bases, new_attrs):
         """Create a new class.
 
         Args:
-            mcs: The class to create.
+            mcs: The metaclass.
             name: The name of the class.
             bases: List of base classes from which mcs inherits.
             new_attrs: The class attribute dictionary.
@@ -56,7 +46,8 @@ class ResourceMeta(type):
         if '_plural' not in new_attrs or not new_attrs['_plural']:
             new_attrs['_plural'] = util.pluralize(new_attrs['_singular'])
 
-        return type.__new__(mcs, name, bases, new_attrs)
+        klass = type.__new__(mcs, name, bases, new_attrs)
+        return klass
 
 
 class ActiveResource(object):
@@ -71,14 +62,19 @@ class ActiveResource(object):
     _headers = None
     _timeout = 5
 
-    def __init__(self, attributes, **kwargs):
+    def __init__(self, attributes, prefix_options=None):
         """Initialize a new ActiveResource object.
 
         Args:
             attributes: A dictionary of attributes which represent this object.
+            prefix_options: A dict of prefixes to add to the request for
+                            nested URLs.
         """
         self.attributes = {}
-        self._prefix_options = kwargs.get('prefix_options', {})
+        if prefix_options:
+            self._prefix_options = prefix_options
+        else:
+            self._prefix_options = {}
         self._update(attributes)
         self._initialized = True
 
@@ -187,7 +183,7 @@ class ActiveResource(object):
         """
         #TODO(mrroach): allow from_ to be a string-generating function
         path = from_ + cls._query_string(query_options)
-        return cls._build_object(cls._connection().get(from_, cls._headers))
+        return cls._build_object(cls._connection().get(path, cls._headers))
 
     @classmethod
     def _find_every(cls, from_=None, **kwargs):
@@ -217,9 +213,8 @@ class ActiveResource(object):
         Returns:
             An ActiveResource object.
         """
-        if not prefix_options:
-            prefix_options = {}
-        attributes = util.xml_to_dict(xml)
+        element_type, attributes = util.xml_to_dict(
+                xml, saveroot=True).items()[0]
         return cls(attributes, prefix_options=prefix_options)
 
     @classmethod
@@ -231,10 +226,13 @@ class ActiveResource(object):
         Returns:
             A list of ActiveResource objects.
         """
-        elements = []
-        root_element = ET.fromstring(xml)
-        for element in root_element.getchildren():
-            elements.append(cls._build_object(element, prefix_options))
+        resources = []
+        collection_type, collection = util.xml_to_dict(
+                xml, saveroot=True).items()[0]
+        element_type, elements = collection.items()[0]
+        
+        for element in elements:
+            resources.append(cls(element, prefix_options))
         return elements
         
     @classmethod
@@ -482,9 +480,11 @@ class ActiveResource(object):
         # Add all the tags in the element as attributes
         for key, value in attributes.items():
             if isinstance(value, dict):
-                attr = self.__class__(value)
+                klass = self._find_class_for(key)
+                attr = klass(value)
             elif isinstance(value, list):
-                attr = [self.__class__(child) for child in value]
+                klass = self._find_class_for(util.singularize(key))
+                attr = [klass(child) for child in value]
             else:
                 attr = value
             # Store the actual value in the attributes dictionary
@@ -495,3 +495,37 @@ class ActiveResource(object):
                 # access via self.attributes[key]
                 continue
 
+    def _find_class_for(self, element_name):
+        """Look in the parent modules for classes matching the element name.
+        
+        Args:
+            element_name: The name of the element type.
+        Returns:
+            A Resource class.
+        """
+        module_path = self.__module__.split('.')
+        class_name = util.camelize(element_name)
+        for depth in range(len(module_path), 0, -1):
+            try:
+                module = __import__('.'.join(module_path[:depth]))
+            except ImportError:
+                continue
+            try:
+                klass = getattr(module, class_name)
+                return klass
+            except AttributeError:
+                try:
+                    module = __import__('.'.join([module.__name__,
+                                                  element_name]))
+                    submodule = getattr(module, element_name)
+                except ImportError:
+                    continue
+                try:
+                    print 'getattr(%s, %s)' % (submodule, class_name)
+                    klass = getattr(submodule, class_name)
+                    return klass
+                except AttributeError:
+                    continue
+                
+        # If we made it this far, no such class was found
+        return new.classobj(class_name, (self.__class__,), {})

@@ -119,7 +119,31 @@ def singularize(plural):
     for i in SINGULARIZE_PATTERNS:
         if re.search(i[0], plural):
             return re.sub(i[0], i[1], plural)
-    raise Error('Unable to singularize %s' % plural)
+    return plural
+
+
+def camelize(word):
+    """Convert a word from lower_with_underscores to CamelCase.
+    
+    Args:
+        word: The string to convert.
+    Returns:
+        The modified string.
+    """
+    return ''.join(w[0].upper() + w[1:]
+                   for w in re.sub('[^A-Z^a-z^0-9^:]+', ' ', word).split(' '))
+
+
+def underscore(word):
+    """Convert a word from CamelCase to lower_with_underscores.
+    
+    Args:
+        word: The string to convert.
+    Returns:
+        The modified string.
+    """
+    return re.sub(r'\B((?<=[a-z])[A-Z]|[A-Z](?=[a-z]))',
+                  r'_\1', word).lower()
 
 
 def xml_pretty_format(element, level=0):
@@ -184,11 +208,12 @@ def to_xml(o, root='object', pretty=False, header=True):
     return xml_data
 
 
-def xml_to_dict(xmlobj):
+def xml_to_dict(xmlobj, saveroot=False):
     """Parse the xml into a dictionary of attributes.
 
     Args:
         xmlobj: An ElementTree element or an xml string.
+        saveroot: Keep the xml element names (ugly format)
     Returns:
         A dictionary of attributes (possibly nested).
     """
@@ -200,17 +225,41 @@ def xml_to_dict(xmlobj):
     else:
         element = xmlobj
 
-    is_list = (len(set([e.tag for e in element.getchildren()])) == 1 and 
-               len(element) != 1)
+    if element.getchildren():
+        is_list = (len(set([e.tag for e in element.getchildren()])) == 1 and 
+                       len(element) != 1)
 
-    if element.attrib.get('type') == 'array' or is_list:
-        return [xml_to_dict(e) for e in element.getchildren()]
-    elif element.getchildren():
-        attributes = {}
-        for child in element.getchildren():
-            attributes[child.tag.replace('-', '_')] = xml_to_dict(child)
-        return attributes
+        if element.attrib.get('type') == 'array' or is_list:
+            # This is a list, build either a list, or an array like:
+            # {list_element_type: [list_element,...]}
+            if saveroot:
+                attributes = {}
+                child_tag = element.getchildren()[0].tag.replace('-', '_')
+                attributes[child_tag] = [xml_to_dict(e, saveroot)[child_tag]
+                                         for e in element.getchildren()]
+            else:
+                attributes = [xml_to_dict(e, saveroot)
+                              for e in element.getchildren()]
+        else:
+            # This is an element with children. The children might be simple
+            # values, or nested hashes.
+            attributes = {}
+            for child in element.getchildren():
+                attribute = xml_to_dict(child, saveroot)
+                child_tag = child.tag.replace('-', '_')
+                if saveroot:
+                    # If this is a nested hash, it will come back as
+                    # {child_tag: {key: value}}, we only want the inner hash
+                    if isinstance(attribute, dict):
+                        attribute = attribute[child_tag]
+                attributes[child_tag] = attribute   
+        if saveroot:
+            return {element.tag.replace('-', '_'): attributes}
+        else:
+            return attributes
     else:
+        # This is a key/value element, convert it to the right type and return
+        # only the value.
         if element.get('type') == 'integer':
             if element.text:
                 return int(element.text)
