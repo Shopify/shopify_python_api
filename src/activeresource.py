@@ -24,10 +24,6 @@ class Error(Exception):
 class ResourceMeta(type):
     """A metaclass to handle singular/plural attributes."""
 
-    # A global registry of known resource types this is to
-    # provide a feature similar to the ruby implementation's find_or_create_*
-    _all_resources = {}
-
     def __new__(mcs, name, bases, new_attrs):
         """Create a new class.
 
