@@ -207,12 +207,14 @@ class ActiveResource(object):
 
         Args:
             xml: An xml string containing the object definition.
+            prefix_options: A dict of prefixes to add to the request for
+                            nested URLs.
         Returns:
             An ActiveResource object.
         """
         element_type, attributes = util.xml_to_dict(
                 xml, saveroot=True).items()[0]
-        return cls(attributes, prefix_options=prefix_options)
+        return cls(attributes, prefix_options)
 
     @classmethod
     def _build_list(cls, xml, prefix_options=None):
@@ -220,6 +222,8 @@ class ActiveResource(object):
 
         Args:
             xml: An xml string containing multiple object definitions.
+            prefix_options: A dict of prefixes to add to the request for
+                            nested URLs.
         Returns:
             A list of ActiveResource objects.
         """
@@ -445,16 +449,13 @@ class ActiveResource(object):
             None
         """
         if '_initialized' in self.__dict__:
-            if name in self.__dict__:
+            if name in self.__dict__ or name in self.__class__.__dict__:
                 # Update a normal attribute
-                self.__dict__[name] = value
-            elif name in self.__class__.__dict__:
-                # Update a class attribute
-                self.__class__.__dict__[name] = value
+                object.__setattr__(self, name, value)
             else:
                 # Add/update an attribute
                 self.attributes[name] = value
-        self.__dict__[name] = value
+        object.__setattr__(self, name, value)
 
     def __repr__(self):
         return '%s(%s)' % (self._singular, self.id)
@@ -492,16 +493,25 @@ class ActiveResource(object):
                 # access via self.attributes[key]
                 continue
 
-    def _find_class_for(self, element_name):
+    def _find_class_for(self, element_name=None, class_name=None):
         """Look in the parent modules for classes matching the element name.
         
+        One, or both of element/class name must be specified.
+
         Args:
             element_name: The name of the element type.
+            class_name: The class name of the element type.
         Returns:
             A Resource class.
         """
+        if not element_name and not class_name:
+            raise Error('One of element_name,class_name must be specified.')
+        elif not element_name:
+            element_name = util.underscore(class_name)
+        elif not class_name:
+            class_name = util.camelize(element_name)
+
         module_path = self.__module__.split('.')
-        class_name = util.camelize(element_name)
         for depth in range(len(module_path), 0, -1):
             try:
                 __import__('.'.join(module_path[:depth]))
