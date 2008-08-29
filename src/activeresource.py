@@ -6,6 +6,7 @@
 
 import new
 import re
+import sys
 import urllib
 import urlparse
 from string import Template
@@ -503,7 +504,8 @@ class ActiveResource(object):
         class_name = util.camelize(element_name)
         for depth in range(len(module_path), 0, -1):
             try:
-                module = __import__('.'.join(module_path[:depth]))
+                __import__('.'.join(module_path[:depth]))
+                module = sys.modules['.'.join(module_path[:depth])]
             except ImportError:
                 continue
             try:
@@ -511,17 +513,17 @@ class ActiveResource(object):
                 return klass
             except AttributeError:
                 try:
-                    module = __import__('.'.join([module.__name__,
-                                                  element_name]))
-                    submodule = getattr(module, element_name)
+                    __import__('.'.join([module.__name__, element_name]))
+                    submodule = sys.modules['.'.join([module.__name__,
+                                                      element_name])]
                 except ImportError:
                     continue
                 try:
-                    print 'getattr(%s, %s)' % (submodule, class_name)
                     klass = getattr(submodule, class_name)
                     return klass
                 except AttributeError:
                     continue
                 
         # If we made it this far, no such class was found
-        return new.classobj(class_name, (self.__class__,), {})
+        return new.classobj(class_name, (self.__class__,),
+                            {'__module__': self.__module__})
