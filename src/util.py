@@ -226,17 +226,17 @@ def xml_to_dict(xmlobj, saveroot=False):
         element = xmlobj
 
     if element.getchildren():
-        is_list = (len(set([e.tag for e in element.getchildren()])) == 1 and 
-                       len(element) != 1)
-
-        if element.attrib.get('type') == 'array' or is_list:
+        if element.attrib.get('type') == 'array':
             # This is a list, build either a list, or an array like:
             # {list_element_type: [list_element,...]}
             if saveroot:
-                attributes = {}
                 child_tag = element.getchildren()[0].tag.replace('-', '_')
-                attributes[child_tag] = [xml_to_dict(e, saveroot)[child_tag]
-                                         for e in element.getchildren()]
+                attributes = []
+                for child in element.getchildren():
+                    attribute = xml_to_dict(child, saveroot)
+                    if isinstance(attribute, dict):
+                        attribute = attribute[child_tag]
+                    attributes.append(attribute)
             else:
                 attributes = [xml_to_dict(e, saveroot)
                               for e in element.getchildren()]
@@ -251,8 +251,16 @@ def xml_to_dict(xmlobj, saveroot=False):
                     # If this is a nested hash, it will come back as
                     # {child_tag: {key: value}}, we only want the inner hash
                     if isinstance(attribute, dict):
-                        attribute = attribute[child_tag]
-                attributes[child_tag] = attribute   
+                        _, attribute = attribute.items()[0]
+                # Handle multiple elements with the same tag name
+                if child_tag in attributes:
+                    if isinstance(attributes[child_tag], list):
+                        attributes[child_tag].append(attribute)
+                    else:
+                        attributes[child_tag] = [attributes[child_tag],
+                                                 attribute]
+                else:
+                    attributes[child_tag] = attribute
         if saveroot:
             return {element.tag.replace('-', '_'): attributes}
         else:
