@@ -5,7 +5,13 @@
 
 __author__ = 'Mark Roach (mrroach@google.com)'
 
+import base64
+import calendar
+import decimal
 import re
+import time
+import datetime
+import yaml
 
 try:
     from xml.etree import cElementTree as ET
@@ -83,6 +89,16 @@ UNCOUNTABLES = ['equipment', 'information', 'rice', 'money', 'species',
 
 class Error(Exception):
     """Base exception class for this module."""
+
+
+class FileObject(object):
+    """Represent a 'file' xml entity."""
+
+    def __init__(self, data, name='untitled',
+                 content_type='application/octet-stream'):
+        self.data = data
+        self.name = name
+        self.content_type = content_type 
 
 
 def pluralize(singular):
@@ -225,58 +241,91 @@ def xml_to_dict(xmlobj, saveroot=False):
     else:
         element = xmlobj
 
-    if element.getchildren():
-        if element.attrib.get('type') == 'array':
-            # This is a list, build either a list, or an array like:
-            # {list_element_type: [list_element,...]}
-            if saveroot:
-                child_tag = element.getchildren()[0].tag.replace('-', '_')
-                attributes = []
-                for child in element.getchildren():
-                    attribute = xml_to_dict(child, saveroot)
-                    if isinstance(attribute, dict):
-                        attribute = attribute[child_tag]
-                    attributes.append(attribute)
-            else:
-                attributes = [xml_to_dict(e, saveroot)
-                              for e in element.getchildren()]
-        else:
-            # This is an element with children. The children might be simple
-            # values, or nested hashes.
-            attributes = {}
+    element_type = element.get('type', '').lower()
+    if element_type == 'array':
+        # This is a list, build either a list, or an array like:
+        # {list_element_type: [list_element,...]}
+        if saveroot:
+            child_tag = singularize(element.tag.replace('-', '_'))
+            attributes = []
             for child in element.getchildren():
                 attribute = xml_to_dict(child, saveroot)
-                child_tag = child.tag.replace('-', '_')
-                if saveroot:
-                    # If this is a nested hash, it will come back as
-                    # {child_tag: {key: value}}, we only want the inner hash
-                    if isinstance(attribute, dict):
-                        _, attribute = attribute.items()[0]
-                # Handle multiple elements with the same tag name
-                if child_tag in attributes:
-                    if isinstance(attributes[child_tag], list):
-                        attributes[child_tag].append(attribute)
-                    else:
-                        attributes[child_tag] = [attributes[child_tag],
-                                                 attribute]
+                if isinstance(attribute, dict):
+                    attribute = attribute[child_tag]
+                attributes.append(attribute)
+            return {element.tag.replace('-', '_'): attributes}
+        else:
+            attributes = [xml_to_dict(e, saveroot)
+                          for e in element.getchildren()]
+            return attributes
+
+    elif element.get('nil') == 'true':
+        return None
+    elif element_type in ('integer', 'datetime', 'date', 
+                          'decimal', 'double', 'float') and not element.text:
+        return None
+    elif element_type == 'integer':
+        return int(element.text)
+    elif element_type == 'datetime':
+        # Parse the default Ruby timestamp format
+        timestamp = calendar.timegm(
+                time.strptime(element.text, '%Y-%m-%dT%H:%M:%S+0000'))
+        return datetime.datetime.utcfromtimestamp(timestamp)
+    elif element_type == 'date':
+        time_tuple = time.strptime(element.text, '%Y-%m-%d')
+        return datetime.date(*time_tuple[:3])
+    elif element_type == 'decimal':
+        return decimal.Decimal(element.text)
+    elif element_type in ('float', 'double'):
+        return float(element.text)
+    elif element_type == 'boolean':
+        return element.text.strip() in ('true', '1')
+    elif element_type == 'yaml':
+        return yaml.safe_load(element.text)
+    elif element_type == 'base64binary':
+        return base64.decodestring(element.text)
+    elif element_type == 'file':
+        content_type = element.get('content_type',
+                                   'application/octet-stream')
+        filename = element.get('name', 'untitled')
+        return FileObject(element.text, filename, content_type)
+    elif element_type in ('symbol', 'string'):
+        if not element.text:
+            return ''
+        return element.text
+    elif element_type:
+        attributes = dict(element.items())
+        for child in element.getchildren():
+            attributes[child.tag.replace('-', '_')] = child.text
+        return attributes
+    elif element.getchildren():
+        # This is an element with children. The children might be simple
+        # values, or nested hashes.
+        attributes = {}
+        for child in element.getchildren():
+            attribute = xml_to_dict(child, saveroot)
+            child_tag = child.tag.replace('-', '_')
+            if saveroot:
+                # If this is a nested hash, it will come back as
+                # {child_tag: {key: value}}, we only want the inner hash
+                if isinstance(attribute, dict):
+                    if len(attribute) == 1 and child_tag in attribute:
+                        attribute = attribute[child_tag]
+            # Handle multiple elements with the same tag name
+            if child_tag in attributes:
+                if isinstance(attributes[child_tag], list):
+                    attributes[child_tag].append(attribute)
                 else:
-                    attributes[child_tag] = attribute
+                    attributes[child_tag] = [attributes[child_tag],
+                                             attribute]
+            else:
+                attributes[child_tag] = attribute
         if saveroot:
             return {element.tag.replace('-', '_'): attributes}
         else:
             return attributes
     else:
-        # This is a key/value element, convert it to the right type and return
-        # only the value.
-        if element.get('type') == 'integer':
-            if element.text:
-                return int(element.text)
-            else:
-                return None
-        elif element.get('nil') == 'true':
-            return None
-        else:
-            return element.text
+        return element.text
 
 
 def main():
