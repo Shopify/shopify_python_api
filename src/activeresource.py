@@ -47,6 +47,19 @@ class ResourceMeta(type):
         return klass
 
 
+class ClassAndInstanceMethod(object):
+  """A descriptor which allows class/instance methods to have the same name."""
+
+  def __init__(self, class_method, instance_method):
+    self.class_method = class_method
+    self.instance_method = instance_method
+
+  def __get__(self, instance, owner):
+    if instance:
+        return getattr(instance, self.instance_method)
+    return getattr(owner, self.class_method)
+
+
 class ActiveResource(object):
     """Represents an activeresource object."""
     
@@ -296,6 +309,74 @@ class ActiveResource(object):
                 'query': cls._query_string(query_options)}
 
     @classmethod
+    def _custom_method_collection_url(cls, method_name, options):
+        prefix_options, query_options = cls._split_options(options)
+        path = (
+            '%(prefix)s/%(plural)s/%(method_name)s.%(format)s%(query)s' % 
+            {'prefix': cls._prefix(prefix_options),
+             'plural': cls._plural,
+             'method_name': method_name,
+             'format': 'xml',
+             'query': cls._query_string(query_options)})
+        return path
+
+    @classmethod
+    def _class_get(cls, method_name, **kwargs):
+        """Get a nested resource or resources.
+        
+        Args:
+            method_name: the nested resource to retrieve.
+            kwargs: Any keyword arguments for the query.
+        Returns:
+            A dictionary representing the returned data.
+        """
+        url = cls._custom_method_collection_url(method_name, kwargs)
+        return util.xml_to_dict(cls._connection().get(url, cls._headers))
+
+    @classmethod
+    def _class_post(cls, method_name, body='', **kwargs):
+        """Get a nested resource or resources.
+        
+        Args:
+            method_name: the nested resource to retrieve.
+            body: The data to send as the body of the request.
+            kwargs: Any keyword arguments for the query.
+        Returns:
+            A dictionary representing the returned data.
+        """
+        url = cls._custom_method_collection_url(method_name, kwargs)
+        return util.xml_to_dict(
+                cls._connection().post(url, cls._headers, body))
+
+    @classmethod
+    def _class_put(cls, method_name, body='', **kwargs):
+        """Get a nested resource or resources.
+        
+        Args:
+            method_name: the nested resource to retrieve.
+            body: The data to send as the body of the request.
+            kwargs: Any keyword arguments for the query.
+        Returns:
+            A dictionary representing the returned data.
+        """
+        url = cls._custom_method_collection_url(method_name, kwargs)
+        return util.xml_to_dict(
+                cls._connection().put(url, cls._headers, body))
+
+    @classmethod
+    def _class_delete(cls, method_name, **kwargs):
+        """Get a nested resource or resources.
+        
+        Args:
+            method_name: the nested resource to retrieve.
+            kwargs: Any keyword arguments for the query.
+        Returns:
+            A dictionary representing the returned data.
+        """
+        url = cls._custom_method_collection_url(method_name, kwargs)
+        return util.xml_to_dict(self._connection().get(url, self._headers))
+
+    @classmethod
     def _prefix_parameters(cls):
         """Return a list of the parameters used in the site prefix.
         
@@ -354,6 +435,7 @@ class ActiveResource(object):
             return match.group(0)
         return None
 
+    # Public instance methods
     def to_dict(self):
         """Convert the object to a dictionary."""
         values = {}
@@ -364,9 +446,8 @@ class ActiveResource(object):
                 values[key] = value.to_dict()
             else:
                 values[key] = value
-        return values
-                
-    # Public instance methods
+        return values                
+
     def to_xml(self, root=None, header=True, pretty=False):
         """Convert the object to an xml string.
 
@@ -533,3 +614,90 @@ class ActiveResource(object):
         # If we made it this far, no such class was found
         return new.classobj(class_name, (self.__class__,),
                             {'__module__': self.__module__})
+        
+    # methods corresponding to Ruby's custom_methods
+    def _custom_method_element_url(self, method_name, options):
+        prefix_options, query_options = self._split_options(options)
+        path = (
+            '%(prefix)s/%(plural)s/%(id)s/%(method_name)s.%(format)s%(query)s' % 
+            {'prefix': self._prefix(prefix_options),
+             'plural': self._plural,
+             'id': self.id,
+             'method_name': method_name,
+             'format': 'xml',
+             'query': self._query_string(query_options)})
+        return path
+    
+    def _custom_method_new_element_url(self, method_name, options):
+        prefix_options, query_options = self._split_options(options)
+        path = (
+            '%(prefix)s/%(plural)s/new/%(method_name)s.%(format)s%(query)s' % 
+            {'prefix': self._prefix(prefix_options),
+             'plural': self._plural,
+             'method_name': method_name,
+             'format': 'xml',
+             'query': self._query_string(query_options)})
+        return path
+
+    def _instance_get(self, method_name, **kwargs):
+        """Get a nested resource or resources.
+        
+        Args:
+            method_name: the nested resource to retrieve.
+            kwargs: Any keyword arguments for the query.
+        Returns:
+            A dictionary representing the returned data.
+        """
+        url = self._custom_method_element_url(method_name, kwargs)
+        return util.xml_to_dict(self._connection().get(url, self._headers))
+
+    def _instance_post(self, method_name, body='', **kwargs):
+        """Create a new resource/nested resource.
+        
+        Args:
+            method_name: the nested resource to post to.
+            body: The data to send as the body of the request.
+            kwargs: Any keyword arguments for the query.
+        Returns:
+            A dictionary representing the returned data.
+        """
+        if self.id:
+            url = self._custom_method_element_url(method_name, kwargs)
+        else:
+            if not body:
+                body = self.to_xml()
+            url = self._custom_method_new_element_url(method_name, kwargs)
+        return util.xml_to_dict(
+                self._connection().post(url, self._headers, body))
+    
+    def _instance_put(self, method_name, body='', **kwargs):
+        """Update a nested resource.
+        
+        Args:
+            method_name: the nested resource to update.
+            body: The data to send as the body of the request.
+            kwargs: Any keyword arguments for the query.
+        Returns:
+            A dictionary representing the returned data.
+        """
+        url = self._custom_method_element_url(method_name, kwargs)
+        return util.xml_to_dict(
+                self._connection().put(url, self._headers, body))
+
+    def _instance_delete(self, method_name, **kwargs):
+        """Get a nested resource or resources.
+        
+        Args:
+            method_name: the nested resource to retrieve.
+            kwargs: Any keyword arguments for the query.
+        Returns:
+            A dictionary representing the returned data.
+        """
+        url = self._custom_method_element_url(method_name, kwargs)
+        return util.xml_to_dict(self._connection().delete(url, self._headers))
+
+    # Create property which returns class/instance method based on context
+    get = ClassAndInstanceMethod('_class_get', '_instance_get')
+    post = ClassAndInstanceMethod('_class_post', '_instance_post')
+    put = ClassAndInstanceMethod('_class_put', '_instance_put')
+    delete = ClassAndInstanceMethod('_class_delete', '_instance_delete')
