@@ -197,6 +197,7 @@ def to_xml(o, root='object', pretty=False, header=True):
     """
     root_element = ET.Element(root.replace('_', '-'))
     if isinstance(o, list):
+        root_element.set('type', 'array')
         for i in o:
             element = ET.fromstring(
                     to_xml(i, root=singularize(root), header=False))

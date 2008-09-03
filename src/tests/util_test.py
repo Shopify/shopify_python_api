@@ -183,7 +183,7 @@ class UtilTest(unittest.TestCase):
             'notes': '',
             'illustration': 'babe.png'}
 
-        diff_dicts(expected_bacon_dict,
+        self.assertEqual(expected_bacon_dict,
                          util.xml_to_dict(bacon_xml, saveroot=True)['bacon'])
 
     def test_xml_to_dict_unknown_type(self):

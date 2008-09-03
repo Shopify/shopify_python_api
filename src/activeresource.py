@@ -228,13 +228,12 @@ class ActiveResource(object):
             A list of ActiveResource objects.
         """
         resources = []
-        collection_type, collection = util.xml_to_dict(
+        collection_type, elements = util.xml_to_dict(
                 xml, saveroot=True).items()[0]
-        element_type, elements = collection.items()[0]
-        
+
         for element in elements:
             resources.append(cls(element, prefix_options))
-        return elements
+        return resources
         
     @classmethod
     def _query_string(cls, query_options):
@@ -488,10 +487,7 @@ class ActiveResource(object):
             # Store the actual value in the attributes dictionary
             self.attributes[key] = attr
             attr_name = self._scrub_name(key)
-            if attr_name != key:
-                # key is not a valid attribute name,
-                # access via self.attributes[key]
-                continue
+
 
     def _find_class_for(self, element_name=None, class_name=None):
         """Look in the parent modules for classes matching the element name.
