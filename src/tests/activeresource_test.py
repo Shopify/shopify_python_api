@@ -11,6 +11,8 @@ from pyactiveresource import util
 
 
 class ActiveResourceTest(unittest.TestCase):
+    """Tests for activeresource.ActiveResource."""
+
     def setUp(self):
         """Create test objects."""
         self.arnold = {'id': 1, 'name': 'Arnold Ziffel'}
@@ -20,6 +22,22 @@ class ActiveResourceTest(unittest.TestCase):
         self.store_new = {'name': 'General Store'}
         self.store = {'id': 1, 'name': 'General Store'}
         self.store_update = {'manager_id': 3, 'id': 1, 'name':'General Store'}
+        
+        self.matz  = util.to_xml(
+                {'id': 1, 'name': 'Matz'}, root='person')
+        self.matz_deep  = util.to_xml(
+                {'id': 1, 'name': 'Matz', 'other': 'other'},
+                root='person')
+        self.matz_array = util.to_xml(
+                [{'id': 1, 'name': 'Matz'}], root='people')
+        self.ryan = util.to_xml(
+                {'name': 'Ryan'}, root='person')
+        self.addy = util.to_xml(
+                {'id': 1, 'street': '12345 Street'},
+                root='address')
+        self.addy_deep  = util.to_xml(
+                {'id': 1, 'street': '12345 Street', 'zip': "27519" },
+                root='address')
 
     def test_find_one(self):
         """Test the find_one method."""
@@ -114,6 +132,113 @@ class ActiveResourceTest(unittest.TestCase):
         self.assertEqual(self.store, store.attributes)
         store.manager_id = 3
         store.save()
+
+    def test_class_get(self):
+        connection = fake_connection.FakeConnection()
+        class Person(activeresource.ActiveResource):
+            _connection_obj = connection
+        connection.respond_to('get', '/people/retrieve.xml?name=Matz',
+                              None, None, self.matz_array)
+        self.assertEqual([{'id': 1, 'name': 'Matz'}],
+                         Person.get('retrieve', name='Matz' ))
+    
+    def test_class_post(self):
+        connection = fake_connection.FakeConnection()
+        class Person(activeresource.ActiveResource):
+            _connection_obj = connection
+        connection.respond_to('post', '/people/hire.xml?name=Matz',
+                              None, '', '')
+        self.assertEqual('', Person.post('hire', name='Matz'))
+    
+    def test_class_put(self):
+        connection = fake_connection.FakeConnection()
+        class Person(activeresource.ActiveResource):
+            _connection_obj = connection
+        connection.respond_to('put', '/people/promote.xml?name=Matz',
+                              None, 'atestbody', '')
+        self.assertEqual('', Person.put('promote', 'atestbody', name='Matz'))
+    
+    def test_class_put_nested(self):
+        connection = fake_connection.FakeConnection()
+        class Address(activeresource.ActiveResource):
+            _site = 'http://localhost/people/$person_id/'
+            _connection_obj = connection
+        connection.respond_to('put', '/people/1/addresses/sort.xml?by=name',
+                              None, '', '')
+        self.assertEqual('', Address.put('sort', person_id=1, by='name'))
+
+    def test_class_delete(self):
+        connection = fake_connection.FakeConnection()
+        class Person(activeresource.ActiveResource):
+            _connection_obj = connection
+        connection.respond_to('delete', '/people/deactivate.xml?name=Matz',
+                              None, None, '')
+        self.assertEqual('',
+                         Person.delete('deactivate', name='Matz'))
+    
+    def test_instance_get(self):
+        connection = fake_connection.FakeConnection()
+        class Person(activeresource.ActiveResource):
+            _connection_obj = connection
+        connection.respond_to('get', '/people/1.xml', None, None, self.matz)
+        connection.respond_to('get', '/people/1/shallow.xml', None, None,
+                              self.matz)
+        self.assertEqual({'id': 1, 'name': 'Matz'},
+                         Person.find(1).get('shallow'))
+        connection.respond_to('get', '/people/1/deep.xml', None, None,
+                              self.matz_deep)
+        self.assertEqual({'id': 1, 'name': 'Matz', 'other': 'other'},
+                         Person.find(1).get('deep'))
+    
+    def test_instance_post_new(self):
+        connection = fake_connection.FakeConnection()
+        class Person(activeresource.ActiveResource):
+            _connection_obj = connection
+        ryan = Person({'name': 'Ryan'})
+        connection.respond_to('post', '/people/new/register.xml', None,
+                              self.ryan, '')
+        self.assertEqual('', ryan.post('register'))
+
+    def test_instance_post(self):
+        connection = fake_connection.FakeConnection()
+        class Person(activeresource.ActiveResource):
+            _connection_obj = connection
+        connection.respond_to('post', '/people/1/register.xml', None,
+                              '', self.matz)
+        matz = Person({'id': 1, 'name': 'Matz'})
+        self.assertEqual(self.matz, matz.post('register'))
+
+    def test_instance_put(self):
+        connection = fake_connection.FakeConnection()
+        class Person(activeresource.ActiveResource):
+            _connection_obj = connection
+        connection.respond_to('get', '/people/1.xml', None, None, self.matz)
+        connection.respond_to('put', '/people/1/promote.xml?position=Manager',
+                              None, 'body', '')
+        self.assertEqual(
+                '', Person.find(1).put('promote', 'body', position='Manager'))
+    
+    def test_instance_put_nested(self):
+        """Test with nested resources"""
+        connection = fake_connection.FakeConnection()
+        class Address(activeresource.ActiveResource):
+            _site = 'http://localhost/people/$person_id/'
+            _connection_obj = connection
+        connection.respond_to('get', '/people/1/addresses/1.xml', None, None,
+                              self.addy)
+        connection.respond_to('get', '/people/1/addresses/1/deep.xml',
+                              None, None, self.addy_deep)
+        self.assertEqual({'id': 1, 'street': '12345 Street', 'zip': "27519" },
+                         Address.find(1, person_id=1).get('deep'))
+    
+    def test_instance_delete(self):
+        connection = fake_connection.FakeConnection()
+        class Person(activeresource.ActiveResource):
+            _connection_obj = connection
+        connection.respond_to('get', '/people/1.xml', None, None, self.matz)
+        connection.respond_to('delete', '/people/1/deactivate.xml', None, None,
+                              '')
+        self.assertEqual('', Person.find(1).delete('deactivate'))
 
 
 if __name__ == '__main__':

@@ -83,3 +83,7 @@ class FakeConnection(object):
     def put(self, path, headers=None, data=None):
         """Perform an HTTP post request."""
         return self._lookup_response('put', path, headers, data)
+    
+    def delete(self, path, headers=None):
+        """Perform an HTTP delete request."""
+        return self._lookup_response('delete', path, headers, None)

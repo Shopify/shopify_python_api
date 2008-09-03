@@ -176,7 +176,8 @@ class ActiveResource(object):
         """
         prefix_options, query_options = cls._split_options(kwargs)
         path = cls._element_path(id_, prefix_options, query_options)
-        return cls._build_object(cls._connection().get(path, cls._headers))
+        return cls._build_object(cls._connection().get(path, cls._headers),
+                                 prefix_options)
 
 
     @classmethod
@@ -345,8 +346,7 @@ class ActiveResource(object):
             A dictionary representing the returned data.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
-        return util.xml_to_dict(
-                cls._connection().post(url, cls._headers, body))
+        return cls._connection().post(url, cls._headers, body)
 
     @classmethod
     def _class_put(cls, method_name, body='', **kwargs):
@@ -360,8 +360,7 @@ class ActiveResource(object):
             A dictionary representing the returned data.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
-        return util.xml_to_dict(
-                cls._connection().put(url, cls._headers, body))
+        return cls._connection().put(url, cls._headers, body)
 
     @classmethod
     def _class_delete(cls, method_name, **kwargs):
@@ -374,7 +373,7 @@ class ActiveResource(object):
             A dictionary representing the returned data.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
-        return util.xml_to_dict(self._connection().get(url, self._headers))
+        return cls._connection().delete(url, cls._headers)
 
     @classmethod
     def _prefix_parameters(cls):
@@ -618,6 +617,7 @@ class ActiveResource(object):
     # methods corresponding to Ruby's custom_methods
     def _custom_method_element_url(self, method_name, options):
         prefix_options, query_options = self._split_options(options)
+        prefix_options.update(self._prefix_options)
         path = (
             '%(prefix)s/%(plural)s/%(id)s/%(method_name)s.%(format)s%(query)s' % 
             {'prefix': self._prefix(prefix_options),
@@ -630,6 +630,7 @@ class ActiveResource(object):
     
     def _custom_method_new_element_url(self, method_name, options):
         prefix_options, query_options = self._split_options(options)
+        prefix_options.update(self._prefix_options)
         path = (
             '%(prefix)s/%(plural)s/new/%(method_name)s.%(format)s%(query)s' % 
             {'prefix': self._prefix(prefix_options),
@@ -667,8 +668,7 @@ class ActiveResource(object):
             if not body:
                 body = self.to_xml()
             url = self._custom_method_new_element_url(method_name, kwargs)
-        return util.xml_to_dict(
-                self._connection().post(url, self._headers, body))
+        return self._connection().post(url, self._headers, body)
     
     def _instance_put(self, method_name, body='', **kwargs):
         """Update a nested resource.
@@ -681,8 +681,7 @@ class ActiveResource(object):
             A dictionary representing the returned data.
         """
         url = self._custom_method_element_url(method_name, kwargs)
-        return util.xml_to_dict(
-                self._connection().put(url, self._headers, body))
+        return self._connection().put(url, self._headers, body)
 
     def _instance_delete(self, method_name, **kwargs):
         """Get a nested resource or resources.
@@ -694,7 +693,7 @@ class ActiveResource(object):
             A dictionary representing the returned data.
         """
         url = self._custom_method_element_url(method_name, kwargs)
-        return util.xml_to_dict(self._connection().delete(url, self._headers))
+        return self._connection().delete(url, self._headers)
 
     # Create property which returns class/instance method based on context
     get = ClassAndInstanceMethod('_class_get', '_instance_get')
