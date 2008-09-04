@@ -650,7 +650,12 @@ class ActiveResource(object):
             A dictionary representing the returned data.
         """
         url = self._custom_method_element_url(method_name, kwargs)
-        return util.xml_to_dict(self._connection().get(url, self._headers))
+        data = util.xml_to_dict(self._connection().get(url, self._headers),
+                                saveroot=True)
+        if isinstance(data, dict) and len(data.keys()) == 1:
+          return data.values()[0]
+        else:
+          return data
 
     def _instance_post(self, method_name, body='', **kwargs):
         """Create a new resource/nested resource.
