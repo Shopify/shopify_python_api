@@ -11,7 +11,10 @@ import decimal
 import re
 import time
 import datetime
-import yaml
+try:
+    import yaml
+except ImportError:
+    yaml = None
 
 try:
     from xml.etree import cElementTree as ET
@@ -282,6 +285,8 @@ def xml_to_dict(xmlobj, saveroot=False):
     elif element_type == 'boolean':
         return element.text.strip() in ('true', '1')
     elif element_type == 'yaml':
+        if not yaml:
+            raise ImportError("PyYaml is not installed: http://pyyaml.org/")
         return yaml.safe_load(element.text)
     elif element_type == 'base64binary':
         return base64.decodestring(element.text)
