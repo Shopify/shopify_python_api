@@ -186,6 +186,14 @@ class UtilTest(unittest.TestCase):
         self.assertEqual(expected_bacon_dict,
                          util.xml_to_dict(bacon_xml, saveroot=True)['bacon'])
 
+    def test_xml_to_dict_parses_datetime_timezones(self):
+        blog_xml = '''<blog>
+            <posted_at type="datetime">2008-09-05T13:34-0700</posted_at>
+          </blog>'''
+        blog_dict = util.xml_to_dict(blog_xml, saveroot=True)
+        self.assertEqual((2008, 9, 5, 20, 34, 0, 4, 249, 0),
+                         blog_dict['blog']['posted_at'].utctimetuple())
+
     def test_xml_to_dict_unknown_type(self):
         product_xml = '''<product>
             <weight type="double">0.5</weight>

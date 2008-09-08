@@ -17,6 +17,17 @@ except ImportError:
     yaml = None
 
 try:
+    from dateutil.parser import parse as date_parse
+except ImportError:
+    try:
+        from xml.utils import iso8601
+        def date_parse(time_string):
+            return datetime.datetime.utcfromtimestamp(
+                    iso8601.parse(time_string))
+    except ImportError:
+        date_parse = None
+
+try:
     from xml.etree import cElementTree as ET
 except ImportError:
     try:
@@ -271,10 +282,12 @@ def xml_to_dict(xmlobj, saveroot=False):
     elif element_type == 'integer':
         return int(element.text)
     elif element_type == 'datetime':
-        # Parse the default Ruby timestamp format
-        timestamp = calendar.timegm(
-                time.strptime(element.text, '%Y-%m-%dT%H:%M:%S+0000'))
-        return datetime.datetime.utcfromtimestamp(timestamp)
+        if date_parse:
+            return date_parse(element.text)
+        else:
+            timestamp = calendar.timegm(
+                    time.strptime(element.text, '%Y-%m-%dT%H:%M:%S+0000'))
+            return datetime.datetime.utcfromtimestamp(timestamp)
     elif element_type == 'date':
         time_tuple = time.strptime(element.text, '%Y-%m-%d')
         return datetime.date(*time_tuple[:3])
