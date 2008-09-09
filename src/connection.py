@@ -4,6 +4,7 @@
 """A connection object to interface with REST services."""
 
 import base64
+import logging
 import socket
 import urllib2
 import urlparse
@@ -28,6 +29,11 @@ class ConnectionError(Error):
             message = str(response)
         Error.__init__(self, message)
 
+
+class Redirection(ConnectionError):
+    """HTTP 3xx redirection."""
+    pass
+    
 
 class ClientError(ConnectionError):
     """An error caused by an ActiveResource client."""
@@ -116,6 +122,7 @@ class Connection(object):
         else:
             self.auth = None
         self.timeout = timeout
+        self.log = logging.getLogger('pyactiveresource.connection')
 
     def _parse_site(self, site):
         """Retrieve the auth information and base url for a site.
@@ -157,6 +164,7 @@ class Connection(object):
             An xml string.
         """
         url = urlparse.urljoin(self.site, path)
+        self.log.info('%s %s', method, url)
         request = self._request(url)
         request.set_method(method)
         if headers:
@@ -165,22 +173,30 @@ class Connection(object):
         if self.auth:
             # Insert basic authentication header
             request.add_header('Authorization', 'Basic %s' % self.auth)
+        if request.headers:
+          header_string = '\n'.join([':'.join((k, v)) for k, v in
+                                     request.headers.items()])
+          self.log.debug('request-headers:%s', header_string)
         if data:
             request.add_header('Content-type', 'text/xml')
             request.add_data(data)
+            self.log.debug('request-body:%s', request.get_data())
         # This is lame, and urllib2 sucks for not giving a good way to do this
         old_timeout = socket.getdefaulttimeout()
         socket.setdefaulttimeout(self.timeout)
         try:
           try:
-              xml = urllib2.urlopen(request).read()
+              response = urllib2.urlopen(request)
           except urllib2.HTTPError, err:
-              xml = self._handle_error(err)
+              response = self._handle_error(err)
           except urllib2.URLError, err:
               raise Error(err, url)
         finally:
             socket.setdefaulttimeout(old_timeout)
-        return xml
+        body = response.read()
+        self.log.info('--> %d %s %db', response.code, response.msg, len(body))
+        self.log.debug('response-body:%s', body)
+        return body
 
     def get(self, path, headers=None):
         """Perform an HTTP get request.
@@ -245,8 +261,9 @@ class Connection(object):
         Args:
             err: A urllib2.HTTPError object.
         Returns:
-            An xml string if the error is recoverable.
+            An HTTP response object if the error is recoverable.
         Raises:
+            Redirection: if HTTP error code 301,302 returned.
             BadRequest: if HTTP error code 400 returned.
             UnauthorizedAccess: if HTTP error code 401 returned.
             ForbiddenAccess: if HTTP error code 403 returned.
@@ -258,8 +275,10 @@ class Connection(object):
             ServerError: if HTTP error code falls in 500 - 599.
             ConnectionError: if unknown HTTP error code returned.
         """
-        if 200 < err.code < 400:
-            return err.read()
+        if 200 < err.code < 300:
+            return err
+        elif err.code in (301, 302):
+            raise Redirection(err)
         elif err.code == 400:
             raise BadRequest(err)
         elif err.code == 401:
