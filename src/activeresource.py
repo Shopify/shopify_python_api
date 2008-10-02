@@ -42,6 +42,14 @@ class ResourceMeta(type):
 
         if '_plural' not in new_attrs or not new_attrs['_plural']:
             new_attrs['_plural'] = util.pluralize(new_attrs['_singular'])
+        
+        # So as to not require auth data if it's in the _site attr
+        if '_user' not in new_attrs and '@' in new_attrs.get('_site', ''):
+            auth_data = urlparse.urlsplit(new_attrs['_site'])[1].split('@')[0]
+            if ':' in auth_data:
+                new_attrs['_user'], new_attrs['_password'] = auth_data.split(':')
+            else:
+                new_attrs['_password'] = auth_data
 
         klass = type.__new__(mcs, name, bases, new_attrs)
         return klass
@@ -553,6 +561,8 @@ class ActiveResource(object):
         Returns:
             None
         """
+        if not isinstance(attributes, dict):
+            return
         self.attributes = {}
         # Add all the tags in the element as attributes
         for key, value in attributes.items():

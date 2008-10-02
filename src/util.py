@@ -249,6 +249,9 @@ def xml_to_dict(xmlobj, saveroot=False):
         A dictionary of attributes (possibly nested).
     """
     if isinstance(xmlobj, basestring):
+        # Allow for blank (usually HEAD) result on success
+        if xmlobj.isspace():
+            return {}
         try:
             element = ET.fromstring(xmlobj)
         except Exception, e:
