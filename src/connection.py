@@ -170,7 +170,7 @@ class Connection(object):
 
         self.site, self.user, self.password = self._parse_site(site)
         if user:
-              self.user = user
+            self.user = user
         if password:
             self.password = password
 
