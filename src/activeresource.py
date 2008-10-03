@@ -11,6 +11,7 @@ import urllib
 import urlparse
 from string import Template
 from pyactiveresource import connection
+from pyactiveresource import formats
 from pyactiveresource import util
 
 
@@ -79,6 +80,7 @@ class ActiveResource(object):
     _connection_obj = None
     _headers = None
     _timeout = 5
+    _format = formats.XMLFormat
 
     def __init__(self, attributes, prefix_options=None):
         """Initialize a new ActiveResource object.
@@ -224,35 +226,30 @@ class ActiveResource(object):
                                prefix_options)
 
     @classmethod
-    def _build_object(cls, xml, prefix_options=None):
-        """Create an object or objects for the given xml string.
+    def _build_object(cls, attributes, prefix_options=None):
+        """Create an object or objects for the given resource string.
 
         Args:
-            xml: An xml string containing the object definition.
+            attributes: A dictionary representing a resource.
             prefix_options: A dict of prefixes to add to the request for
                             nested URLs.
         Returns:
             An ActiveResource object.
         """
-        element_type, attributes = util.xml_to_dict(
-                xml, saveroot=True).items()[0]
         return cls(attributes, prefix_options)
 
     @classmethod
-    def _build_list(cls, xml, prefix_options=None):
+    def _build_list(cls, elements, prefix_options=None):
         """Create a list of objects for the given xml string.
 
         Args:
-            xml: An xml string containing multiple object definitions.
+            elements: A list of dictionaries representing resources.
             prefix_options: A dict of prefixes to add to the request for
                             nested URLs.
         Returns:
             A list of ActiveResource objects.
         """
         resources = []
-        collection_type, elements = util.xml_to_dict(
-                xml, saveroot=True).items()[0]
-
         for element in elements:
             resources.append(cls(element, prefix_options))
         return resources
@@ -290,7 +287,7 @@ class ActiveResource(object):
                 'prefix': cls._prefix(prefix_options),
                 'plural': cls._plural,
                 'id': id_,
-                'format': 'xml',
+                'format': cls._format.extension,
                 'query': cls._query_string(query_options)}
 
     @classmethod
@@ -314,7 +311,7 @@ class ActiveResource(object):
         return '%(prefix)s/%(plural)s.%(format)s%(query)s' % {
                 'prefix': cls._prefix(prefix_options),
                 'plural': cls._plural,
-                'format': 'xml',
+                'format': cls._format.extension,
                 'query': cls._query_string(query_options)}
 
     @classmethod
@@ -325,7 +322,7 @@ class ActiveResource(object):
             {'prefix': cls._prefix(prefix_options),
              'plural': cls._plural,
              'method_name': method_name,
-             'format': 'xml',
+             'format': cls._format.extension,
              'query': cls._query_string(query_options)})
         return path
 
@@ -340,7 +337,7 @@ class ActiveResource(object):
             A dictionary representing the returned data.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
-        return util.xml_to_dict(cls._connection().get(url, cls._headers))
+        return cls._connection().get(url, cls._headers)
 
     @classmethod
     def _class_post(cls, method_name, body='', **kwargs):
@@ -351,7 +348,7 @@ class ActiveResource(object):
             body: The data to send as the body of the request.
             kwargs: Any keyword arguments for the query.
         Returns:
-            A dictionary representing the returned data.
+            A connection.Response object.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
         return cls._connection().post(url, cls._headers, body)
@@ -365,7 +362,7 @@ class ActiveResource(object):
             body: The data to send as the body of the request.
             kwargs: Any keyword arguments for the query.
         Returns:
-            A dictionary representing the returned data.
+            A connection.Response object.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
         return cls._connection().put(url, cls._headers, body)
@@ -378,7 +375,7 @@ class ActiveResource(object):
             method_name: the nested resource to retrieve.
             kwargs: Any keyword arguments for the query.
         Returns:
-            A dictionary representing the returned data.
+            A connection.Response object.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
         return cls._connection().delete(url, cls._headers)
@@ -424,7 +421,7 @@ class ActiveResource(object):
         """Return a connection object which handles HTTP requests."""
         if not cls._connection_obj:
             cls._connection_obj = connection.Connection(
-                    cls._site, cls._user, cls._password, cls._timeout)
+                cls._site, cls._user, cls._password, cls._timeout, cls._format)
         return cls._connection_obj
 
     @classmethod
@@ -490,7 +487,7 @@ class ActiveResource(object):
                     self._headers,
                     data=self.to_xml())
         try:
-            attributes = util.xml_to_dict(response)
+            attributes = self._format.decode(response.body)
         except Error:
             return
         self._update(attributes)
@@ -634,7 +631,7 @@ class ActiveResource(object):
              'plural': self._plural,
              'id': self.id,
              'method_name': method_name,
-             'format': 'xml',
+             'format': self._format.extension,
              'query': self._query_string(query_options)})
         return path
     
@@ -646,7 +643,7 @@ class ActiveResource(object):
             {'prefix': self._prefix(prefix_options),
              'plural': self._plural,
              'method_name': method_name,
-             'format': 'xml',
+             'format': self._format.extension,
              'query': self._query_string(query_options)})
         return path
 
@@ -660,12 +657,7 @@ class ActiveResource(object):
             A dictionary representing the returned data.
         """
         url = self._custom_method_element_url(method_name, kwargs)
-        data = util.xml_to_dict(self._connection().get(url, self._headers),
-                                saveroot=True)
-        if isinstance(data, dict) and len(data.keys()) == 1:
-          return data.values()[0]
-        else:
-          return data
+        return self._connection().get(url, self._headers)
 
     def _instance_post(self, method_name, body='', **kwargs):
         """Create a new resource/nested resource.
@@ -675,7 +667,7 @@ class ActiveResource(object):
             body: The data to send as the body of the request.
             kwargs: Any keyword arguments for the query.
         Returns:
-            A dictionary representing the returned data.
+            A connection.Response object.
         """
         if self.id:
             url = self._custom_method_element_url(method_name, kwargs)
@@ -693,7 +685,7 @@ class ActiveResource(object):
             body: The data to send as the body of the request.
             kwargs: Any keyword arguments for the query.
         Returns:
-            A dictionary representing the returned data.
+            A connection.Response object.
         """
         url = self._custom_method_element_url(method_name, kwargs)
         return self._connection().put(url, self._headers, body)
@@ -705,7 +697,7 @@ class ActiveResource(object):
             method_name: the nested resource to retrieve.
             kwargs: Any keyword arguments for the query.
         Returns:
-            A dictionary representing the returned data.
+            A connection.Response object.
         """
         url = self._custom_method_element_url(method_name, kwargs)
         return self._connection().delete(url, self._headers)

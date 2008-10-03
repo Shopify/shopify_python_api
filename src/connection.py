@@ -8,6 +8,7 @@ import logging
 import socket
 import urllib2
 import urlparse
+from pyactiveresource import formats
 
 
 class Error(Exception):
@@ -101,19 +102,75 @@ class Request(urllib2.Request):
         self._method = method
 
 
+class Response(object):
+    """Represents a response from the http server."""
+
+    def __init__(self, code, body, headers=None, msg='', response=None):
+        """Initialize a new Response object.
+
+        code, body, headers, msg are retrievable as instance attributes.
+        Individual headers can be retrieved using dictionary syntax (i.e.
+        response['header'] => value.
+
+        Args:
+            code: The HTTP response code returned by the server.
+            body: The body of the response.
+            headers: A dictionary of HTTP headers.
+            msg: The HTTP message (e.g. 200 OK => 'OK').
+            response: The original httplib.HTTPResponse (if any).
+        """
+        self.code = code
+        self.msg = msg
+        self.body = body
+        if headers is None:
+            headers = {}
+        self.headers = headers
+        self.response = response
+
+    def __eq__(self, other):
+        if isinstance(other, Response):
+            return ((self.code, self.body, self.headers) ==
+                    (other.code, other.body, other.headers))
+        return False
+
+    def __repr__(self):
+        return 'Response(code=%d, body="%s", headers=%s, msg="%s")' % (
+            self.code, self.body, self.headers, self.msg)
+
+    def __getitem__(self, key):
+        return self.headers[key]
+
+    @classmethod
+    def from_httpresponse(cls, response):
+        """Create a Response object based on an httplib.HTTPResponse object.
+
+        Args:
+            response: An httplib.HTTPResponse object.
+        Returns:
+            A Response object.
+        """
+        return cls(response.code, response.read(),
+                   dict(response.headers), response.msg, response)
+
+
 class Connection(object):
     """A connection object to interface with REST services."""
 
-    def __init__(self, site, user=None, password=None, timeout=5):
+    def __init__(self, site, user=None, password=None, timeout=5,
+                 format=formats.XMLFormat):
         """Initialize a new Connection object.
 
         Args:
             site: The base url for connections (e.g. 'http://foo')
+            user: username for basic authentication.
+            password: password for basic authentication.
+            timeout: socket timeout.
+            format: format object for en/decoding resource data.
         """
 
         self.site, self.user, self.password = self._parse_site(site)
         if user:
-            self.user = user
+              self.user = user
         if password:
             self.password = password
 
@@ -123,6 +180,7 @@ class Connection(object):
             self.auth = None
         self.timeout = timeout
         self.log = logging.getLogger('pyactiveresource.connection')
+        self.format = format
 
     def _parse_site(self, site):
         """Retrieve the auth information and base url for a site.
@@ -161,7 +219,7 @@ class Connection(object):
             headers: A dictionary of HTTP headers to add.
             data: The data to send as the body of the request.
         Returns:
-            An xml string.
+             A Response object.
         """
         url = urlparse.urljoin(self.site, path)
         self.log.info('%s %s', method, url)
@@ -178,7 +236,7 @@ class Connection(object):
                                      request.headers.items()])
           self.log.debug('request-headers:%s', header_string)
         if data:
-            request.add_header('Content-type', 'text/xml')
+            request.add_header('Content-Type', self.format.mime_type)
             request.add_data(data)
             self.log.debug('request-body:%s', request.get_data())
         # This is lame, and urllib2 sucks for not giving a good way to do this
@@ -186,17 +244,17 @@ class Connection(object):
         socket.setdefaulttimeout(self.timeout)
         try:
           try:
-              response = urllib2.urlopen(request)
+              response = Response.from_httpresponse(urllib2.urlopen(request))
           except urllib2.HTTPError, err:
-              response = self._handle_error(err)
+              response = Response.from_httpresponse(self._handle_error(err))
           except urllib2.URLError, err:
               raise Error(err, url)
         finally:
             socket.setdefaulttimeout(old_timeout)
-        body = response.read()
-        self.log.info('--> %d %s %db', response.code, response.msg, len(body))
-        self.log.debug('response-body:%s', body)
-        return body
+
+        self.log.info('--> %d %s %db', response.code, response.msg,
+                      len(response.body))
+        return response
 
     def get(self, path, headers=None):
         """Perform an HTTP get request.
@@ -205,9 +263,9 @@ class Connection(object):
             path: The HTTP path to retrieve.
             headers: A dictionary of HTTP headers to add.
         Returns:
-            An xml string.
+            A dictionary representing a resource.
         """
-        return self._open('GET', path, headers=headers)
+        return self.format.decode(self._open('GET', path, headers=headers).body)
 
     def delete(self, path, headers=None):
         """Perform an HTTP delete request.
@@ -216,7 +274,7 @@ class Connection(object):
             path: The HTTP path to retrieve.
             headers: A dictionary of HTTP headers to add.
         Returns:
-            An xml string.
+            A Response object.
         """
         return self._open('DELETE', path, headers=headers)
 
@@ -228,7 +286,7 @@ class Connection(object):
             headers: A dictionary of HTTP headers to add.
             data: The data to send as the body of the request.
         Returns:
-            An xml string.
+            A Response object.
         """
         return self._open('PUT', path, headers=headers, data=data)
 
@@ -240,7 +298,7 @@ class Connection(object):
             headers: A dictionary of HTTP headers to add.
             data: The data to send as the body of the request.
         Returns:
-            An xml string.
+            A Response object.
         """
         return self._open('POST', path, headers=headers, data=data)
 
@@ -251,7 +309,7 @@ class Connection(object):
             path: The HTTP path to retrieve.
             headers: A dictionary of HTTP headers to add.
         Returns:
-            An xml string.
+            A Response object.
         """
         return self._open('HEAD', path, headers=headers)
 
@@ -275,10 +333,10 @@ class Connection(object):
             ServerError: if HTTP error code falls in 500 - 599.
             ConnectionError: if unknown HTTP error code returned.
         """
-        if 200 < err.code < 300:
-            return err
-        elif err.code in (301, 302):
+        if err.code in (301, 302):
             raise Redirection(err)
+        elif 200 <= err.code < 400:
+            return err
         elif err.code == 400:
             raise BadRequest(err)
         elif err.code == 401:

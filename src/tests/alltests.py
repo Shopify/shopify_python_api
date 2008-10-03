@@ -8,6 +8,7 @@ import unittest
 def suite():
     modules_to_test = (
         'activeresource_test',
+        'connection_test',
         'util_test'
         )
     alltests = unittest.TestSuite()

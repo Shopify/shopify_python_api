@@ -49,7 +49,7 @@ class UtilTest(unittest.TestCase):
             'replies_count': 0,
             'replies_close_in': 2592000000L,
             'written_on': datetime.date(2003, 7, 16),
-            'viewed_at': datetime.datetime(2003, 7, 16, 9, 28),
+            'viewed_at': util.date_parse('2003-07-16T9:28Z'),
             'content': {':message': 'Have a nice day',
                         1: 'should be an integer',
                         'array': [{'should-have-dashes': True,
@@ -103,7 +103,7 @@ class UtilTest(unittest.TestCase):
           'replies_count': 0,
           'replies_close_in': 2592000000L,
           'written_on': datetime.date(2003, 7, 16),
-          'viewed_at': datetime.datetime(2003, 7, 16, 9, 28),
+          'viewed_at': util.date_parse('2003-07-16T09:28Z'),
           'content': 'Have a nice day',
           'author_email_address': 'david@loudthinking.com',
           'parent_id': None}
@@ -179,7 +179,7 @@ class UtilTest(unittest.TestCase):
             'weight': 0.5,
             'chunky': True,
             'price': decimal.Decimal('12.50'),
-            'expires_at': datetime.datetime(2007, 12, 25, 12, 34, 56),
+            'expires_at': util.date_parse('2007-12-25T12:34:56Z'),
             'notes': '',
             'illustration': 'babe.png'}
 
@@ -206,6 +206,8 @@ class UtilTest(unittest.TestCase):
                 expected_product_dict,
                 util.xml_to_dict(product_xml, saveroot=True)['product'])
 
+    def test_xml_to_dict_errors_on_empty_string(self):
+        self.assertRaises(Exception, util.xml_to_dict, '')
 
 if __name__ == '__main__':
     unittest.main()
