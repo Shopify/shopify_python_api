@@ -22,6 +22,13 @@ except ImportError:
     try:
         from xml.utils import iso8601
         def date_parse(time_string):
+            """Return a datetime object for the given ISO8601 string.
+            
+            Args:
+                time_string: An ISO8601 timestamp.
+            Returns:
+                A datetime.datetime object.
+            """
             return datetime.datetime.utcfromtimestamp(
                     iso8601.parse(time_string))
     except ImportError:
@@ -199,25 +206,25 @@ def xml_pretty_format(element, level=0):
         if level and (not element.tail or not element.tail.strip()):
             element.tail = indent
 
-    
-def to_xml(o, root='object', pretty=False, header=True):
+
+def to_xml(obj, root='object', pretty=False, header=True):
     """Convert a dictionary or list to an XML string.
     
     Args:
-        o: The dictionary/list object to convert.
+        obj: The dictionary/list object to convert.
         root: The name of the root xml element.
     Returns:
         An xml string.
     """
     root_element = ET.Element(root.replace('_', '-'))
-    if isinstance(o, list):
+    if isinstance(obj, list):
         root_element.set('type', 'array')
-        for i in o:
+        for i in obj:
             element = ET.fromstring(
                     to_xml(i, root=singularize(root), header=False))
             root_element.append(element)
     else:
-        for key, value in o.iteritems():
+        for key, value in obj.iteritems():
             key = key.replace('_', '-')
             if isinstance(value, dict) or isinstance(value, list):
                 element = ET.fromstring(
@@ -230,7 +237,7 @@ def to_xml(o, root='object', pretty=False, header=True):
                     if isinstance(value, int):
                         element.set('type', 'integer')
                 else:
-                  element.set('nil', 'true')
+                    element.set('nil', 'true')
     if pretty:
         xml_pretty_format(root_element)
     xml_data = ET.tostring(root_element)
@@ -254,8 +261,8 @@ def xml_to_dict(xmlobj, saveroot=False):
             return {}
         try:
             element = ET.fromstring(xmlobj)
-        except Exception, e:
-            raise Error('Unable to parse xml data.')
+        except Exception, err:
+            raise Error('Unable to parse xml data: %s' % err)
     else:
         element = xmlobj
 

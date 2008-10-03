@@ -7,9 +7,7 @@ __author__ = 'Mark Roach (mrroach@google.com)'
 
 
 import unittest
-import urllib
 import urllib2
-from StringIO import StringIO
 from pyactiveresource import connection
 from pyactiveresource import util
 from pyactiveresource.tests import http_fake
@@ -93,7 +91,7 @@ class ConnectionTest(unittest.TestCase):
     def test_handle_connection_error(self):
         # Others are unknown.
         for code in [199, 600]:
-          self.assert_response_raises(connection.ConnectionError, code)
+            self.assert_response_raises(connection.ConnectionError, code)
 
     def test_timeout_attribute(self):
         self.connection.timeout = 7

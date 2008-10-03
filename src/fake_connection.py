@@ -5,9 +5,7 @@
 
 __author__ = 'Mark Roach (mrroach@google.com)'
 
-import re
 import urllib
-import urlparse
 from pyactiveresource import connection
 from pyactiveresource import formats
 
@@ -38,6 +36,7 @@ class FakeConnection(object):
         """Constructor for FakeConnection object."""
         self.format = format
         self._request_map = {}
+        self._debug_only = False
 
     def _split_path(self, path):
         """Return the path and the query string as a dictionary."""
@@ -67,7 +66,7 @@ class FakeConnection(object):
         """
         path_only, query = self._split_path(path)
         if response_headers is None:
-            response_headers == {}
+            response_headers = {}
         self._request_map.setdefault(method, []).append(
                 ((path_only, query, headers, data), (body, response_headers)))
 

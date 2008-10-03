@@ -4,12 +4,13 @@
 """Tests for ActiveResource objects."""
 
 __author__ = 'Mark Roach (mrroach@google.com)'
+
 import unittest
 from pyactiveresource import activeresource
 from pyactiveresource import connection
 from pyactiveresource import util
-from pyactiveresource import fake_connection
 from pyactiveresource.tests import http_fake
+
 
 class Error(Exception):
     pass
@@ -89,6 +90,7 @@ class ActiveResourceTest(unittest.TestCase):
                 <person><name>jim</name><id>2</id></person>
               </people>'''
         self.http.respond_to('GET', '/people.xml', {}, collection_xml)
+        print self.person.find()
         self.assertRaises(Exception, self.person.find)
 
     def test_find_parses_single_item_non_array_collection(self):

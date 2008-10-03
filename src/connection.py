@@ -232,9 +232,9 @@ class Connection(object):
             # Insert basic authentication header
             request.add_header('Authorization', 'Basic %s' % self.auth)
         if request.headers:
-          header_string = '\n'.join([':'.join((k, v)) for k, v in
-                                     request.headers.items()])
-          self.log.debug('request-headers:%s', header_string)
+            header_string = '\n'.join([':'.join((k, v)) for k, v in
+                                       request.headers.items()])
+            self.log.debug('request-headers:%s', header_string)
         if data:
             request.add_header('Content-Type', self.format.mime_type)
             request.add_data(data)
@@ -243,12 +243,12 @@ class Connection(object):
         old_timeout = socket.getdefaulttimeout()
         socket.setdefaulttimeout(self.timeout)
         try:
-          try:
-              response = Response.from_httpresponse(urllib2.urlopen(request))
-          except urllib2.HTTPError, err:
-              response = Response.from_httpresponse(self._handle_error(err))
-          except urllib2.URLError, err:
-              raise Error(err, url)
+            try:
+                response = Response.from_httpresponse(urllib2.urlopen(request))
+            except urllib2.HTTPError, err:
+                response = Response.from_httpresponse(self._handle_error(err))
+            except urllib2.URLError, err:
+                raise Error(err, url)
         finally:
             socket.setdefaulttimeout(old_timeout)
 

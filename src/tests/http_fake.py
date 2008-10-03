@@ -6,12 +6,10 @@
 __author__ = 'Mark Roach (mrroach@google.com)'
 
 
-import os
 import urllib2
 import urlparse
 from StringIO import StringIO
 from pprint import pformat
-from pyactiveresource import connection
 
 
 class Error(Exception):
@@ -24,7 +22,7 @@ def initialize():
     urllib2.install_opener(opener)
 
 
-class TestHandler(urllib2.HTTPHandler,urllib2.HTTPSHandler):
+class TestHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
     """A urllib2 handler object which returns a predefined response."""
 
     _response = None
@@ -105,7 +103,9 @@ class FakeResponse(object):
         self.body_file = StringIO(body)
     
     def read(self):
+        """Read the entire response body."""
         return self.body_file.read()
     
     def readline(self):
+        """Read a single line from the response body."""
         return self.body_file.readline()

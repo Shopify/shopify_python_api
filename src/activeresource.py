@@ -48,7 +48,8 @@ class ResourceMeta(type):
         if '_user' not in new_attrs and '@' in new_attrs.get('_site', ''):
             auth_data = urlparse.urlsplit(new_attrs['_site'])[1].split('@')[0]
             if ':' in auth_data:
-                new_attrs['_user'], new_attrs['_password'] = auth_data.split(':')
+                new_attrs['_user'], new_attrs['_password'] = \
+                    auth_data.split(':')
             else:
                 new_attrs['_password'] = auth_data
 
@@ -57,16 +58,16 @@ class ResourceMeta(type):
 
 
 class ClassAndInstanceMethod(object):
-  """A descriptor which allows class/instance methods to have the same name."""
+    """A descriptor to allow class/instance methods with the same name."""
 
-  def __init__(self, class_method, instance_method):
-    self.class_method = class_method
-    self.instance_method = instance_method
+    def __init__(self, class_method, instance_method):
+        self.class_method = class_method
+        self.instance_method = instance_method
 
-  def __get__(self, instance, owner):
-    if instance:
-        return getattr(instance, self.instance_method)
-    return getattr(owner, self.class_method)
+    def __get__(self, instance, owner):
+        if instance:
+            return getattr(instance, self.instance_method)
+        return getattr(owner, self.class_method)
 
 
 class ActiveResource(object):
@@ -316,6 +317,14 @@ class ActiveResource(object):
 
     @classmethod
     def _custom_method_collection_url(cls, method_name, options):
+        """Get the collection path for this resource type.
+        
+        Args:
+            method_name: The HTTP method being used.
+            options: A dictionary of query/prefix options.
+        Returns:
+            The path (relative to site) to this type of collection.
+        """ 
         prefix_options, query_options = cls._split_options(options)
         path = (
             '%(prefix)s/%(plural)s/%(method_name)s.%(format)s%(query)s' % 
@@ -503,7 +512,7 @@ class ActiveResource(object):
         """
         self._connection().delete(
                 self._element_path(self.id, self._prefix_options),
-                self.__class__._headers)
+                self._headers)
 
     def __getattr__(self, name):
         """Retrieve the requested attribute if it exists.
@@ -623,10 +632,18 @@ class ActiveResource(object):
         
     # methods corresponding to Ruby's custom_methods
     def _custom_method_element_url(self, method_name, options):
+        """Get the element path for this type of object.
+
+        Args:
+            method_name: The HTTP method being used.
+            options: A dictionary of query/prefix options.
+        Returns:
+            The path (relative to site) to the element formatted with the query.
+        """
         prefix_options, query_options = self._split_options(options)
         prefix_options.update(self._prefix_options)
         path = (
-            '%(prefix)s/%(plural)s/%(id)s/%(method_name)s.%(format)s%(query)s' % 
+            '%(prefix)s/%(plural)s/%(id)s/%(method_name)s.%(format)s%(query)s' %
             {'prefix': self._prefix(prefix_options),
              'plural': self._plural,
              'id': self.id,
@@ -636,6 +653,14 @@ class ActiveResource(object):
         return path
     
     def _custom_method_new_element_url(self, method_name, options):
+        """Get the element path for creating new objects of this type.
+
+        Args:
+            method_name: The HTTP method being used.
+            options: A dictionary of query/prefix options.
+        Returns:
+            The path (relative to site) to the element formatted with the query.
+        """
         prefix_options, query_options = self._split_options(options)
         prefix_options.update(self._prefix_options)
         path = (
