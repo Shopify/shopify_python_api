@@ -299,6 +299,8 @@ def xml_to_dict(xmlobj, saveroot=False):
     elif element_type in ('float', 'double'):
         return float(element.text)
     elif element_type == 'boolean':
+        if not element.text:
+            return False
         return element.text.strip() in ('true', '1')
     elif element_type == 'yaml':
         if not yaml:
