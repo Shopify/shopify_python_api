@@ -495,12 +495,28 @@ class ActiveResource(object):
                     self._collection_path(self._prefix_options),
                     self._headers,
                     data=self.to_xml())
+            new_id = self._id_from_response(response)
+            if new_id:
+                self.attributes['id'] = new_id
         try:
             attributes = self._format.decode(response.body)
-        except Error:
+        except formats.Error:
             return
-        self._update(attributes)
+        if attributes:
+            self._update(attributes)
         return response
+
+    def _id_from_response(self, response):
+        """Pull the ID out of a response from a create POST.
+        
+        Args:
+            response: A Response object.
+        Returns:
+           An id string.
+        """
+        match = re.search(r'\/([^\/]*?)(\.\w+)?$', response.get('location', ''))
+        if match:
+            return match.group(1)
 
     def destroy(self):
         """Deletes the resource from the remote service.
@@ -569,8 +585,6 @@ class ActiveResource(object):
         """
         if not isinstance(attributes, dict):
             return
-        self.attributes = {}
-        # Add all the tags in the element as attributes
         for key, value in attributes.items():
             if isinstance(value, dict):
                 klass = self._find_class_for(key)

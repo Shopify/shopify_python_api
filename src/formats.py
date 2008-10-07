@@ -9,6 +9,10 @@ __author__ = 'Mark Roach (mrroach@google.com)'
 from pyactiveresource import util
 
 
+class Error(Exception):
+    """Base exception type for this module."""
+
+
 class Base(object):
     """A base format object for inheritance."""
     
@@ -22,7 +26,10 @@ class XMLFormat(Base):
     @staticmethod
     def decode(resource_string):
         """Convert a resource string to a dictionary."""
-        data = util.xml_to_dict(resource_string, saveroot=True)
+        try:
+            data = util.xml_to_dict(resource_string, saveroot=True)
+        except util.Error, err:
+            raise Error(err)
         if isinstance(data, dict) and len(data) == 1:
             data = data.values()[0]
         return data

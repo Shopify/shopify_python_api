@@ -140,6 +140,9 @@ class Response(object):
     def __getitem__(self, key):
         return self.headers[key]
 
+    def get(self, key, value=None):
+        return self.headers.get(key, value)
+
     @classmethod
     def from_httpresponse(cls, response):
         """Create a Response object based on an httplib.HTTPResponse object.
