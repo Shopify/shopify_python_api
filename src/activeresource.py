@@ -23,6 +23,111 @@ class Error(Exception):
     pass
 
 
+class Errors(object):
+    """Represents error lists returned by the server."""
+    
+    def __init__(self, base):
+        """Constructor for Errors object.
+        
+        Args:
+            base: The parent resource object.
+        """
+        self.base = base
+        self.errors = {}
+
+    @property
+    def size(self):
+        return len(self.errors)
+
+    def __len__(self):
+        return len(self.errors)
+
+    def add(self, attribute, error):
+        """Add an error to a resource object's attribute.
+        
+        Args:
+            attribute: The attribute to add the error to.
+            error: The error string to add.
+        Returns:
+            None
+        """
+        self.errors.setdefault(attribute, []).append(error)
+
+    def add_to_base(self, error):
+        """Add an error to the base resource object rather than an attribute.
+        
+        Args:
+            error: the error string to add.
+        Returns:
+            None
+        """
+        self.add('base', error)
+
+    def clear(self):
+        """Clear any errors that have been set.
+        
+        Args:
+            None
+        Returns:
+            None
+        """
+        self.errors = {}
+        
+    def from_xml(self, xml_string):
+        """Grab errors from an XML response.
+        
+        Args:
+            xml_string: An xml errors object (e.g. '<errors></errors>')
+        Returns:
+            None
+        """
+        attribute_keys = self.base.attributes.keys()
+        try:
+            messages = util.xml_to_dict(
+                    xml_string, saveroot=True)['errors']['error']
+            if not isinstance(messages, list):
+                messages = [messages]
+        except util.Error:
+            messages = []
+        for message in messages:
+            attr_name = message.split()[0]
+            key = util.underscore(attr_name)
+            if key in attribute_keys:
+                self.add(key, message[len(attr_name)+1:])
+            else:
+                self.add_to_base(message)
+
+    def on(self, attribute):
+        """Return the errors for the given attribute.
+        
+        Args:
+            attribute: The attribute to retrieve errors for.
+        Returns:
+            An error string, or a list of error message strings or None 
+            if none exist for the given attribute.
+        """
+        errors = self.errors.get(attribute, None)
+        if len(errors) == 1:
+            return errors[0]
+    
+    def full_messages(self):
+        """Returns all the full error messages in an array.
+        
+        Args:
+            None
+        Returns:
+            An array of error strings.
+        """
+        messages = []
+        for key, errors in self.errors.items():
+            for error in errors:
+                if key == 'base':
+                    messages.append(error)
+                else:
+                    messages.append(' '.join((key, error)))
+        return messages
+
+
 class ResourceMeta(type):
     """A metaclass to handle singular/plural attributes."""
 
@@ -97,6 +202,7 @@ class ActiveResource(object):
         else:
             self._prefix_options = {}
         self._update(attributes)
+        self.errors = Errors(self)
         self._initialized = True
 
     # Public class methods which act as factory functions
@@ -481,30 +587,45 @@ class ActiveResource(object):
         Args:
             None
         Returns:
-            None.
+            True on success, False on ResourceInvalid errors (sets the errors
+            attribute if an <errors> object is returned by the server).
         Raises:
             connection.Error: On any communications problems.
         """
-        if self.id:
-            response = self._connection().put(
-                    self._element_path(self.id, self._prefix_options),
-                    self._headers,
-                    data=self.to_xml())
-        else:
-            response = self._connection().post(
-                    self._collection_path(self._prefix_options),
-                    self._headers,
-                    data=self.to_xml())
-            new_id = self._id_from_response(response)
-            if new_id:
-                self.attributes['id'] = new_id
+        try:
+            if self.id:
+                response = self._connection().put(
+                        self._element_path(self.id, self._prefix_options),
+                        self._headers,
+                        data=self.to_xml())
+            else:
+                response = self._connection().post(
+                        self._collection_path(self._prefix_options),
+                        self._headers,
+                        data=self.to_xml())
+                new_id = self._id_from_response(response)
+                if new_id:
+                    self.attributes['id'] = new_id
+        except connection.ResourceInvalid, err:
+            self.errors.from_xml(err.response.body)
+            return False
         try:
             attributes = self._format.decode(response.body)
         except formats.Error:
-            return
+            return True
         if attributes:
             self._update(attributes)
-        return response
+        return True
+
+    def is_valid(self):
+        """Returns True if no errors have been set.
+        
+        Args:
+            None
+        Returns:
+            True if no errors have been set, False otherwise.
+        """
+        return not len(self.errors)
 
     def _id_from_response(self, response):
         """Pull the ID out of a response from a create POST.

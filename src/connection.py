@@ -25,7 +25,7 @@ class ServerError(Error):
 class ConnectionError(Error):
     """An error caused by network connection."""
     def __init__(self, response, message=None):
-        self.response = response
+        self.response = Response.from_httpresponse(response)
         if not message:
             message = str(response)
         Error.__init__(self, message)
