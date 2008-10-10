@@ -259,6 +259,19 @@ class ActiveResource(object):
         except connection.Error:
             return False
 
+    @classmethod
+    def create(cls, attributes):
+        """Create and save a resource with the given attributes.
+        
+        Args:
+            attributes: A dictionary of attributes which represent this object.
+        Returns:
+            True if the resource is found, False otherwise.
+        """
+        resource = cls(attributes)
+        resource.save()
+        return resource
+
     # Non-public class methods to support the above
     @classmethod
     def _split_options(cls, options):
