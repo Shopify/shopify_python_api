@@ -8,6 +8,7 @@ __author__ = 'Mark Roach (mrroach@google.com)'
 
 import unittest
 import urllib2
+from StringIO import StringIO
 from pyactiveresource import connection
 from pyactiveresource import util
 from pyactiveresource.tests import http_fake
@@ -38,7 +39,7 @@ class ConnectionTest(unittest.TestCase):
         self.connection = connection.Connection(self.http.site)
     
     def assert_response_raises(self, error, code):
-        response = urllib2.HTTPError('', code, '', {}, None)
+        response = urllib2.HTTPError('', code, '', {}, StringIO(''))
         self.http.set_response(response)
         self.assertRaises(error, self.connection._open, '', '')
       

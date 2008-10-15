@@ -159,7 +159,7 @@ class Response(object):
 class Connection(object):
     """A connection object to interface with REST services."""
 
-    def __init__(self, site, user=None, password=None, timeout=5,
+    def __init__(self, site, user=None, password=None, timeout=None,
                  format=formats.XMLFormat):
         """Initialize a new Connection object.
 
@@ -242,9 +242,10 @@ class Connection(object):
             request.add_header('Content-Type', self.format.mime_type)
             request.add_data(data)
             self.log.debug('request-body:%s', request.get_data())
-        # This is lame, and urllib2 sucks for not giving a good way to do this
-        old_timeout = socket.getdefaulttimeout()
-        socket.setdefaulttimeout(self.timeout)
+        if self.timeout:
+            # This is lame, and urllib2 sucks for not giving a good way to do this
+            old_timeout = socket.getdefaulttimeout()
+            socket.setdefaulttimeout(self.timeout)
         try:
             try:
                 response = Response.from_httpresponse(urllib2.urlopen(request))
@@ -253,7 +254,8 @@ class Connection(object):
             except urllib2.URLError, err:
                 raise Error(err, url)
         finally:
-            socket.setdefaulttimeout(old_timeout)
+            if self.timeout:
+                socket.setdefaulttimeout(old_timeout)
 
         self.log.info('--> %d %s %db', response.code, response.msg,
                       len(response.body))

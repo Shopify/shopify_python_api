@@ -8,6 +8,7 @@ import new
 import re
 import sys
 import urllib
+import urllib2
 import urlparse
 from string import Template
 from pyactiveresource import connection
@@ -25,10 +26,10 @@ class Error(Exception):
 
 class Errors(object):
     """Represents error lists returned by the server."""
-    
+
     def __init__(self, base):
         """Constructor for Errors object.
-        
+
         Args:
             base: The parent resource object.
         """
@@ -44,7 +45,7 @@ class Errors(object):
 
     def add(self, attribute, error):
         """Add an error to a resource object's attribute.
-        
+
         Args:
             attribute: The attribute to add the error to.
             error: The error string to add.
@@ -55,7 +56,7 @@ class Errors(object):
 
     def add_to_base(self, error):
         """Add an error to the base resource object rather than an attribute.
-        
+
         Args:
             error: the error string to add.
         Returns:
@@ -65,17 +66,17 @@ class Errors(object):
 
     def clear(self):
         """Clear any errors that have been set.
-        
+
         Args:
             None
         Returns:
             None
         """
         self.errors = {}
-        
+
     def from_xml(self, xml_string):
         """Grab errors from an XML response.
-        
+
         Args:
             xml_string: An xml errors object (e.g. '<errors></errors>')
         Returns:
@@ -99,20 +100,20 @@ class Errors(object):
 
     def on(self, attribute):
         """Return the errors for the given attribute.
-        
+
         Args:
             attribute: The attribute to retrieve errors for.
         Returns:
-            An error string, or a list of error message strings or None 
+            An error string, or a list of error message strings or None
             if none exist for the given attribute.
         """
         errors = self.errors.get(attribute, None)
         if len(errors) == 1:
             return errors[0]
-    
+
     def full_messages(self):
         """Returns all the full error messages in an array.
-        
+
         Args:
             None
         Returns:
@@ -128,8 +129,24 @@ class Errors(object):
         return messages
 
 
+class ClassAndInstanceMethod(object):
+    """A descriptor to allow class/instance methods with the same name."""
+
+    def __init__(self, class_method, instance_method):
+        self.class_method = class_method
+        self.instance_method = instance_method
+
+    def __get__(self, instance, owner):
+        if instance:
+            return getattr(instance, self.instance_method)
+        return getattr(owner, self.class_method)
+
+
 class ResourceMeta(type):
-    """A metaclass to handle singular/plural attributes."""
+    """A metaclass for ActiveResource objects.
+
+    Provides a separate namespace for configuration objects (user,password,
+    site, etc)"""
 
     def __new__(mcs, name, bases, new_attrs):
         """Create a new class.
@@ -148,45 +165,121 @@ class ResourceMeta(type):
 
         if '_plural' not in new_attrs or not new_attrs['_plural']:
             new_attrs['_plural'] = util.pluralize(new_attrs['_singular'])
-        
-        # So as to not require auth data if it's in the _site attr
-        if '_user' not in new_attrs and '@' in new_attrs.get('_site', ''):
-            auth_data = urlparse.urlsplit(new_attrs['_site'])[1].split('@')[0]
-            if ':' in auth_data:
-                new_attrs['_user'], new_attrs['_password'] = \
-                    auth_data.split(':')
-            else:
-                new_attrs['_password'] = auth_data
+
 
         klass = type.__new__(mcs, name, bases, new_attrs)
+
+        # if _site is defined, use the site property to ensure that user
+        # and password are properly initialized.
+        if '_site' in new_attrs:
+            klass.site = new_attrs['_site']
+
         return klass
 
+    @property
+    def connection(cls):
+        """A connection object which handles all HTTP requests."""
+        super_class = cls.__mro__[1]
+        if super_class == object or '_connection' in cls.__dict__:
+            if cls._connection is None:
+                cls._connection = connection.Connection(
+                    cls.site, cls.user, cls.password, cls.timeout, cls.format)
+            return cls._connection
+        else:
+            return super_class.connection
 
-class ClassAndInstanceMethod(object):
-    """A descriptor to allow class/instance methods with the same name."""
+    def get_user(cls):
+        return cls._user
 
-    def __init__(self, class_method, instance_method):
-        self.class_method = class_method
-        self.instance_method = instance_method
+    def set_user(cls, value):
+      cls._connection = None
+      cls._user = value
 
-    def __get__(self, instance, owner):
-        if instance:
-            return getattr(instance, self.instance_method)
-        return getattr(owner, self.class_method)
+    user = property(get_user, set_user, None,
+                    'A username for HTTP Basic Auth.')
+
+    def get_password(cls):
+        return cls._password
+
+    def set_password(cls, value):
+        cls._connection = None
+        cls._password = value
+
+    password = property(get_password, set_password, None,
+                        'A password for HTTP Basic Auth.')
+
+    def get_site(cls):
+        return cls._site
+
+    def set_site(cls, value):
+        if value is not None:
+            host = urlparse.urlsplit(value)[1]
+            auth_info, host = urllib2.splituser(host)
+            if auth_info:
+                user, password = urllib2.splitpasswd(auth_info)
+                if user:
+                    cls._user = urllib.unquote(user)
+                if password:
+                    cls._password = urllib.unquote(password)
+        cls._connection = None
+        cls._site = value
+
+    site = property(get_site, set_site, None,
+                    'The base REST site to connect to.')
+
+    def get_headers(cls):
+        return cls._headers
+
+    def set_headers(cls, value):
+        cls._headers = value
+    headers = property(get_headers, set_headers, None,
+                       'HTTP headers.')
+
+    def get_timeout(cls):
+        return cls._timeout
+
+    def set_timeout(cls, value):
+        cls._connection = None
+        cls._timeout = value
+    timeout = property(get_timeout, set_timeout, None,
+                       'Socket timeout for HTTP operations')
+
+    def get_format(cls):
+        return cls._format
+
+    def set_format(cls, value):
+        cls._format = value
+    format = property(get_format, set_format, None,
+                       'A format object for encoding/decoding requests')
+
+    def get_plural(cls):
+        return cls._plural
+
+    def set_plural(cls, value):
+        cls._plural = value
+    plural = property(get_plural, set_plural, None,
+                      'The plural name of this object type.')
+
+    def get_singular(cls):
+        return cls._singular
+
+    def set_singular(cls, value):
+        cls._singular = vaue
+    singular = property(get_singular, set_singular, None,
+                        'The singular name of this object type.')
 
 
 class ActiveResource(object):
     """Represents an activeresource object."""
-    
-    __metaclass__ = ResourceMeta
 
-    _site = ''
-    _user = ''
-    _password = ''
-    _connection_obj = None
-    _headers = None
-    _timeout = 5
+    __metaclass__ = ResourceMeta
+    _connection = None
     _format = formats.XMLFormat
+    _headers = None
+    _password = None
+    _site = None
+    _timeout = None
+    _user = None
 
     def __init__(self, attributes, prefix_options=None):
         """Initialize a new ActiveResource object.
@@ -196,6 +289,7 @@ class ActiveResource(object):
             prefix_options: A dict of prefixes to add to the request for
                             nested URLs.
         """
+        self.klass = self.__class__
         self.attributes = {}
         if prefix_options:
             self._prefix_options = prefix_options
@@ -227,6 +321,25 @@ class ActiveResource(object):
         return cls._find_every(from_=from_, **kwargs)
 
     @classmethod
+    def find_first(cls, from_=None, **kwargs):
+        """Core method for finding resources.
+
+        Args:
+            from_: The path that resources will be fetched from.
+            kwargs: any keyword arguments for query.
+
+        Returns:
+            The first resource from the list of returned resources or None if
+            none are found.
+        Raises:
+            connection.Error: On any communications errors.
+            Error: On any other errors.
+        """
+        resources = cls._find_every(from_=from_, **kwargs)
+        if resources:
+            return resources[0]
+
+    @classmethod
     def find_one(cls, from_, **kwargs):
         """Get a single resource from a specific URL.
 
@@ -244,7 +357,7 @@ class ActiveResource(object):
     @classmethod
     def exists(cls, id_, **kwargs):
         """Check whether a resource exists.
-        
+
         Args:
             id_: The id or other key which specifies a unique object.
             kwargs: Any keyword arguments for query.
@@ -254,7 +367,7 @@ class ActiveResource(object):
         prefix_options, query_options = cls._split_options(kwargs)
         path = cls._element_path(id_, prefix_options, query_options)
         try:
-            _ = cls._connection().head(path, cls._headers)
+            _ = cls.connection.head(path, cls.headers)
             return True
         except connection.Error:
             return False
@@ -262,7 +375,7 @@ class ActiveResource(object):
     @classmethod
     def create(cls, attributes):
         """Create and save a resource with the given attributes.
-        
+
         Args:
             attributes: A dictionary of attributes which represent this object.
         Returns:
@@ -306,9 +419,8 @@ class ActiveResource(object):
         """
         prefix_options, query_options = cls._split_options(kwargs)
         path = cls._element_path(id_, prefix_options, query_options)
-        return cls._build_object(cls._connection().get(path, cls._headers),
+        return cls._build_object(cls.connection.get(path, cls.headers),
                                  prefix_options)
-
 
     @classmethod
     def _find_one(cls, from_, query_options):
@@ -324,12 +436,12 @@ class ActiveResource(object):
         """
         #TODO(mrroach): allow from_ to be a string-generating function
         path = from_ + cls._query_string(query_options)
-        return cls._build_object(cls._connection().get(path, cls._headers))
+        return cls._build_object(cls.connection.get(path, cls.headers))
 
     @classmethod
     def _find_every(cls, from_=None, **kwargs):
         """Get all resources.
-        
+
         Args:
             from_: (optional) The path from which to retrieve the resource.
             kwargs: Any keyword arguments for the query.
@@ -342,7 +454,7 @@ class ActiveResource(object):
         else:
             prefix_options, query_options = cls._split_options(kwargs)
             path = cls._collection_path(prefix_options, query_options)
-        return cls._build_list(cls._connection().get(path, cls._headers),
+        return cls._build_list(cls.connection.get(path, cls.headers),
                                prefix_options)
 
     @classmethod
@@ -373,7 +485,7 @@ class ActiveResource(object):
         for element in elements:
             resources.append(cls(element, prefix_options))
         return resources
-        
+
     @classmethod
     def _query_string(cls, query_options):
         """Return a query string for the given options.
@@ -407,7 +519,7 @@ class ActiveResource(object):
                 'prefix': cls._prefix(prefix_options),
                 'plural': cls._plural,
                 'id': id_,
-                'format': cls._format.extension,
+                'format': cls.format.extension,
                 'query': cls._query_string(query_options)}
 
     @classmethod
@@ -437,27 +549,27 @@ class ActiveResource(object):
     @classmethod
     def _custom_method_collection_url(cls, method_name, options):
         """Get the collection path for this resource type.
-        
+
         Args:
             method_name: The HTTP method being used.
             options: A dictionary of query/prefix options.
         Returns:
             The path (relative to site) to this type of collection.
-        """ 
+        """
         prefix_options, query_options = cls._split_options(options)
         path = (
-            '%(prefix)s/%(plural)s/%(method_name)s.%(format)s%(query)s' % 
+            '%(prefix)s/%(plural)s/%(method_name)s.%(format)s%(query)s' %
             {'prefix': cls._prefix(prefix_options),
              'plural': cls._plural,
              'method_name': method_name,
-             'format': cls._format.extension,
+             'format': cls.format.extension,
              'query': cls._query_string(query_options)})
         return path
 
     @classmethod
     def _class_get(cls, method_name, **kwargs):
         """Get a nested resource or resources.
-        
+
         Args:
             method_name: the nested resource to retrieve.
             kwargs: Any keyword arguments for the query.
@@ -465,12 +577,12 @@ class ActiveResource(object):
             A dictionary representing the returned data.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
-        return cls._connection().get(url, cls._headers)
+        return cls.connection.get(url, cls.headers)
 
     @classmethod
     def _class_post(cls, method_name, body='', **kwargs):
         """Get a nested resource or resources.
-        
+
         Args:
             method_name: the nested resource to retrieve.
             body: The data to send as the body of the request.
@@ -479,12 +591,12 @@ class ActiveResource(object):
             A connection.Response object.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
-        return cls._connection().post(url, cls._headers, body)
+        return cls.connection.post(url, cls.headers, body)
 
     @classmethod
     def _class_put(cls, method_name, body='', **kwargs):
         """Get a nested resource or resources.
-        
+
         Args:
             method_name: the nested resource to retrieve.
             body: The data to send as the body of the request.
@@ -493,12 +605,12 @@ class ActiveResource(object):
             A connection.Response object.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
-        return cls._connection().put(url, cls._headers, body)
+        return cls.connection.put(url, cls.headers, body)
 
     @classmethod
     def _class_delete(cls, method_name, **kwargs):
         """Get a nested resource or resources.
-        
+
         Args:
             method_name: the nested resource to retrieve.
             kwargs: Any keyword arguments for the query.
@@ -506,12 +618,12 @@ class ActiveResource(object):
             A connection.Response object.
         """
         url = cls._custom_method_collection_url(method_name, kwargs)
-        return cls._connection().delete(url, cls._headers)
+        return cls.connection.delete(url, cls.headers)
 
     @classmethod
     def _prefix_parameters(cls):
         """Return a list of the parameters used in the site prefix.
-        
+
         e.g. /objects/$object_id would yield ['object_id']
              /objects/${object_id}/people/$person_id/ would yield
              ['object_id', 'person_id']
@@ -520,7 +632,7 @@ class ActiveResource(object):
         Returns:
             A set of named parameters.
         """
-        path = urlparse.urlsplit(cls._site)[2]        
+        path = urlparse.urlsplit(cls.site)[2]
         template = Template(path)
         keys = set()
         for match in template.pattern.finditer(path):
@@ -538,19 +650,11 @@ class ActiveResource(object):
         Returns:
             A string containing the path to this element.
         """
-        path = re.sub('/$', '', urlparse.urlsplit(cls._site)[2])
+        path = re.sub('/$', '', urlparse.urlsplit(cls.site)[2])
         template = Template(path)
         keys = cls._prefix_parameters()
         options = dict([(k, options.get(k, '')) for k in keys])
         return template.safe_substitute(options)
-
-    @classmethod
-    def _connection(cls):
-        """Return a connection object which handles HTTP requests."""
-        if not cls._connection_obj:
-            cls._connection_obj = connection.Connection(
-                cls._site, cls._user, cls._password, cls._timeout, cls._format)
-        return cls._connection_obj
 
     @classmethod
     def _scrub_name(cls, name):
@@ -578,7 +682,7 @@ class ActiveResource(object):
                 values[key] = value.to_dict()
             else:
                 values[key] = value
-        return values                
+        return values
 
     def to_xml(self, root=None, header=True, pretty=False):
         """Convert the object to an xml string.
@@ -592,8 +696,8 @@ class ActiveResource(object):
         if not root:
             root = self._singular
         return util.to_xml(self.to_dict(), root=root,
-                                header=header, pretty=pretty)
-    
+                           header=header, pretty=pretty)
+
     def save(self):
         """Save the object to the server.
 
@@ -607,14 +711,14 @@ class ActiveResource(object):
         """
         try:
             if self.id:
-                response = self._connection().put(
+                response = self.klass.connection.put(
                         self._element_path(self.id, self._prefix_options),
-                        self._headers,
+                        self.klass.headers,
                         data=self.to_xml())
             else:
-                response = self._connection().post(
+                response = self.klass.connection.post(
                         self._collection_path(self._prefix_options),
-                        self._headers,
+                        self.klass.headers,
                         data=self.to_xml())
                 new_id = self._id_from_response(response)
                 if new_id:
@@ -623,7 +727,7 @@ class ActiveResource(object):
             self.errors.from_xml(err.response.body)
             return False
         try:
-            attributes = self._format.decode(response.body)
+            attributes = self.klass.format.decode(response.body)
         except formats.Error:
             return True
         if attributes:
@@ -632,7 +736,7 @@ class ActiveResource(object):
 
     def is_valid(self):
         """Returns True if no errors have been set.
-        
+
         Args:
             None
         Returns:
@@ -642,7 +746,7 @@ class ActiveResource(object):
 
     def _id_from_response(self, response):
         """Pull the ID out of a response from a create POST.
-        
+
         Args:
             response: A Response object.
         Returns:
@@ -660,9 +764,9 @@ class ActiveResource(object):
         Returns:
             None
         """
-        self._connection().delete(
+        self.klass.connection.delete(
                 self._element_path(self.id, self._prefix_options),
-                self._headers)
+                self.klass.headers)
 
     def __getattr__(self, name):
         """Retrieve the requested attribute if it exists.
@@ -732,10 +836,9 @@ class ActiveResource(object):
             self.attributes[key] = attr
             attr_name = self._scrub_name(key)
 
-
     def _find_class_for(self, element_name=None, class_name=None):
         """Look in the parent modules for classes matching the element name.
-        
+
         One, or both of element/class name must be specified.
 
         Args:
@@ -773,11 +876,11 @@ class ActiveResource(object):
                     return klass
                 except AttributeError:
                     continue
-                
+
         # If we made it this far, no such class was found
         return new.classobj(class_name, (self.__class__,),
                             {'__module__': self.__module__})
-        
+
     # methods corresponding to Ruby's custom_methods
     def _custom_method_element_url(self, method_name, options):
         """Get the element path for this type of object.
@@ -799,7 +902,7 @@ class ActiveResource(object):
              'format': self._format.extension,
              'query': self._query_string(query_options)})
         return path
-    
+
     def _custom_method_new_element_url(self, method_name, options):
         """Get the element path for creating new objects of this type.
 
@@ -812,7 +915,7 @@ class ActiveResource(object):
         prefix_options, query_options = self._split_options(options)
         prefix_options.update(self._prefix_options)
         path = (
-            '%(prefix)s/%(plural)s/new/%(method_name)s.%(format)s%(query)s' % 
+            '%(prefix)s/%(plural)s/new/%(method_name)s.%(format)s%(query)s' %
             {'prefix': self._prefix(prefix_options),
              'plural': self._plural,
              'method_name': method_name,
@@ -822,7 +925,7 @@ class ActiveResource(object):
 
     def _instance_get(self, method_name, **kwargs):
         """Get a nested resource or resources.
-        
+
         Args:
             method_name: the nested resource to retrieve.
             kwargs: Any keyword arguments for the query.
@@ -830,11 +933,11 @@ class ActiveResource(object):
             A dictionary representing the returned data.
         """
         url = self._custom_method_element_url(method_name, kwargs)
-        return self._connection().get(url, self._headers)
+        return self.klass.connection.get(url, self.klass.headers)
 
     def _instance_post(self, method_name, body='', **kwargs):
         """Create a new resource/nested resource.
-        
+
         Args:
             method_name: the nested resource to post to.
             body: The data to send as the body of the request.
@@ -848,11 +951,11 @@ class ActiveResource(object):
             if not body:
                 body = self.to_xml()
             url = self._custom_method_new_element_url(method_name, kwargs)
-        return self._connection().post(url, self._headers, body)
-    
+        return self.klass.connection.post(url, self.klass.headers, body)
+
     def _instance_put(self, method_name, body='', **kwargs):
         """Update a nested resource.
-        
+
         Args:
             method_name: the nested resource to update.
             body: The data to send as the body of the request.
@@ -861,11 +964,11 @@ class ActiveResource(object):
             A connection.Response object.
         """
         url = self._custom_method_element_url(method_name, kwargs)
-        return self._connection().put(url, self._headers, body)
+        return self.klass.connection.put(url, self.klass.headers, body)
 
     def _instance_delete(self, method_name, **kwargs):
         """Get a nested resource or resources.
-        
+
         Args:
             method_name: the nested resource to retrieve.
             kwargs: Any keyword arguments for the query.
@@ -873,7 +976,7 @@ class ActiveResource(object):
             A connection.Response object.
         """
         url = self._custom_method_element_url(method_name, kwargs)
-        return self._connection().delete(url, self._headers)
+        return self.klass.connection.delete(url, self.klass.headers)
 
     # Create property which returns class/instance method based on context
     get = ClassAndInstanceMethod('_class_get', '_instance_get')
