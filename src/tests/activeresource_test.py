@@ -245,6 +245,23 @@ class ActiveResourceTest(unittest.TestCase):
         self.http.respond_to('DELETE', '/people/1/deactivate.xml', {}, '')
         self.assertEqual('', self.person.find(1).delete('deactivate').body)
 
+    def test_save_should_get_id_from_location(self):
+        self.http.respond_to(
+            'POST', '/people.xml', self.xml_headers,
+            '', 200, {'Location': '/people/7.xml'})
+        person = self.person.create({})
+        self.assertEqual(7, person.id)
+
+    def test_save_should_get_id_from_lowercase_location(self):
+        # There seems to be some inconsistency in how headers are reformatted
+        # This will ensure that we catch the two sensible cases (init caps and
+        # all lowercase)
+        self.http.respond_to(
+            'POST', '/people.xml', self.xml_headers,
+            '', 200, {'location': '/people/7.xml'})
+        person = self.person.create({})
+        self.assertEqual(7, person.id)
+
     def test_should_accept_setting_user(self):
         self.person.user = 'david'
         self.assertEqual('david', self.person.user)
