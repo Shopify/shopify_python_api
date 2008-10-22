@@ -268,6 +268,24 @@ class ResourceMeta(type):
     singular = property(get_singular, set_singular, None,
                         'The singular name of this object type.')
 
+    def get_prefix_source(cls):
+        """Return the prefix source, by default derived from site."""
+        if hasattr(cls, '_prefix_source'):
+            return cls._prefix_source
+        else:
+            return urlparse.urlsplit(cls.site)[2]
+
+    def set_prefix_source(cls, value):
+        """Set the prefix source, which will be rendered into the prefix."""
+        cls._prefix_source = value
+    
+    prefix_source = property(get_prefix_source, set_prefix_source, None,
+                             'prefix for lookups for this type of object.')
+
+    def prefix(cls, options=None):
+        """Return the rendered prefix for this object."""
+        return cls._prefix(options)
+
 
 class ActiveResource(object):
     """Represents an activeresource object."""
@@ -632,7 +650,7 @@ class ActiveResource(object):
         Returns:
             A set of named parameters.
         """
-        path = urlparse.urlsplit(cls.site)[2]
+        path = cls.prefix_source
         template = Template(path)
         keys = set()
         for match in template.pattern.finditer(path):
@@ -650,7 +668,9 @@ class ActiveResource(object):
         Returns:
             A string containing the path to this element.
         """
-        path = re.sub('/$', '', urlparse.urlsplit(cls.site)[2])
+        if options is None:
+            options = {}
+        path = re.sub('/$', '', cls.prefix_source)
         template = Template(path)
         keys = cls._prefix_parameters()
         options = dict([(k, options.get(k, '')) for k in keys])
@@ -895,7 +915,7 @@ class ActiveResource(object):
         prefix_options.update(self._prefix_options)
         path = (
             '%(prefix)s/%(plural)s/%(id)s/%(method_name)s.%(format)s%(query)s' %
-            {'prefix': self._prefix(prefix_options),
+            {'prefix': self.klass.prefix(prefix_options),
              'plural': self._plural,
              'id': self.id,
              'method_name': method_name,
@@ -916,7 +936,7 @@ class ActiveResource(object):
         prefix_options.update(self._prefix_options)
         path = (
             '%(prefix)s/%(plural)s/new/%(method_name)s.%(format)s%(query)s' %
-            {'prefix': self._prefix(prefix_options),
+            {'prefix': self.klass.prefix(prefix_options),
              'plural': self._plural,
              'method_name': method_name,
              'format': self._format.extension,

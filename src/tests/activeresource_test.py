@@ -135,6 +135,14 @@ class ActiveResourceTest(unittest.TestCase):
         nobody = self.person.find(store_id=1, name='Ralph')
         self.assertEqual([], nobody)
 
+    def test_set_prefix_source(self):
+      self.http.respond_to(
+          'GET', '/stores/1/people.xml?name=Ralph', {},
+          util.to_xml([], root='people'))
+      self.person.prefix_source = '/stores/${store_id}/'
+      nobody = self.person.find(store_id=1, name='Ralph')
+      self.assertEqual([], nobody)
+
     def test_save(self):
         # Return an object with id for a post(save) request.
         self.http.respond_to(
