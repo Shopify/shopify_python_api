@@ -772,9 +772,14 @@ class ActiveResource(object):
         Returns:
            An id string.
         """
-        match = re.search(r'\/([^\/]*?)(\.\w+)?$', response.get('location', ''))
+        match = re.search(r'\/([^\/]*?)(\.\w+)?$',
+                          response.get('Location',
+                                       response.get('location', '')))
         if match:
-            return match.group(1)
+            try:
+                return int(match.group(1))
+            except ValueError:
+                return match.group(1)
 
     def destroy(self):
         """Deletes the resource from the remote service.
