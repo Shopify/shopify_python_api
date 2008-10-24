@@ -264,7 +264,7 @@ class ResourceMeta(type):
         return cls._singular
 
     def set_singular(cls, value):
-        cls._singular = vaue
+        cls._singular = value
     singular = property(get_singular, set_singular, None,
                         'The singular name of this object type.')
 
