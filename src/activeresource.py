@@ -107,9 +107,10 @@ class Errors(object):
             An error string, or a list of error message strings or None
             if none exist for the given attribute.
         """
-        errors = self.errors.get(attribute, None)
+        errors = self.errors.get(attribute, [])
         if len(errors) == 1:
             return errors[0]
+        return errors
 
     def full_messages(self):
         """Returns all the full error messages in an array.
