@@ -711,6 +711,7 @@ class ActiveResource(object):
         Args:
             root: The name of the root element for xml output.
             header: Whether to include the xml header.
+            pretty: Whether to "pretty-print" format the output.
         Returns:
             An xml string.
         """
