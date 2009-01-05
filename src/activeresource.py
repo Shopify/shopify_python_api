@@ -300,7 +300,7 @@ class ActiveResource(object):
     _timeout = None
     _user = None
 
-    def __init__(self, attributes, prefix_options=None):
+    def __init__(self, attributes=None, prefix_options=None):
         """Initialize a new ActiveResource object.
 
         Args:
@@ -308,6 +308,8 @@ class ActiveResource(object):
             prefix_options: A dict of prefixes to add to the request for
                             nested URLs.
         """
+        if attributes is None:
+          attributes = {}
         self.klass = self.__class__
         self.attributes = {}
         if prefix_options:
