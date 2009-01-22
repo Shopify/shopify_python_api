@@ -176,11 +176,11 @@ class Connection(object):
 
         self.site, self.user, self.password = self._parse_site(site)
         if user:
-            self.user = user
+            self.user = user or ''
         if password:
-            self.password = password
+            self.password = password or ''
 
-        if self.user and self.password:
+        if self.user or self.password:
             self.auth = base64.b64encode('%s:%s' % (self.user, self.password))
         else:
             self.auth = None
