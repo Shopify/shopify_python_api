@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-version = '0.4'
+version = '1.0'
 
 setup(name='pyactiveresource',
       version=version,
