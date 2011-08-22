@@ -1,0 +1,4 @@
+*.pyc
+tags
+/build
+*.swp
