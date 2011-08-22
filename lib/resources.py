@@ -15,6 +15,7 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         self._update(self.__class__.format.decode(response.body))
 
     def encode(self, options):
+        # pyactiveresource (version 1.0.1) doesn't support encoding to_json
         return pyactiveresource.util.to_xml(options)
 
     @property
@@ -214,9 +215,6 @@ class Metafield(ShopifyResource):
 class Comment(ShopifyResource):
     def remove(self):
         self._load_attributes_from_response(self.post("remove", self.only_id()))
-
-    def ham(self):
-        self._load_attributes_from_response(self.post("ham", self.only_id()))
 
     def spam(self):
         self._load_attributes_from_response(self.post("spam", self.only_id()))

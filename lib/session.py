@@ -73,7 +73,7 @@ class Session(object):
     @classmethod
     def create_permission_url(cls, shop_url):
         shop_url = cls.__prepare_url(shop_url)
-        return "http://{0}/admin/api/auth?api_key={1}".format(shop_url, cls.api_key)
+        return "{0}://{1}/admin/api/auth?api_key={1}".format(cls.protocol, shop_url, cls.api_key)
 
     @property
     def site(self):
