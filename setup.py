@@ -23,7 +23,7 @@ setup(name=NAME,
       license='MIT License',
       requires=['pyactiveresource(>=1.0.0)'],
       platforms='Any',
-      classifiers=['Development Status :: 4 - Beta'
+      classifiers=['Development Status :: 4 - Beta',
                    'Intended Audience :: Developers',
                    'License :: OSI Approved :: MIT License',
                    'Operating System :: OS Independent',
