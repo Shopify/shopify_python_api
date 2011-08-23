@@ -2,3 +2,5 @@
 tags
 /build
 *.swp
+/dist
+/MANIFEST
