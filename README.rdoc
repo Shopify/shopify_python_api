@@ -64,7 +64,7 @@ these steps:
    by Shopify. That token is used to instantiate the session so that it
    is ready to make calls to that particular shop.
 
-    session = shopify.Session(shop_url, **params)
+    session = shopify.Session(shop_url, params)
 
 5. Now you can finally get the fully authorized URL for that shop.
    Use that URL to configure ActiveResource and you're set:

@@ -60,7 +60,9 @@ class Session(object):
         for k, v in kwargs.iteritems():
             setattr(cls, k, v)
 
-    def __init__(self, shop_url, **params):
+    def __init__(self, shop_url, params=None, **kwargs):
+        if params is None:
+            params = kwargs
         self.url = self.__prepare_url(shop_url)
         self.token = params.get('t')
         self.name = None
