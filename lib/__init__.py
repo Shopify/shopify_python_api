@@ -1,2 +1,2 @@
-from shopify.session import Session
+from shopify.session import Session, ValidationException
 from shopify.resources import *

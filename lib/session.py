@@ -5,6 +5,8 @@ except ImportError:
     from md5 import md5
 import re
 
+class ValidationException(Exception):
+    pass
 
 class Session(object):
     """The Session helps in authenticating an API session.
@@ -65,7 +67,7 @@ class Session(object):
 
         if not self.__validate_signature(params) or \
            not int(params['timestamp']) > time.time() - 24 * 60 * 60:
-            raise Exception('Invalid Signature: Possibly malicious login')
+            raise ValidationException('Invalid Signature: Possibly malicious login')
 
     def shop(self):
         Shop.current()
