@@ -60,11 +60,11 @@ these steps:
 
 4. After visiting this URL, the shop redirects the owner to a custom
    URL of your application where the "token" gets sent to (it's param
-   name is just "t"). Use that token to instantiate the session
-   that is ready to make calls to that particular shop.
+   name is just "t") along with other parameters to ensure it was sent
+   by Shopify. That token is used to instantiate the session so that it
+   is ready to make calls to that particular shop.
 
-    token = params['t']
-    session = shopify.Session.new(shop_url, token)
+    session = shopify.Session(shop_url, **params)
 
 5. Now you can finally get the fully authorized URL for that shop.
    Use that URL to configure ActiveResource and you're set:
@@ -73,8 +73,8 @@ these steps:
 
 6. Get data from that shop (returns ActiveResource instances):
 
-     shop = shopify.Shop.current()
-     latest_orders = shopify.Order.find()
+    shop = shopify.Shop.current()
+    latest_orders = shopify.Order.find()
 
 === Console
 
