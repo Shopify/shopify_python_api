@@ -345,6 +345,36 @@ class ScriptTag(ShopifyResource):
     pass
 
 
+# attribute of Customer
+class Address(ShopifyResource):
+    pass
+
+
+# attribute of Product
+class Option(ShopifyResource):
+    pass
+
+
+# attribute of Order
+class PaymentDetail(ShopifyResource):
+    pass
+
+
+# attribute of Fulfillment and Transaction
+class Receipt(ShopifyResource):
+    pass
+
+
+# attribute of SmartCollection
+class Rule(ShopifyResource):
+    pass
+
+
+# attribute of Order
+class TaxLine(ShopifyResource):
+    pass
+
+
 METAFIELD_ENABLED_CLASSES = (Order, Product, CustomCollection, SmartCollection, Page, Blog, Article, Variant)
 EVENT_ENABLED_CLASSES = (Order, Product, CustomCollection, SmartCollection, Page, Blog, Article)
 
