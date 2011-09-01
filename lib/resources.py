@@ -356,7 +356,7 @@ class Option(ShopifyResource):
 
 
 # attribute of Order
-class PaymentDetail(ShopifyResource):
+class PaymentDetails(ShopifyResource):
     pass
 
 
