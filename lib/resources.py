@@ -121,14 +121,6 @@ class Order(ShopifyResource):
 
 
 class Product(ShopifyResource):
-    @classmethod
-    def share(cls):
-        self.post("share")
-
-    @classmethod
-    def unshare(cls):
-        self.delete("share")
-
     def price_range(self):
         prices = [variant.price for variant in self.variants]
         f = "%0.2f"
