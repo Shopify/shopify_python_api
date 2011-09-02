@@ -77,11 +77,11 @@ class Session(object):
     @classmethod
     def create_permission_url(cls, shop_url):
         shop_url = cls.__prepare_url(shop_url)
-        return "{0}://{1}/admin/api/auth?api_key={2}".format(cls.protocol, shop_url, cls.api_key)
+        return "%s://%s/admin/api/auth?api_key=%s" % (cls.protocol, shop_url, cls.api_key)
 
     @property
     def site(self):
-        return "{0}://{1}:{2}@{3}/admin".format(self.protocol, self.api_key, self.__computed_password(), self.url)
+        return "%s://%s:%s@%s/admin" % (self.protocol, self.api_key, self.__computed_password(), self.url)
 
     def __computed_password(self):
         return md5(self.secret + self.token).hexdigest()

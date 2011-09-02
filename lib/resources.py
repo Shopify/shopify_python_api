@@ -18,27 +18,28 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         # pyactiveresource (version 1.0.1) doesn't support encoding to_json
         return pyactiveresource.util.to_xml(options)
 
-    @property
-    def primary_key(self):
+    def __get_primary_key(self):
         return self._primary_key
 
-    @primary_key.setter
-    def primary_key(self, value):
+    def __set_primary_key(self, value):
         self._primary_key = value
 
-    @property
-    def id(self):
+    primary_key = property(__get_primary_key, __set_primary_key, None,
+                           'Primary key to identity the resource (defaults to "id")')
+
+    def __get_id(self):
         if self._primary_key != "id":
             return getattr(self, self._primary_key)
         else:
             return super(self.__class__, self).__getattr__("id")
 
-    @id.setter
-    def id(self, value):
+    def __set_id(self, value):
         if self._primary_key != "id":
             return setattr(self, self._primary_key, value)
         else:
             return super(self.__class__, self).__setattr__("id", value)
+
+    id = property(__get_id, __set_id, None, 'Value stored in the primary key')
 
 class Shop(ShopifyResource):
     @classmethod
@@ -127,7 +128,7 @@ class Product(ShopifyResource):
         min_price = min(prices)
         max_price = max(prices)
         if min_price != max_price:
-            return "{0} - {1}".format(f % min_price, f % max_price)
+            return "%f - %f" % (f % min_price, f % max_price)
         else:
             return f % min_price
 
@@ -150,7 +151,7 @@ class Variant(ShopifyResource):
     @classmethod
     def prefix(cls, options={}):
         product_id = options.get("product_id")
-        return "/admin/" if product_id is None else "/admin/products/{0}".format(product_id)
+        return "/admin/" if product_id is None else "/admin/products/%s" % (product_id)
 
 
 class Image(ShopifyResource):
@@ -158,7 +159,7 @@ class Image(ShopifyResource):
 
     def __getattr__(self, name):
         if name in ["pico", "icon", "thumb", "small", "compact", "medium", "large", "grande", "original"]:
-            return re.sub(r"/(.*)\.(\w{2,4})", r"\1_{0}.\2".format(name), self.src)
+            return re.sub(r"/(.*)\.(\w{2,4})", r"\1_%s.\2" % (name), self.src)
         else:
             return super(self.__class__, self).__getattr__(name)
 
@@ -201,7 +202,7 @@ class Metafield(ShopifyResource):
 
     @classmethod
     def prefix(cls, options={}):
-        return "/admin/" if options.get("resource") is None else "/admin/{0}/{1}".format(options["resource"], options["resource_id"])
+        return "/admin/" if options.get("resource") is None else "/admin/%s/%s" % (options["resource"], options["resource_id"])
 
 
 class Comment(ShopifyResource):
@@ -241,7 +242,7 @@ class Event(ShopifyResource):
 
     @classmethod
     def prefix(cls, options={}):
-        return "/admin/" if options.get("resource") is None else "/admin/{0}/{1}/".format(options["resource"], options["resource_id"])
+        return "/admin/" if options.get("resource") is None else "/admin/%s/%s/" % (options["resource"], options["resource_id"])
 
 
 class Customer(ShopifyResource):
@@ -262,14 +263,14 @@ class Asset(ShopifyResource):
 
     @classmethod
     def prefix(cls, options={}):
-        return "/admin/" if options.get("theme_id") is None else "/admin/themes/{0}/".format(options["theme_id"])
+        return "/admin/" if options.get("theme_id") is None else "/admin/themes/%s/" % (options["theme_id"])
 
     @classmethod
     def _element_path(cls, id, prefix_options={}, query_options=None):
         if query_options is None:
             prefix_options, query_options = cls._split_options(prefix_options)
-        return "{0}{1}.{2}{3}".format(cls.prefix(prefix_options), cls.plural,
-                                      cls.format.extension, cls._query_string(query_options))
+        return "%s%s.%s%s" % (cls.prefix(prefix_options), cls.plural,
+                              cls.format.extension, cls._query_string(query_options))
 
     @classmethod
     def find(cls, key=None, **kwargs):
@@ -282,11 +283,10 @@ class Asset(ShopifyResource):
         params = {"asset[key]": key}
         params.update(kwargs)
         theme_id = params.get("theme_id")
-        path_prefix = "/admin/themes/{0}".format(theme_id) if theme_id else "/admin"
-        return cls.find_one("{0}/assets.{1}".format(path_prefix, cls.format.extension), **params)
+        path_prefix = "/admin/themes/%s" % (theme_id) if theme_id else "/admin"
+        return cls.find_one("%s/assets.%s" % (path_prefix, cls.format.extension), **params)
 
-    @property
-    def value(self):
+    def __get_value(self):
         data = self.attributes.get("value")
         if data:
             return data
@@ -294,9 +294,10 @@ class Asset(ShopifyResource):
         if data:
             return base64.b64decode(data)
 
-    @value.setter
-    def value(self, data):
+    def __set_value(self, data):
         self.attach(data)
+
+    value = property(__get_value, __set_value, None, "The asset's value or attachment")
 
     def attach(self, data):
         self.attachment = base64.b64encode(data)

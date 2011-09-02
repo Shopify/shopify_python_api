@@ -1,6 +1,10 @@
+== Version 0.1.2
+
+* Add python 2.5 compatibility
+
 == Version 0.1.1
 
-* Make creating a session simpler wtih django
+* Make creating a session simpler with django
 
 == Version 0.1.0
 

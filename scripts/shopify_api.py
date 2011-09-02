@@ -52,7 +52,7 @@ class TasksMeta(type):
             if len(matches) == 1:
                 task = matches[0]
             else:
-                print >>sys.stderr, 'Could not find task "{0}".'.format(task)
+                print >>sys.stderr, 'Could not find task "%s".' % (task)
 
         task_func = getattr(cls, task)
         task_func(*args)
@@ -64,7 +64,7 @@ class TasksMeta(type):
             usage_list = []
             for task in iter(cls._tasks):
                 task_func = getattr(cls, task)
-                usage_string = "  {0} {1}".format(cls._prog, task_func.usage)
+                usage_string = "  %s %s" % (cls._prog, task_func.usage)
                 desc = task_func.__doc__.splitlines()[0]
                 usage_list.append((usage_string, desc))
             max_len = reduce(lambda m, item: max(m, len(item[0])), usage_list, 0)
@@ -73,15 +73,15 @@ class TasksMeta(type):
             for line, desc in usage_list:
                 task_func = getattr(cls, task)
                 if desc:
-                    line = "{0}{1}  # {2}".format(line, " " * (max_len - len(line)), desc)
+                    line = "%s%s  # %s" % (line, " " * (max_len - len(line)), desc)
                 if len(line) > cols:
                     line = line[:cols - 3] + "..."
                 print(line)
         else:
             task_func = getattr(cls, task)
             print("Usage:")
-            print("  {0} {1}".format(cls._prog, task_func.usage))
-            print()
+            print("  %s %s" % (cls._prog, task_func.usage))
+            print("")
             print(task_func.__doc__)
 
 
@@ -108,12 +108,12 @@ class Tasks(object):
             raise ConfigFileError("There is already a config file at " + filename)
         else:
             config = dict(protocol='https')
-            domain = raw_input("Domain? (leave blank for {0}.myshopify.com) ".format(connection))
+            domain = raw_input("Domain? (leave blank for %s.myshopify.com) " % (connection))
             if not domain.strip():
-                domain = "{0}.myshopify.com".format(connection)
+                domain = "%s.myshopify.com" % (connection)
             config['domain'] = domain
-            print()
-            print("open https://{0}/admin/api in your browser to get API credentials".format(domain))
+            print("")
+            print("open https://%s/admin/api in your browser to get API credentials" % (domain))
             config['api_key'] = raw_input("API key? ")
             config['password'] = raw_input("Password? ")
             if not os.path.isdir(cls._shop_config_dir):
@@ -144,7 +144,7 @@ class Tasks(object):
             if editor:
                 subprocess.call([editor, filename])
             else:
-                print "Please set an editor in the EDITOR environment variable"
+                print("Please set an editor in the EDITOR environment variable")
         else:
             cls._no_config_file_error(filename)
 
@@ -156,8 +156,8 @@ class Tasks(object):
             connection = cls._default_connection()
         filename = cls._get_config_filename(connection)
         if os.path.exists(filename):
-            print filename
-            print file(filename).read()
+            print(filename)
+            print(file(filename).read())
         else:
             cls._no_config_file_error(filename)
 
@@ -187,7 +187,7 @@ class Tasks(object):
             cls._no_config_file_error(filename)
 
         config = yaml.safe_load(file(filename).read())
-        print("using {0}".format(config["domain"]))
+        print("using %s" % (config["domain"]))
         shopify.ShopifyResource.site = cls._get_site_from_config(config)
 
         start_interpreter(shopify=shopify)
@@ -225,7 +225,7 @@ class Tasks(object):
         api_key = config.get("api_key")
         password = config.get("password")
         domain = config.get("domain")
-        return "{0}://{1}:{2}@{3}/admin".format(protocol, api_key, password, domain)
+        return "%s://%s:%s@%s/admin" % (protocol, api_key, password, domain)
 
     @classmethod
     def _is_default(cls, connection):
@@ -237,5 +237,5 @@ class Tasks(object):
 
 try:
     Tasks.run_task(*sys.argv[1:])
-except ConfigFileError as e:
-    print e
+except ConfigFileError, e:
+    print(e)
