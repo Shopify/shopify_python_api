@@ -69,7 +69,7 @@ these steps:
 5. Now you can finally get the fully authorized URL for that shop.
    Use that URL to configure ActiveResource and you're set:
 
-    shopify.ShopifyResource.Base.site = session.site
+    shopify.ShopifyResource.site = session.site
 
 6. Get data from that shop (returns ActiveResource instances):
 
