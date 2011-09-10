@@ -26,9 +26,13 @@ http://api.shopify.com
 
 === Installation
 
-First install the pre-requisites:
+To install or upgrade to the latest release:
 
-    easy_install pyactiveresource PyYAML
+    easy_install -U ShopifyAPI
+
+To install from source, first install the pre-requisites:
+
+    easy_install pyactiveresource PyYAML python-dateutil==1.5
 
 Then use the setup script in the root of this source tree.
 

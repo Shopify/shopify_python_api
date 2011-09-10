@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 NAME='ShopifyAPI'
-VERSION='0.1.2'
+VERSION='0.1.3'
 DESCRIPTION='Shopify API for Python'
 LONG_DESCRIPTION="""\
 The ShopifyAPI library allows python developers to programmatically
@@ -21,7 +21,11 @@ setup(name=NAME,
       package_dir={'shopify': 'lib'},
       scripts=['scripts/shopify_api.py'],
       license='MIT License',
-      requires=['pyactiveresource(>=1.0.0)'],
+      install_requires=[
+          'pyactiveresource>=1.0.0',
+          'python-dateutil<2.0', # >= 2.0 is for python>=3.0
+          'PyYAML',
+      ],
       platforms='Any',
       classifiers=['Development Status :: 4 - Beta',
                    'Intended Audience :: Developers',
