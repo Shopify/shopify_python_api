@@ -31,13 +31,13 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         if self._primary_key != "id":
             return getattr(self, self._primary_key)
         else:
-            return super(self.__class__, self).__getattr__("id")
+            return super(ShopifyResource, self).__getattr__("id")
 
     def __set_id(self, value):
         if self._primary_key != "id":
             return setattr(self, self._primary_key, value)
         else:
-            return super(self.__class__, self).__setattr__("id", value)
+            return super(ShopifyResource, self).__setattr__("id", value)
 
     id = property(__get_id, __set_id, None, 'Value stored in the primary key')
 
@@ -161,7 +161,7 @@ class Image(ShopifyResource):
         if name in ["pico", "icon", "thumb", "small", "compact", "medium", "large", "grande", "original"]:
             return re.sub(r"/(.*)\.(\w{2,4})", r"\1_%s.\2" % (name), self.src)
         else:
-            return super(self.__class__, self).__getattr__(name)
+            return super(Image, self).__getattr__(name)
 
     def attach_image(self, data, filename=None):
         self.attributes["attachment"] = base64.b64encode(data)
@@ -279,7 +279,7 @@ class Asset(ShopifyResource):
             ShopifyAPI::Asset.find('layout/theme.liquid', theme_id=99)
         """
         if not key:
-            return super(cls, cls).find(**kwargs)
+            return ShopifyResource.find(**kwargs)
         params = {"asset[key]": key}
         params.update(kwargs)
         theme_id = params.get("theme_id")
@@ -313,7 +313,7 @@ class Asset(ShopifyResource):
     def __setattr__(self, name, value):
         if name in ("value", "attachment", "src", "source_key"):
             self.__wipe_value_attributes()
-        return super(self.__class__, self).__setattr__(name, value)
+        return super(Asset, self).__setattr__(name, value)
 
     def __wipe_value_attributes(self):
         for attr in ("value", "attachment", "src", "source_key"):
