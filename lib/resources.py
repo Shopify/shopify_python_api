@@ -8,6 +8,11 @@ import re
 class ShopifyResource(ActiveResource, mixins.Countable):
     _primary_key = "id"
 
+    def __init__(self, attributes=None, prefix_options=None):
+        if attributes is not None and prefix_options is None:
+            prefix_options, attributes = self.__class__._split_options(attributes)
+        return super(ShopifyResource, self).__init__(attributes, prefix_options)
+
     def is_new(self):
         return not self.id
 
