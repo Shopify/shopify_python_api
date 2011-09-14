@@ -1,7 +1,9 @@
 class Countable(object):
     @classmethod
-    def count(cls, options={}):
-        return int(cls.get("count", **options))
+    def count(cls, _options=None, **kwargs):
+        if _options is None:
+            _options = kwargs
+        return int(cls.get("count", **_options))
 
 
 class Metafields(object):
