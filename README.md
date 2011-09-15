@@ -59,9 +59,9 @@ these steps:
 2. You will need to supply two parameters to the Session class
    before you instantiate it:
 
-```python
-shopify.Session.setup(api_key=API_KEY, secret=SHARED_SECRET)
-```
+    ```python
+    shopify.Session.setup(api_key=API_KEY, secret=SHARED_SECRET)
+    ```
 
 3. For application to access a shop via the API, they first need a
    "token" specific to the shop, which is obtained from Shopify after
@@ -69,10 +69,10 @@ shopify.Session.setup(api_key=API_KEY, secret=SHARED_SECRET)
    be done by redirecting the shop owner to permission URL obtained
    as follows:
 
-```python
-shop_url = "yourshopname.myshopify.com"
-permission_url = shopify.Session.create_permission_url(shop_url)
-```
+    ```python
+    shop_url = "yourshopname.myshopify.com"
+    permission_url = shopify.Session.create_permission_url(shop_url)
+    ```
 
 4. After visiting this URL, the shop redirects the owner to a custom
    URL of your application where the `token` gets sent to (it's param
@@ -80,23 +80,23 @@ permission_url = shopify.Session.create_permission_url(shop_url)
    by Shopify. That token is used to instantiate the session so that it
    is ready to make calls to that particular shop.
 
-```python
-session = shopify.Session(shop_url, params)
-```
+    ```python
+    session = shopify.Session(shop_url, params)
+    ```
 
 5. Now you can finally get the fully authorized URL for that shop.
    Use that URL to configure ActiveResource and you're set:
 
-```python
-shopify.ShopifyResource.site = session.site
-```
+    ```python
+    shopify.ShopifyResource.site = session.site
+    ```
 
 6. Get data from that shop (returns ActiveResource instances):
 
-```python
-shop = shopify.Shop.current()
-latest_orders = shopify.Order.find()
-```
+    ```python
+    shop = shopify.Shop.current()
+    latest_orders = shopify.Order.find()
+    ```
 
 ### Console
 
@@ -109,25 +109,23 @@ open up an interactive console to use the API with a shop.
 2. Use the `shopify_api.py` script to save the credentials for the
    shop to quickly login. The script uses [PyYAML](http://pyyaml.org/) to save
    and load connection configurations in the same format as the ruby
-   shopify\_api.
+   shopify\_api. Follow the prompts for the shop domain, API key and password.
 
-```shell
-shopify_api.py add yourshopname
-```
-
-   Follow the prompts for the shop domain, API key and password.
+    ```shell
+    shopify_api.py add yourshopname
+    ```
 
 3. Start the console for the connection.
 
-```shell
-shopify_api.py console
-```
+    ```shell
+    shopify_api.py console
+    ```
 
 4. Enter the following for the full list of the commands.
 
-```shell
-shopify_api.py help
-```
+    ```shell
+    shopify_api.py help
+    ```
 
 ## Copyright
 
