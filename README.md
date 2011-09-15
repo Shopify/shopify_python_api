@@ -53,45 +53,45 @@ service. pyactiveresource has to be configured with a fully authorized
 URL of a particular store first. To obtain that URL you can follow
 these steps:
 
-1. First create a new application in either the partners admin or
-   your store admin and write down your `API_KEY` and `SHARED_SECRET`.
+1.  First create a new application in either the partners admin or
+    your store admin and write down your `API_KEY` and `SHARED_SECRET`.
 
-2. You will need to supply two parameters to the Session class
-   before you instantiate it:
+2.  You will need to supply two parameters to the Session class
+    before you instantiate it:
 
     ```python
     shopify.Session.setup(api_key=API_KEY, secret=SHARED_SECRET)
     ```
 
-3. For application to access a shop via the API, they first need a
-   "token" specific to the shop, which is obtained from Shopify after
-   the owner has granted the application access to the shop. This can
-   be done by redirecting the shop owner to permission URL obtained
-   as follows:
+3.  For application to access a shop via the API, they first need a
+    "token" specific to the shop, which is obtained from Shopify after
+    the owner has granted the application access to the shop. This can
+    be done by redirecting the shop owner to permission URL obtained
+    as follows:
 
     ```python
     shop_url = "yourshopname.myshopify.com"
     permission_url = shopify.Session.create_permission_url(shop_url)
     ```
 
-4. After visiting this URL, the shop redirects the owner to a custom
-   URL of your application where the `token` gets sent to (it's param
-   name is just `t`) along with other parameters to ensure it was sent
-   by Shopify. That token is used to instantiate the session so that it
-   is ready to make calls to that particular shop.
+4.  After visiting this URL, the shop redirects the owner to a custom
+    URL of your application where the `token` gets sent to (it's param
+    name is just `t`) along with other parameters to ensure it was sent
+    by Shopify. That token is used to instantiate the session so that it
+    is ready to make calls to that particular shop.
 
     ```python
     session = shopify.Session(shop_url, params)
     ```
 
-5. Now you can finally get the fully authorized URL for that shop.
-   Use that URL to configure ActiveResource and you're set:
+5.  Now you can finally get the fully authorized URL for that shop.
+    Use that URL to configure ActiveResource and you're set:
 
     ```python
     shopify.ShopifyResource.site = session.site
     ```
 
-6. Get data from that shop (returns ActiveResource instances):
+6.  Get data from that shop (returns ActiveResource instances):
 
     ```python
     shop = shopify.Shop.current()
@@ -103,25 +103,27 @@ these steps:
 This package also includes the `shopify_api.py` script to make it easy to
 open up an interactive console to use the API with a shop.
 
-1. Go to https\://*yourshopname*.myshopify.com/admin/api to generate a private
-   application and obtain your API key and password to use with your shop.
+1.  Go to https\://*yourshopname*.myshopify.com/admin/api to generate a private
+    application and obtain your API key and password to use with your shop.
 
-2. Use the `shopify_api.py` script to save the credentials for the
-   shop to quickly login. The script uses [PyYAML](http://pyyaml.org/) to save
-   and load connection configurations in the same format as the ruby
-   shopify\_api. Follow the prompts for the shop domain, API key and password.
+2.  Use the `shopify_api.py` script to save the credentials for the
+    shop to quickly login. The script uses [PyYAML](http://pyyaml.org/) to save
+    and load connection configurations in the same format as the ruby
+    shopify\_api.
 
     ```shell
     shopify_api.py add yourshopname
     ```
 
-3. Start the console for the connection.
+    Follow the prompts for the shop domain, API key and password.
+
+3.  Start the console for the connection.
 
     ```shell
     shopify_api.py console
     ```
 
-4. Enter the following for the full list of the commands.
+4.  Enter the following for the full list of the commands.
 
     ```shell
     shopify_api.py help
