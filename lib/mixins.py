@@ -1,3 +1,5 @@
+import shopify.resources
+
 class Countable(object):
     @classmethod
     def count(cls, _options=None, **kwargs):
@@ -8,7 +10,7 @@ class Countable(object):
 
 class Metafields(object):
     def metafields(self):
-        return Metafield.find(resource=self.__class__.plural, resource_id=self.id)
+        return shopify.resources.Metafield.find(resource=self.__class__.plural, resource_id=self.id)
 
     def add_metafield(self, metafield):
         if self.is_new():
@@ -21,4 +23,4 @@ class Metafields(object):
 
 class Events(object):
     def events(self):
-        return Event.find(resource=self.__class__.plural, resource_id=self.id)
+        return shopify.resources.Event.find(resource=self.__class__.plural, resource_id=self.id)
