@@ -284,7 +284,7 @@ class Asset(ShopifyResource):
             ShopifyAPI::Asset.find('layout/theme.liquid', theme_id=99)
         """
         if not key:
-            return ShopifyResource.find(**kwargs)
+            return super(Asset, cls).find(**kwargs)
         params = {"asset[key]": key}
         params.update(kwargs)
         theme_id = params.get("theme_id")
