@@ -1,3 +1,9 @@
+== Version 0.1.5
+
+* Fixed Asset.find()
+* Fixed Variant.find()
+* Allow running from source directory with PYTHONPATH=./lib
+
 == Version 0.1.4
 
 * Fixed a bug in metafields method caused by missing import.
