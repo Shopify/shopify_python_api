@@ -154,7 +154,7 @@ class Variant(ShopifyResource):
     _prefix_source = "/admin/products/$product_id/"
 
     @classmethod
-    def prefix(cls, options={}):
+    def _prefix(cls, options={}):
         product_id = options.get("product_id")
         return "/admin/" if product_id is None else "/admin/products/%s" % (product_id)
 
@@ -206,7 +206,7 @@ class Metafield(ShopifyResource):
     _prefix_source = "/admin/$resource/$resource_id/"
 
     @classmethod
-    def prefix(cls, options={}):
+    def _prefix(cls, options={}):
         return "/admin/" if options.get("resource") is None else "/admin/%s/%s" % (options["resource"], options["resource_id"])
 
 
@@ -246,7 +246,7 @@ class Event(ShopifyResource):
     _prefix_source = "/admin/$resource/$resource_id/"
 
     @classmethod
-    def prefix(cls, options={}):
+    def _prefix(cls, options={}):
         return "/admin/" if options.get("resource") is None else "/admin/%s/%s/" % (options["resource"], options["resource_id"])
 
 
@@ -267,14 +267,14 @@ class Asset(ShopifyResource):
     _prefix_source = "/admin/themes/$theme_id/"
 
     @classmethod
-    def prefix(cls, options={}):
+    def _prefix(cls, options={}):
         return "/admin/" if options.get("theme_id") is None else "/admin/themes/%s/" % (options["theme_id"])
 
     @classmethod
     def _element_path(cls, id, prefix_options={}, query_options=None):
         if query_options is None:
             prefix_options, query_options = cls._split_options(prefix_options)
-        return "%s%s.%s%s" % (cls.prefix(prefix_options), cls.plural,
+        return "%s%s.%s%s" % (cls._prefix(prefix_options), cls.plural,
                               cls.format.extension, cls._query_string(query_options))
 
     @classmethod
