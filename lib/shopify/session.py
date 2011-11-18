@@ -91,6 +91,7 @@ class Session(object):
         if url.strip() == "":
             return None
         url = re.sub("https?://", "", url)
+        url = re.sub("/.*", "", url)
         if url.find(".") == -1:
             url += ".myshopify.com"
         return url
