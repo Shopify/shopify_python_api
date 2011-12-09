@@ -1,3 +1,8 @@
+== Version 0.1.6
+
+* Fixed attribute setting on Asset objects
+* Strip path from shop_url to get just the shop's domain.
+
 == Version 0.1.5
 
 * Fixed Asset.find()
