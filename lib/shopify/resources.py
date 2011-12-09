@@ -300,7 +300,8 @@ class Asset(ShopifyResource):
             return base64.b64decode(data)
 
     def __set_value(self, data):
-        self.attach(data)
+        self.__wipe_value_attributes()
+        self.attributes["value"] = data
 
     value = property(__get_value, __set_value, None, "The asset's value or attachment")
 
@@ -322,7 +323,7 @@ class Asset(ShopifyResource):
 
     def __wipe_value_attributes(self):
         for attr in ("value", "attachment", "src", "source_key"):
-            if hasattr(self.attributes, attr):
+            if self.attributes.has_key(attr):
                 del self.attributes[attr]
 
 
