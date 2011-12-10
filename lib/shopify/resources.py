@@ -281,7 +281,7 @@ class Asset(ShopifyResource):
     def find(cls, key=None, **kwargs):
         """Find an asset by key
         E.g.
-            ShopifyAPI::Asset.find('layout/theme.liquid', theme_id=99)
+            shopify.Asset.find('layout/theme.liquid', theme_id=99)
         """
         if not key:
             return super(Asset, cls).find(**kwargs)
@@ -289,7 +289,10 @@ class Asset(ShopifyResource):
         params.update(kwargs)
         theme_id = params.get("theme_id")
         path_prefix = "/admin/themes/%s" % (theme_id) if theme_id else "/admin"
-        return cls.find_one("%s/assets.%s" % (path_prefix, cls.format.extension), **params)
+        resource = cls.find_one("%s/assets.%s" % (path_prefix, cls.format.extension), **params)
+        if theme_id and resource:
+            resource._prefix_options["theme_id"] = theme_id
+        return resource
 
     def __get_value(self):
         data = self.attributes.get("value")
