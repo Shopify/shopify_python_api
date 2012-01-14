@@ -1,3 +1,7 @@
+== Version 0.1.8
+
+* Added ability to add metafields on customers.
+
 == Version 0.1.7
 
 * Fixed missing theme_id in return value of Asset.find.

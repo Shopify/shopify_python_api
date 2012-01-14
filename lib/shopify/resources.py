@@ -385,7 +385,7 @@ class TaxLine(ShopifyResource):
     pass
 
 
-METAFIELD_ENABLED_CLASSES = (Order, Product, CustomCollection, SmartCollection, Page, Blog, Article, Variant)
+METAFIELD_ENABLED_CLASSES = (Article, Blog, CustomCollection, Customer, Order, Page, Product, SmartCollection, Variant)
 EVENT_ENABLED_CLASSES = (Order, Product, CustomCollection, SmartCollection, Page, Blog, Article)
 
 for cls in METAFIELD_ENABLED_CLASSES:
