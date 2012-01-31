@@ -1,11 +1,35 @@
 import pyactiveresource.util
-from pyactiveresource.activeresource import ActiveResource
+import pyactiveresource.connection
+from pyactiveresource.activeresource import ActiveResource, ResourceMeta
 import shopify.yamlobjects
 import shopify.mixins as mixins
 import base64
 import re
 
+# Store the response from the last request in the connection object
+class ShopifyConnection(pyactiveresource.connection.Connection):
+    response = None
+    def _open(self, *args, **kwargs):
+        self.response = None
+        try:
+            self.response = super(ShopifyConnection, self)._open(*args, **kwargs)
+        except pyactiveresource.connection.ConnectionError, err:
+            self.response = err.response
+            raise
+        return self.response
+
+# Inherit from pyactiveresource's metaclass in order to use ShopifyConnection
+class ShopifyResourceMeta(ResourceMeta):
+    @property
+    def connection(cls):
+        """HTTP connection which stores it's the last response"""
+        if cls._connection is None:
+            cls._connection = ShopifyConnection(
+                cls.site, cls.user, cls.password, cls.timeout, cls.format)
+        return cls._connection
+
 class ShopifyResource(ActiveResource, mixins.Countable):
+    __metaclass__ = ShopifyResourceMeta
     _primary_key = "id"
 
     def __init__(self, attributes=None, prefix_options=None):
