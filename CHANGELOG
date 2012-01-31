@@ -1,3 +1,7 @@
+== Version 0.2.0
+
+* Made responses available through the connection object.
+
 == Version 0.1.8
 
 * Added ability to add metafields on customers.
