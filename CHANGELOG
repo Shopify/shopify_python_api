@@ -1,3 +1,8 @@
+== Version 0.2.1
+
+* Fixed a regression that caused a different connection
+object to be created on each resource.
+
 == Version 0.2.0
 
 * Made responses available through the connection object.
