@@ -129,6 +129,38 @@ open up an interactive console to use the API with a shop.
     shopify_api.py help
     ```
 
+## Using Development Version
+
+Make sure the installed ShopifyAPI library isn't used.
+
+```shell
+easy_install -m ShopifyAPI
+```
+
+Set PYTHONPATH to use the project from its source directory. The
+dependant libraries must be installed.
+
+```shell
+PYTHONPATH=./lib scripts/shopify_api.py console
+```
+
+The development version can be built and installed using easy_install.
+
+```shell
+python setup.py sdist
+easy_install dist/ShopifyAPI-*.tar.gz
+```
+
+## Limitations
+
+Currently there is not support for:
+
+* python 3
+* asynchronous requests
+* persistent connections
+* json format for API requests
+* thread-safety
+
 ## Copyright
 
 Copyright (c) 2011 "JadedPixel inc.". See LICENSE for details.
