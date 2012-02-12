@@ -21,14 +21,19 @@ class ShopifyResourceMeta(ResourceMeta):
     @property
     def connection(cls):
         """HTTP connection which stores it's the last response"""
-        if cls._connection is None:
-            cls._connection = ShopifyConnection(
-                cls.site, cls.user, cls.password, cls.timeout, cls.format)
-        return cls._connection
+        super_class = cls.__mro__[1]
+        if super_class == object or '_connection' in cls.__dict__:
+            if cls._connection is None:
+                cls._connection = ShopifyConnection(
+                    cls.site, cls.user, cls.password, cls.timeout, cls.format)
+            return cls._connection
+        else:
+            return super_class.connection
 
 class ShopifyResource(ActiveResource, mixins.Countable):
     __metaclass__ = ShopifyResourceMeta
     _primary_key = "id"
+    _connection = None
 
     def __init__(self, attributes=None, prefix_options=None):
         if attributes is not None and prefix_options is None:
