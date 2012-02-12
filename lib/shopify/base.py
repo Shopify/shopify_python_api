@@ -20,7 +20,7 @@ class ShopifyConnection(pyactiveresource.connection.Connection):
 class ShopifyResourceMeta(ResourceMeta):
     @property
     def connection(cls):
-        """HTTP connection which stores it's the last response"""
+        """HTTP connection which stores it's last response"""
         super_class = cls.__mro__[1]
         if super_class == object or '_connection' in cls.__dict__:
             if cls._connection is None:
