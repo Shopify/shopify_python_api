@@ -65,22 +65,19 @@ class NoteAttribute(ShopifyResource):
 
 class Order(ShopifyResource):
     def close(self):
-        self._load_attributes_from_response(self.post("close", self.only_id()))
+        self._load_attributes_from_response(self.post("close"))
 
     def open(self):
-        self._load_attributes_from_response(self.post("open", self.only_id()))
+        self._load_attributes_from_response(self.post("open"))
 
     def cancel(self, **kwargs):
-        self._load_attributes_from_response(self.post("cancel", self.only_id()), **kwargs)
+        self._load_attributes_from_response(self.post("cancel"), **kwargs)
 
     def transactions(self):
         return Transaction.find(order_id=self.id)
 
     def capture(self, amount=""):
         return Transaction.create(amount=amount, kind="capture", order_id=self.id)
-
-    def only_id(self):
-        return self.encode(dict(only="id", include=[], methods=[], fields=[]))
 
 
 class Product(ShopifyResource):
@@ -169,22 +166,19 @@ class Metafield(ShopifyResource):
 
 class Comment(ShopifyResource):
     def remove(self):
-        self._load_attributes_from_response(self.post("remove", self.only_id()))
+        self._load_attributes_from_response(self.post("remove"))
 
     def spam(self):
-        self._load_attributes_from_response(self.post("spam", self.only_id()))
+        self._load_attributes_from_response(self.post("spam"))
 
     def approve(self):
-        self._load_attributes_from_response(self.post("approve", self.only_id()))
+        self._load_attributes_from_response(self.post("approve"))
 
     def restore(self):
-        self._load_attributes_from_response(self.post("restore", self.only_id()))
+        self._load_attributes_from_response(self.post("restore"))
 
     def not_spam(self):
-        self._load_attributes_from_response(self.post("not_spam", self.only_id()))
-
-    def only_id(self):
-        return self.encode(dict(only="id"))
+        self._load_attributes_from_response(self.post("not_spam"))
 
 
 class Province(ShopifyResource):
