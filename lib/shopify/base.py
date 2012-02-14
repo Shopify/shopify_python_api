@@ -82,6 +82,7 @@ class ShopifyResourceMeta(ResourceMeta):
     def set_timeout(cls, value):
         cls._threadlocal.connection = None
         ShopifyResource._timeout = cls._threadlocal.timeout = value
+
     timeout = property(get_timeout, set_timeout, None,
                        'Socket timeout for HTTP requests')
 
