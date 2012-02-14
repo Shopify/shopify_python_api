@@ -159,7 +159,6 @@ Currently there is not support for:
 * asynchronous requests
 * persistent connections
 * json format for API requests
-* thread-safety
 
 ## Copyright
 
