@@ -3,6 +3,10 @@ import pyactiveresource.connection
 from pyactiveresource.activeresource import ActiveResource, ResourceMeta
 import shopify.yamlobjects
 import shopify.mixins as mixins
+import threading
+import urllib
+import urllib2
+import urlparse
 
 # Store the response from the last request in the connection object
 class ShopifyConnection(pyactiveresource.connection.Connection):
@@ -20,20 +24,73 @@ class ShopifyConnection(pyactiveresource.connection.Connection):
 class ShopifyResourceMeta(ResourceMeta):
     @property
     def connection(cls):
-        """HTTP connection which stores it's last response"""
+        """HTTP connection for the current thread"""
         super_class = cls.__mro__[1]
-        if super_class == object or '_connection' in cls.__dict__:
-            if cls._connection is None:
-                cls._connection = ShopifyConnection(
-                    cls.site, cls.user, cls.password, cls.timeout, cls.format)
-            return cls._connection
-        else:
-            return super_class.connection
+        local = cls._threadlocal
+        if not getattr(local, 'connection', None):
+            # Make sure these variables are no longer affected by other threads.
+            local.user = cls.user
+            local.password = cls.password
+            local.site = cls.site
+            local.timeout = cls.timeout
+            local.connection = ShopifyConnection(
+                cls.site, cls.user, cls.password, cls.timeout, cls.format)
+        return local.connection
+
+    def get_user(cls):
+        return getattr(cls._threadlocal, 'user', ShopifyResource._user)
+
+    def set_user(cls, value):
+        cls._threadlocal.connection = None
+        ShopifyResource._user = cls._threadlocal.user = value
+
+    user = property(get_user, set_user, None,
+                    "The username for HTTP Basic Auth.")
+
+    def get_password(cls):
+        return getattr(cls._threadlocal, 'password', ShopifyResource._password)
+
+    def set_password(cls, value):
+        cls._threadlocal.connection = None
+        ShopifyResource._password = cls._threadlocal.password = value
+
+    password = property(get_password, set_password, None,
+                        "The password for HTTP Basic Auth.")
+
+    def get_site(cls):
+        return getattr(cls._threadlocal, 'site', ShopifyResource._site)
+
+    def set_site(cls, value):
+        cls._threadlocal.connection = None
+        ShopifyResource._site = cls._threadlocal.site = value
+        if value is not None:
+            host = urlparse.urlsplit(value)[1]
+            auth_info, host = urllib2.splituser(host)
+            if auth_info:
+                user, password = urllib2.splitpasswd(auth_info)
+                if user:
+                    cls.user = urllib.unquote(user)
+                if password:
+                    cls.password = urllib.unquote(password)
+
+    site = property(get_site, set_site, None,
+                    'The base REST site to connect to.')
+
+    def get_timeout(cls):
+        return getattr(cls._threadlocal, 'timeout', ShopifyResource._timeout)
+
+    def set_timeout(cls, value):
+        cls._threadlocal.connection = None
+        ShopifyResource._timeout = cls._threadlocal.timeout = value
+
+    timeout = property(get_timeout, set_timeout, None,
+                       'Socket timeout for HTTP requests')
+
 
 class ShopifyResource(ActiveResource, mixins.Countable):
     __metaclass__ = ShopifyResourceMeta
     _primary_key = "id"
-    _connection = None
+    _threadlocal = threading.local()
 
     def __init__(self, attributes=None, prefix_options=None):
         if attributes is not None and prefix_options is None:
