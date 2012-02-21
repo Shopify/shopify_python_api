@@ -1,3 +1,9 @@
+== Version 0.3.0
+
+* Added support for customer search and customer group search.
+* Resource erros are cleared on save from previous save attempt.
+* Made the library thread-safe using thread-local connections.
+
 == Version 0.2.1
 
 * Fixed a regression that caused a different connection
