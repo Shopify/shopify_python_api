@@ -1,3 +1,4 @@
 include LICENSE
 include CHANGELOG
 include README.rdoc
+include bin/shopify_api.py

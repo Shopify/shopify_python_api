@@ -131,17 +131,12 @@ open up an interactive console to use the API with a shop.
 
 ## Using Development Version
 
-Make sure the installed ShopifyAPI library isn't used.
+Use the `bin/shopify_api.py` script when running from the source tree.
+It will add the lib directory to start of sys.path, so the installed
+version won't be used.
 
 ```shell
-easy_install -m ShopifyAPI
-```
-
-Set PYTHONPATH to use the project from its source directory. The
-dependant libraries must be installed.
-
-```shell
-PYTHONPATH=./lib scripts/shopify_api.py console
+bin/shopify_api.py console
 ```
 
 The development version can be built and installed using easy_install.
