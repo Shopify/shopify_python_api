@@ -109,7 +109,7 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         self._primary_key = value
 
     primary_key = property(__get_primary_key, __set_primary_key, None,
-                           'Primary key to identity the resource (defaults to "id")')
+                           'Primary key to identify the resource (defaults to "id")')
 
     def __get_id(self):
         if self._primary_key != "id":
