@@ -85,6 +85,15 @@ class ShopifyResourceMeta(ResourceMeta):
     timeout = property(get_timeout, set_timeout, None,
                        'Socket timeout for HTTP requests')
 
+    def get_primary_key(cls):
+        return cls._primary_key
+
+    def set_primary_key(cls, value):
+        cls._primary_key = value
+
+    primary_key = property(get_primary_key, set_primary_key, None,
+                           'Name of attribute that uniquely identies the resource')
+
 
 class ShopifyResource(ActiveResource, mixins.Countable):
     __metaclass__ = ShopifyResourceMeta
@@ -102,26 +111,17 @@ class ShopifyResource(ActiveResource, mixins.Countable):
     def _load_attributes_from_response(self, response):
         self._update(self.__class__.format.decode(response.body))
 
-    def __get_primary_key(self):
-        return self._primary_key
-
-    def __set_primary_key(self, value):
-        self._primary_key = value
-
-    primary_key = property(__get_primary_key, __set_primary_key, None,
-                           'Primary key to identify the resource (defaults to "id")')
-
     def __get_id(self):
-        if self._primary_key != "id":
-            return getattr(self, self._primary_key)
+        if self.klass.primary_key != "id":
+            return self.attributes.get(self.klass.primary_key)
         else:
-            return super(ShopifyResource, self).__getattr__("id")
+            return super(ShopifyResource, self).id
 
     def __set_id(self, value):
-        if self._primary_key != "id":
-            return setattr(self, self._primary_key, value)
+        if self.klass.primary_key != "id":
+            self.attributes[self.klass.primary_key] = value
         else:
-            return super(ShopifyResource, self).__setattr__("id", value)
+            super(ShopifyResource, self).id = value
 
     id = property(__get_id, __set_id, None, 'Value stored in the primary key')
 
