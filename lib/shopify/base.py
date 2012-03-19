@@ -1,4 +1,3 @@
-import pyactiveresource.util
 import pyactiveresource.connection
 from pyactiveresource.activeresource import ActiveResource, ResourceMeta
 import shopify.yamlobjects
@@ -102,10 +101,6 @@ class ShopifyResource(ActiveResource, mixins.Countable):
 
     def _load_attributes_from_response(self, response):
         self._update(self.__class__.format.decode(response.body))
-
-    def encode(self, options):
-        # pyactiveresource (version 1.0.1) doesn't support encoding to_json
-        return pyactiveresource.util.to_xml(options)
 
     def __get_primary_key(self):
         return self._primary_key
