@@ -1,3 +1,7 @@
+== Version 0.3.1
+
+* Compatiblity fixes for using latest (unreleased) pyactiveresource
+
 == Version 0.3.0
 
 * Added support for customer search and customer group search.
