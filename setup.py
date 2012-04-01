@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 NAME='ShopifyAPI'
-VERSION=__import__('shopify').VERSION
+execfile('shopify/version.py')
 DESCRIPTION='Shopify API for Python'
 LONG_DESCRIPTION="""\
 The ShopifyAPI library allows python developers to programmatically
