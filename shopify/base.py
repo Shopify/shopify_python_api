@@ -26,7 +26,6 @@ class ShopifyResourceMeta(ResourceMeta):
     @property
     def connection(cls):
         """HTTP connection for the current thread"""
-        super_class = cls.__mro__[1]
         local = cls._threadlocal
         if not getattr(local, 'connection', None):
             # Make sure these variables are no longer affected by other threads.
@@ -34,6 +33,7 @@ class ShopifyResourceMeta(ResourceMeta):
             local.password = cls.password
             local.site = cls.site
             local.timeout = cls.timeout
+            local.headers = cls.headers
             local.connection = ShopifyConnection(
                 cls.site, cls.user, cls.password, cls.timeout, cls.format)
         return local.connection
@@ -86,6 +86,17 @@ class ShopifyResourceMeta(ResourceMeta):
 
     timeout = property(get_timeout, set_timeout, None,
                        'Socket timeout for HTTP requests')
+
+    def get_headers(cls):
+        if not hasattr(cls._threadlocal, 'headers'):
+            cls._threadlocal.headers = ShopifyResource._headers
+        return cls._threadlocal.headers
+
+    def set_headers(cls, value):
+        cls._threadlocal.headers = value
+
+    headers = property(get_headers, set_headers, None,
+                       'The headers sent with HTTP requests')
 
     def get_primary_key(cls):
         return cls._primary_key
