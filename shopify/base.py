@@ -140,6 +140,5 @@ class ShopifyResource(ActiveResource, mixins.Countable):
     id = property(__get_id, __set_id, None, 'Value stored in the primary key')
 
     def save(self):
-        # See pyactiveresource issue 14: http://code.google.com/p/pyactiveresource/issues/detail?id=14
-        self.errors.clear()
+        self.errors.clear() # Bug in pyactiveresource v1.0.1, but fixed in trunk at revision 96
         return super(ShopifyResource, self).save()
