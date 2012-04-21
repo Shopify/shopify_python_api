@@ -10,11 +10,9 @@ import subprocess
 import yaml
 
 def start_interpreter(**variables):
-    class ShopifyAPI(code.InteractiveConsole):
-        pass
-
+    console = type('shopify ' + shopify.version.VERSION, (code.InteractiveConsole, object), {})
     import readline
-    ShopifyAPI(variables).interact()
+    console(variables).interact()
 
 class ConfigFileError(StandardError):
     pass
@@ -191,6 +189,12 @@ class Tasks(object):
         shopify.ShopifyResource.site = cls._get_site_from_config(config)
 
         start_interpreter(shopify=shopify)
+
+    @classmethod
+    @usage("version")
+    def version(cls, connection=None):
+        """output the shopify library version"""
+        print(shopify.version.VERSION)
 
     @classmethod
     def _available_connections(cls):
