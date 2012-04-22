@@ -1,56 +1,33 @@
+import pyactiveresource.formats
 import time
+import urllib
 try:
     from hashlib import md5
 except ImportError:
     from md5 import md5
+try:
+    import simplejson as json
+except ImportError:
+    import json
 import re
+
+# Partial JSON support needed only for authentication.
+# Full JSON support requires a patch sent upstream to pyactiveresource.
+class JSONFormat(pyactiveresource.formats.Base):
+    extension = 'json'
+    mime_type = 'application/json'
+
+    @staticmethod
+    def decode(resource_string):
+        data = json.loads(resource_string)
+        if isinstance(data, dict) and len(data) == 1:
+            return data.values()[0]
+        return data
 
 class ValidationException(Exception):
     pass
 
 class Session(object):
-    """The Session helps in authenticating an API session.
-
-    The Shopify API authenticates each call via HTTP Authentication, using
-      * the application's API key as the username, and
-      * a hex digest of the application's shared secret and an
-        authentication token as the password.
-
-    Generation & acquisition of the beforementioned looks like this:
-
-      0. Developer (that's you) registers Application (and provides a
-         callback url) and receives an API key and a shared secret
-
-      1. User visits Application and are told they need to authenticate the
-         application first for read/write permission to their data (needs to
-         happen only once). User is asked for their shop url.
-
-      2. Application redirects to Shopify : GET <user's shop url>/admin/api/auth?api_key=<API key>
-         (See Session.create_permission_url)
-
-      3. User logs-in to Shopify, approves application permission request
-
-      4. Shopify redirects to the Application's callback url (provided during
-         registration), including the shop's name, and an authentication token in the parameters:
-           GET client.com/customers?shop=snake-oil.myshopify.com&t=a94a110d86d2452eb3e2af4cfb8a3828
-
-      5. Authentication password computed using the shared secret and the
-         authentication token (see Session.__computed_password)
-
-      6. Profit!
-         (API calls can now authenticate through HTTP using the API key, and
-         computed password)
-
-    The Session.site method can be used to set ShopifyResource.site,
-    so that all API calls are authorized transparently and end up
-    just looking like this:
-
-      # get 3 products
-      products = shopify.Product.find(limit=3)
-
-      # get latest 3 orders
-      orders = shopify.Order.find(limit=3, order="created_at DESC")
-    """
     api_key = None
     secret = None
     protocol = 'https'
@@ -63,6 +40,7 @@ class Session(object):
     def __init__(self, shop_url, params=None):
         self.url = self.__prepare_url(shop_url)
         self.token = None
+        self.legacy = False
 
         if params is None:
             return
@@ -71,19 +49,52 @@ class Session(object):
            not int(params['timestamp']) > time.time() - 24 * 60 * 60:
             raise ValidationException('Invalid Signature: Possibly malicious login')
 
-        self.token = self.__computed_password(params.get('t'))
+        if params.has_key('code'):
+            # OAuth2
+            self.token = self.request_token(params['code'])
+        else:
+            # Legacy
+            self.legacy = True
+            self.token = self.__computed_password(params['t'])
 
     def shop(self):
         Shop.current()
 
     @classmethod
-    def create_permission_url(cls, shop_url):
+    def create_permission_url(cls, shop_url, scope=None, redirect_url=None):
         shop_url = cls.__prepare_url(shop_url)
-        return "%s://%s/admin/api/auth?api_key=%s" % (cls.protocol, shop_url, cls.api_key)
+        if scope:
+            # OAuth2
+            query_params = dict(client_id=cls.api_key, scope=",".join(scope))
+            if redirect_url: query_params['redirect_url'] = redirect_url
+            return "%s://%s/admin/oauth/authorize?%s" % (cls.protocol, shop_url, urllib.urlencode(query_params))
+        else:
+            # Legacy
+            return "%s://%s/admin/api/auth?api_key=%s" % (cls.protocol, shop_url, cls.api_key)
 
     @property
     def site(self):
-        return "%s://%s:%s@%s/admin" % (self.protocol, self.api_key, self.token, self.url)
+        if self.legacy:
+            # deprecated backwards compatiblity for setting ShopifyResource.site directly
+            return "%s://%s:%s@%s/admin" % (self.protocol, self.api_key, self.token, self.url)
+        else:
+            return "%s://%s/admin" % (self.protocol, self.url)
+
+    def request_token(self, code):
+        from shopify.base import ShopifyResource, ShopifyConnection
+        if self.token:
+            return self.token
+        site = "%s://%s" % (self.protocol, self.url)
+        params = (self.api_key, self.secret, code)
+        access_token_path = "/admin/oauth/access_token?client_id=%s&client_secret=%s&code=%s" % params
+        connection = ShopifyConnection(site, None, None, ShopifyResource.timeout, JSONFormat)
+        response = connection.post(access_token_path, ShopifyResource.headers)
+        body = json.loads(response.body)
+        if response.code == 200:
+            self.token = body['access_token']
+            return self.token
+        else:
+            raise response.response
 
     def __computed_password(self, t):
         return md5(self.secret + t).hexdigest()

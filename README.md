@@ -71,14 +71,18 @@ these steps:
 
     ```python
     shop_url = "yourshopname.myshopify.com"
-    permission_url = shopify.Session.create_permission_url(shop_url)
+    scope = ["write_products", "read_orders"]
+    permission_url = shopify.Session.create_permission_url(shop_url, scope)
     ```
 
+    Note: Legacy Auth is assumed if the scope parameter is omitted or None
+
 4.  After visiting this URL, the shop redirects the owner to a custom
-    URL of your application where the encoded access token gets sent
-    as the `t` param. The following code will validate taht the request
-    came from Shopify, then decode the permanent access token which
-    can be used to make API requests for this shop.
+    URL of your application where a `code` param gets sent to along with
+    other parameters to ensure it was sent by Shopify. The following
+    code will validate that the request came from Shopify, then obtain
+    the permanent access token (with an HTTP request when using OAuth2)
+    which can be used to make API requests for this shop.
 
     ```python
     session = shopify.Session(shop_url, params)
@@ -183,7 +187,6 @@ easy_install dist/ShopifyAPI-*.tar.gz
 
 Currently there is no support for:
 
-* OAuth2
 * python 3
 * asynchronous requests
 * persistent connections

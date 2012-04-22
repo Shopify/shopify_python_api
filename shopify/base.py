@@ -153,9 +153,14 @@ class ShopifyResource(ActiveResource, mixins.Countable):
     @classmethod
     def activate_session(cls, session):
         cls.site = session.site
+        if not session.legacy:
+            cls.user = None
+            cls.password = None
+            cls.headers['X-Shopify-Access-Token'] = session.token
 
     @classmethod
     def clear_session(cls):
         cls.site = None
         cls.user = None
         cls.password = None
+        del cls.headers['X-Shopify-Access-Token']
