@@ -35,6 +35,8 @@ class ShopifyResourceMeta(ResourceMeta):
             local.timeout = cls.timeout
             local.headers = cls.headers
             local.format = cls.format
+            if cls.site is None:
+                raise ValueError("No shopify session is active")
             local.connection = ShopifyConnection(
                 cls.site, cls.user, cls.password, cls.timeout, cls.format)
         return local.connection
