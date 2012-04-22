@@ -64,10 +64,10 @@ these steps:
     ```
 
 3.  For application to access a shop via the API, they first need a
-    "token" specific to the shop, which is obtained from Shopify after
-    the owner has granted the application access to the shop. This can
-    be done by redirecting the shop owner to permission URL obtained
-    as follows:
+    "access token" specific to the shop, which is obtained from
+    Shopify after the owner has granted the application access to the
+    shop. This can be done by redirecting the shop owner to a
+    permission URL, obtained as follows:
 
     ```python
     shop_url = "yourshopname.myshopify.com"
@@ -75,27 +75,42 @@ these steps:
     ```
 
 4.  After visiting this URL, the shop redirects the owner to a custom
-    URL of your application where the `token` gets sent to (it's param
-    name is just `t`) along with other parameters to ensure it was sent
-    by Shopify. That token is used to instantiate the session so that it
-    is ready to make calls to that particular shop.
+    URL of your application where the encoded access token gets sent
+    as the `t` param. The following code will validate taht the request
+    came from Shopify, then decode the permanent access token which
+    can be used to make API requests for this shop.
 
     ```python
     session = shopify.Session(shop_url, params)
     ```
 
-5.  Now you can finally get the fully authorized URL for that shop.
-    Use that URL to configure ActiveResource and you're set:
+5.  Activate the session to use the access token for following API
+    requests for the shop it was authorized for.
 
     ```python
-    shopify.ShopifyResource.site = session.site
+    shopify.ShopifyResource.activate_session(session)
     ```
 
-6.  Get data from that shop (returns ActiveResource instances):
+6.  Start making authorized API requests for that shop. Data is returned as
+    ActiveResource instances:
 
     ```python
-    shop = shopify.Shop.current()
-    latest_orders = shopify.Order.find()
+    # Get a list of products
+    products = shopify.Product.find()
+
+    # Get a specific product
+    product = shopify.Product.find(632910)
+
+    # Create a new product
+    new_product = shopify.Product()
+    new_product.title = "Burton Custom Freestlye 151"
+    new_product.product_type = "Snowboard"
+    new_product.vendor = "Burton"
+    new_product.save()
+
+    # Update a product
+    product.handle = "burton-snowboard"
+    product.save()
     ```
 
 ### Console
@@ -148,8 +163,9 @@ easy_install dist/ShopifyAPI-*.tar.gz
 
 ## Limitations
 
-Currently there is not support for:
+Currently there is no support for:
 
+* OAuth2
 * python 3
 * asynchronous requests
 * persistent connections

@@ -1,7 +1,7 @@
 Releasing shopify_python_api
 
 1. Check the Semantic Versioning page for info on how to version the new release: http://semver.org
-2. Updates version in shopify/__init__.py
+2. Update version in shopify/version.py
 3. Update CHANGELOG entry for the release.
 4. Commit the changes
     git commit -m "Release vX.Y.Z"

@@ -1,3 +1,10 @@
+== Version 0.4.0
+
+* Using setup.py no longer requires all dependancies
+* More compatiblity fixes for using the latest pyactiveresource
+* ShopifyResource.activate_session is not recommended over setting site
+directly for forward compatibility with coming OAuth2 changes.
+
 == Version 0.3.1
 
 * Compatiblity fixes for using latest (unreleased) pyactiveresource
