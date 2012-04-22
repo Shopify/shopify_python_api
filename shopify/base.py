@@ -34,6 +34,7 @@ class ShopifyResourceMeta(ResourceMeta):
             local.site = cls.site
             local.timeout = cls.timeout
             local.headers = cls.headers
+            local.format = cls.format
             local.connection = ShopifyConnection(
                 cls.site, cls.user, cls.password, cls.timeout, cls.format)
         return local.connection
@@ -97,6 +98,16 @@ class ShopifyResourceMeta(ResourceMeta):
 
     headers = property(get_headers, set_headers, None,
                        'The headers sent with HTTP requests')
+
+    def get_format(cls):
+        return getattr(cls._threadlocal, 'format', ShopifyResource._format)
+
+    def set_format(cls, value):
+        cls._threadlocal.connection = None
+        ShopifyResource._format = cls._threadlocal.format = value
+
+    format = property(get_format, set_format, None,
+                      'Encoding used for request and responses')
 
     def get_primary_key(cls):
         return cls._primary_key
