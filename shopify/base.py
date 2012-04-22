@@ -137,16 +137,10 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         self._update(self.__class__.format.decode(response.body))
 
     def __get_id(self):
-        if self.klass.primary_key != "id":
-            return self.attributes.get(self.klass.primary_key)
-        else:
-            return super(ShopifyResource, self).id
+        return self.attributes.get(self.klass.primary_key)
 
     def __set_id(self, value):
-        if self.klass.primary_key != "id":
-            self.attributes[self.klass.primary_key] = value
-        else:
-            super(ShopifyResource, self).id = value
+        self.attributes[self.klass.primary_key] = value
 
     id = property(__get_id, __set_id, None, 'Value stored in the primary key')
 
