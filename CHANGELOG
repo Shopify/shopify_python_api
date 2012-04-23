@@ -1,3 +1,14 @@
+== Version 1.0.0
+
+* Added support for OAuth2.
+* ShopifyResource.activate_session must now be used with OAuth2 instead
+of setting ShopifyResource.site directly.
+* Session.__init__ no longer allows params to be passed in as **params
+* Session.__init__ now makes an HTTP request when using OAuth2 if
+params are specified
+* Session now exposes the access token through the token instance
+variable to simplify session saving and resuming
+
 == Version 0.4.0
 
 * Using setup.py no longer requires all dependancies
