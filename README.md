@@ -113,6 +113,24 @@ these steps:
     product.save()
     ```
 
+### Saved Session
+
+1.  Follow steps 1-4 from the "Getting Started" section to obtain a session,
+    then save the session's token along with the shop_url.
+
+    ```python
+    shop_url = session.url
+    saved_token = session.token
+    ```
+
+2.  Create and activate a new session using the saved shop_url and token.
+
+    ```python
+    session = shopify.Session(shop_url)
+    session.token = saved_token
+    shopify.ShopifyResource.activate_session(session)
+    ```
+
 ### Console
 
 This package also includes the `shopify_api.py` script to make it easy to

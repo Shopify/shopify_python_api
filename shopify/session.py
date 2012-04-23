@@ -60,16 +60,18 @@ class Session(object):
         for k, v in kwargs.iteritems():
             setattr(cls, k, v)
 
-    def __init__(self, shop_url, params=None, **kwargs):
-        if params is None:
-            params = kwargs
+    def __init__(self, shop_url, params=None):
         self.url = self.__prepare_url(shop_url)
-        self.token = params.get('t')
-        self.name = None
+        self.token = None
 
-        if not self.__validate_signature(params) or \
+        if params is None:
+            return
+
+        if not self.validate_signature(params) or \
            not int(params['timestamp']) > time.time() - 24 * 60 * 60:
             raise ValidationException('Invalid Signature: Possibly malicious login')
+
+        self.token = self.__computed_password(params.get('t'))
 
     def shop(self):
         Shop.current()
@@ -81,10 +83,10 @@ class Session(object):
 
     @property
     def site(self):
-        return "%s://%s:%s@%s/admin" % (self.protocol, self.api_key, self.__computed_password(), self.url)
+        return "%s://%s:%s@%s/admin" % (self.protocol, self.api_key, self.token, self.url)
 
-    def __computed_password(self):
-        return md5(self.secret + self.token).hexdigest()
+    def __computed_password(self, t):
+        return md5(self.secret + t).hexdigest()
 
     @staticmethod
     def __prepare_url(url):
@@ -97,7 +99,7 @@ class Session(object):
         return url
 
     @classmethod
-    def __validate_signature(cls, params):
+    def validate_signature(cls, params):
         if "signature" not in params:
             return False
 

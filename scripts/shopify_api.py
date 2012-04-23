@@ -186,7 +186,8 @@ class Tasks(object):
 
         config = yaml.safe_load(file(filename).read())
         print("using %s" % (config["domain"]))
-        shopify.ShopifyResource.site = cls._get_site_from_config(config)
+        session = cls._session_from_config(config)
+        shopify.ShopifyResource.activate_session(session)
 
         start_interpreter(shopify=shopify)
 
@@ -224,12 +225,12 @@ class Tasks(object):
             return os.path.join(cls._shop_config_dir, connection + ".yml")
 
     @classmethod
-    def _get_site_from_config(cls, config):
-        protocol = config.get("protocol", "https")
-        api_key = config.get("api_key")
-        password = config.get("password")
-        domain = config.get("domain")
-        return "%s://%s:%s@%s/admin" % (protocol, api_key, password, domain)
+    def _session_from_config(cls, config):
+        session = shopify.Session(config.get("domain"))
+        session.protocol = config.get("protocol", "https")
+        session.api_key = config.get("api_key")
+        session.token = config.get("password")
+        return session
 
     @classmethod
     def _is_default(cls, connection):
