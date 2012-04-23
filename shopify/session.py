@@ -45,8 +45,7 @@ class Session(object):
         if params is None:
             return
 
-        if not self.validate_signature(params) or \
-           not int(params['timestamp']) > time.time() - 24 * 60 * 60:
+        if not self.validate_params(params):
             raise ValidationException('Invalid Signature: Possibly malicious login')
 
         if params.has_key('code'):
@@ -108,6 +107,16 @@ class Session(object):
         if url.find(".") == -1:
             url += ".myshopify.com"
         return url
+
+    @classmethod
+    def validate_params(cls, params):
+        # Avoid replay attacks by making sure the request
+        # isn't more than a day old.
+        one_day = 24 * 60 * 60
+        if int(params['timestamp']) < time.time() - one_day:
+            return False
+
+        return cls.validate_signature(params)
 
     @classmethod
     def validate_signature(cls, params):
