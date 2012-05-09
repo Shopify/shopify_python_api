@@ -60,12 +60,12 @@ class Session(object):
         Shop.current()
 
     @classmethod
-    def create_permission_url(cls, shop_url, scope=None, redirect_url=None):
+    def create_permission_url(cls, shop_url, scope=None, redirect_uri=None):
         shop_url = cls.__prepare_url(shop_url)
         if scope:
             # OAuth2
             query_params = dict(client_id=cls.api_key, scope=",".join(scope))
-            if redirect_url: query_params['redirect_url'] = redirect_url
+            if redirect_uri: query_params['redirect_uri'] = redirect_uri
             return "%s://%s/admin/oauth/authorize?%s" % (cls.protocol, shop_url, urllib.urlencode(query_params))
         else:
             # Legacy
