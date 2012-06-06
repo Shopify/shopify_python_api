@@ -192,6 +192,12 @@ Currently there is no support for:
 * persistent connections
 * json format for API requests
 
+## Questions or Problems?
+
+* http://api.shopify.com <= Read the tech docs!
+* http://wiki.shopify.com/Developer_Home <= Read the wiki!
+* http://stackoverflow.com/questions/tagged/shopify <= Ask questions on Stack Overflow!
+
 ## Copyright
 
-Copyright (c) 2011 "JadedPixel inc.". See LICENSE for details.
+Copyright (c) 2012 "Shopify inc.". See LICENSE for details.
