@@ -28,22 +28,17 @@ For more information and detailed documentation about the API visit
 
 ### Installation
 
-To install or upgrade to the latest release:
+To easily install or upgrade to the latest release, use
+[pip](http://www.pip-installer.org/)
+
+```shell
+pip install --upgrade ShopifyAPI
+```
+
+or [easy_install](http://packages.python.org/distribute/easy_install.html)
 
 ```shell
 easy_install -U ShopifyAPI
-```
-
-To install from source, first install the pre-requisites:
-
-```shell
-easy_install pyactiveresource PyYAML python-dateutil==1.5
-```
-
-Then use the setup script in the root of this source tree.
-
-```shell
-python setup.py install
 ```
 
 ### Getting Started
@@ -176,11 +171,22 @@ version won't be used.
 bin/shopify_api.py console
 ```
 
-The development version can be built and installed using easy_install.
+The development version can be built using
 
 ```shell
 python setup.py sdist
-easy_install dist/ShopifyAPI-*.tar.gz
+```
+
+then the package can be installed using pip
+
+```shell
+pip install --upgrade dist/ShopifyAPI-*.tar.gz
+```
+
+or easy_install
+
+```shell
+easy_install -U dist/ShopifyAPI-*.tar.gz
 ```
 
 ## Limitations
