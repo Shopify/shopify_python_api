@@ -56,9 +56,6 @@ class Session(object):
             self.legacy = True
             self.token = self.__computed_password(params['t'])
 
-    def shop(self):
-        Shop.current()
-
     @classmethod
     def create_permission_url(cls, shop_url, scope=None, redirect_uri=None):
         shop_url = cls.__prepare_url(shop_url)
