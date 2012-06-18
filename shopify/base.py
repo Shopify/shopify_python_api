@@ -163,4 +163,5 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         cls.site = None
         cls.user = None
         cls.password = None
-        del cls.headers['X-Shopify-Access-Token']
+        if 'X-Shopify-Access-Token' in cls.headers:
+            del cls.headers['X-Shopify-Access-Token']
