@@ -198,11 +198,11 @@ Currently there is no support for:
 * persistent connections
 * json format for API requests
 
-## Questions or Problems?
+## Additional Resources
 
-* http://api.shopify.com <= Read the tech docs!
-* http://wiki.shopify.com/Developer_Home <= Read the wiki!
-* http://stackoverflow.com/questions/tagged/shopify <= Ask questions on Stack Overflow!
+* [Shopify API](http://api.shopify.com) HTTP endpoints documentation
+* [Using the shopify_python_api](http://wiki.shopify.com/Using_the_shopify_python_api)
+* [Shopify questions on Stack Overflow](http://stackoverflow.com/questions/tagged/shopify)
 
 ## Copyright
 
