@@ -1,3 +1,13 @@
+== Version 1.0.3
+
+* Fix bug in setting format attribute on Webhook instances.
+* Fixed missing slash in return value of Image size methods
+* Upgrade pyactiveresource to fix unicode encoding issues
+
+== Version 1.0.2
+
+* Made ShopifyResource.clear_session idempotent.
+
 == Version 1.0.1
 
 * Use the correct redirect parameter in Session.create_permission_url.
