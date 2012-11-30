@@ -1,3 +1,7 @@
+== Version 1.0.4
+
+* Fixed another bug in Image size methods regex.
+
 == Version 1.0.3
 
 * Fix bug in setting format attribute on Webhook instances.
