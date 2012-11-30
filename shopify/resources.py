@@ -118,7 +118,7 @@ class Image(ShopifyResource):
 
     def __getattr__(self, name):
         if name in ["pico", "icon", "thumb", "small", "compact", "medium", "large", "grande", "original"]:
-            return re.sub(r"/([^/]*)\.(\w{2,4})", r"/\1_%s.\2" % (name), self.src)
+            return re.sub(r"/(.*)\.(\w{2,4})", r"/\1_%s.\2" % (name), self.src)
         else:
             return super(Image, self).__getattr__(name)
 
