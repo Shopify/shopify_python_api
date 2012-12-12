@@ -202,7 +202,7 @@ Currently there is no support for:
 
 * [Shopify API](http://api.shopify.com) HTTP endpoints documentation
 * [Using the shopify_python_api](http://wiki.shopify.com/Using_the_shopify_python_api)
-* [Shopify questions on Stack Overflow](http://stackoverflow.com/questions/tagged/shopify)
+* [Ask questions on the Shopify forums](http://ecommerce.shopify.com/c/shopify-apis-and-technology)
 
 ## Copyright
 
