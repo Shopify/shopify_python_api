@@ -71,7 +71,7 @@ class Order(ShopifyResource):
         self._load_attributes_from_response(self.post("open"))
 
     def cancel(self, **kwargs):
-        self._load_attributes_from_response(self.post("cancel"), **kwargs)
+        self._load_attributes_from_response(self.post("cancel", **kwargs))
 
     def transactions(self):
         return Transaction.find(order_id=self.id)
