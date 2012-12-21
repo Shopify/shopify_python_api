@@ -1,3 +1,8 @@
+== Version 1.0.5
+
+* Fix parameter passing for order cancellation.
+* Fix Product.price_range method for variants with different prices.
+
 == Version 1.0.4
 
 * Fixed another bug in Image size methods regex.
