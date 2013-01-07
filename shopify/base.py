@@ -128,7 +128,7 @@ class ShopifyResource(ActiveResource, mixins.Countable):
     _headers = { 'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0]) }
 
     def __init__(self, attributes=None, prefix_options=None):
-        if attributes is not None and prefix_options is None:
+        if isinstance(attributes, dict) and prefix_options is None:
             prefix_options, attributes = self.__class__._split_options(attributes)
         return super(ShopifyResource, self).__init__(attributes, prefix_options)
 
