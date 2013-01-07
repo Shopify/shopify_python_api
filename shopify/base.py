@@ -1,5 +1,6 @@
 import pyactiveresource.connection
 from pyactiveresource.activeresource import ActiveResource, ResourceMeta
+import pyactiveresource.util as util
 import shopify.yamlobjects
 import shopify.mixins as mixins
 import shopify
@@ -145,6 +146,76 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         self.attributes[self.klass.primary_key] = value
 
     id = property(__get_id, __set_id, None, 'Value stored in the primary key')
+
+    # Backport changes to _update, to_dict and to_xml from upstream
+    # patch to suport loading:
+    # https://groups.google.com/forum/#!msg/pyactiveresource/JpE-Qg_pEZc/RlrbQFafk3IJ
+    def _update(self, attributes):
+        if not isinstance(attributes, dict):
+            return
+        for key, value in attributes.items():
+            if isinstance(value, dict):
+                klass = self._find_class_for(key)
+                attr = klass(value)
+            elif isinstance(value, list):
+                klass = None
+                attr = []
+                for child in value:
+                    if isinstance(child, dict):
+                        if klass is None:
+                            klass = self._find_class_for_collection(key)
+                        attr.append(klass(child))
+                    else:
+                        attr.append(child)
+            else:
+                attr = value
+            self.attributes[key] = attr
+
+    def to_dict(self):
+        values = {}
+        for key, value in self.attributes.iteritems():
+            if isinstance(value, list):
+                new_value = []
+                for item in value:
+                  if isinstance(item, ActiveResource):
+                      new_value.append(item.to_dict())
+                  else:
+                      new_value.append(item)
+                values[key] = new_value
+            elif isinstance(value, ActiveResource):
+                values[key] = value.to_dict()
+            else:
+                values[key] = value
+        return values
+
+    @staticmethod
+    def __to_xml_element(obj, root, dasherize):
+        root = dasherize and root.replace('_', '-') or root
+        root_element = util.ET.Element(root)
+        if isinstance(obj, list):
+            root_element.set('type', 'array')
+            for value in obj:
+                root_element.append(ShopifyResource.__to_xml_element(value, util.singularize(root), dasherize))
+        elif isinstance(obj, dict):
+            for key, value in obj.iteritems():
+                root_element.append(ShopifyResource.__to_xml_element(value, key, dasherize))
+        else:
+            util.serialize(obj, root_element)
+
+        return root_element
+
+    def to_xml(self, root=None, header=True, pretty=False, dasherize=True):
+        if not root:
+            root = self._singular
+        root_element = ShopifyResource.__to_xml_element(self.to_dict(), root, dasherize)
+        if pretty:
+            xml_pretty_format(root_element)
+        xml_data = util.ET.tostring(root_element)
+        if header:
+            return util.XML_HEADER + '\n' + xml_data
+        return xml_data
+
+
 
     @classmethod
     def activate_session(cls, session):
