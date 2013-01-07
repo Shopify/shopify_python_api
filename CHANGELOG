@@ -1,3 +1,8 @@
+== Version 1.0.6
+
+* Fix deserializing and serializing fulfillments which can now contain
+arrays of strings in the tracking_urls attribute.
+
 == Version 1.0.5
 
 * Fix parameter passing for order cancellation.
