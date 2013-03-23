@@ -21,7 +21,7 @@ class Shop(ShopifyResource):
         return Event.find()
 
 
-class CustomCollection(ShopifyResource):
+class CustomCollection(ShopifyResource, mixins.Metafields, mixins.Events):
     def products(self):
         return Product.find(collection_id=self.id)
 
@@ -34,7 +34,7 @@ class CustomCollection(ShopifyResource):
             collect.destroy()
 
 
-class SmartCollection(ShopifyResource):
+class SmartCollection(ShopifyResource, mixins.Metafields, mixins.Events):
     def products(self):
         return Product.find(collection_id=self.id)
 
@@ -63,7 +63,7 @@ class NoteAttribute(ShopifyResource):
     pass
 
 
-class Order(ShopifyResource):
+class Order(ShopifyResource, mixins.Metafields, mixins.Events):
     def close(self):
         self._load_attributes_from_response(self.post("close"))
 
@@ -80,7 +80,7 @@ class Order(ShopifyResource):
         return Transaction.create(amount=amount, kind="capture", order_id=self.id)
 
 
-class Product(ShopifyResource):
+class Product(ShopifyResource, mixins.Metafields, mixins.Events):
     def price_range(self):
         prices = [variant.price for variant in self.variants]
         f = "%0.2f"
@@ -104,7 +104,7 @@ class Product(ShopifyResource):
         return collection.remove_product(self)
 
 
-class Variant(ShopifyResource):
+class Variant(ShopifyResource, mixins.Metafields):
     _prefix_source = "/admin/products/$product_id/"
 
     @classmethod
@@ -140,16 +140,16 @@ class Country(ShopifyResource):
     pass
 
 
-class Page(ShopifyResource):
+class Page(ShopifyResource, mixins.Metafields, mixins.Events):
     pass
 
 
-class Blog(ShopifyResource):
+class Blog(ShopifyResource, mixins.Metafields, mixins.Events):
     def articles(self):
         return Article.find(blog_id=self.id)
 
 
-class Article(ShopifyResource):
+class Article(ShopifyResource, mixins.Metafields, mixins.Events):
     _prefix_source = "/admin/blogs/$blog_id/"
 
     def comments(self):
@@ -207,7 +207,7 @@ class Event(ShopifyResource):
         return "/admin/" if options.get("resource") is None else "/admin/%s/%s/" % (options["resource"], options["resource_id"])
 
 
-class Customer(ShopifyResource):
+class Customer(ShopifyResource, mixins.Metafields):
     @classmethod
     def search(cls, **kwargs):
         """Search for customers matching supplied query
@@ -361,13 +361,3 @@ class Rule(ShopifyResource):
 # attribute of Order
 class TaxLine(ShopifyResource):
     pass
-
-
-METAFIELD_ENABLED_CLASSES = (Article, Blog, CustomCollection, Customer, Order, Page, Product, SmartCollection, Variant)
-EVENT_ENABLED_CLASSES = (Order, Product, CustomCollection, SmartCollection, Page, Blog, Article)
-
-for cls in METAFIELD_ENABLED_CLASSES:
-    cls.__bases__ += (mixins.Metafields,)
-
-for cls in EVENT_ENABLED_CLASSES:
-    cls.__bases__ += (mixins.Events,)
