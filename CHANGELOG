@@ -1,3 +1,8 @@
+== Version 1.0.7
+
+* Fix thread local headers to store a copy of the default hash which
+prevents activate_session in one thread from affecting other threads.
+
 == Version 1.0.6
 
 * Fix deserializing and serializing fulfillments which can now contain
