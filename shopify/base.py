@@ -93,7 +93,7 @@ class ShopifyResourceMeta(ResourceMeta):
 
     def get_headers(cls):
         if not hasattr(cls._threadlocal, 'headers'):
-            cls._threadlocal.headers = ShopifyResource._headers
+            cls._threadlocal.headers = ShopifyResource._headers.copy()
         return cls._threadlocal.headers
 
     def set_headers(cls, value):
