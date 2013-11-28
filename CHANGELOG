@@ -1,3 +1,7 @@
+== Version 2.x.x
+
+* Added support for CustomerSavedSearch (CustomerGroup is deprecated)
+
 == Version 1.0.7
 
 * Fix thread local headers to store a copy of the default hash which
