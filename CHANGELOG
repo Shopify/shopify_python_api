@@ -1,5 +1,8 @@
 == Version 2.x.x
 
+* removed Session.request_token and supporting code for the time being
+* Updated Session to better match the ShopifyAPI Ruby gem
+* Updated the readme to better describe how to use the library
 * Added support for CustomerSavedSearch (CustomerGroup is deprecated)
 
 == Version 1.0.7
