@@ -230,27 +230,11 @@ class Customer(ShopifyResource, mixins.Metafields):
 
 class CustomerGroup(ShopifyResource):
     def customers(cls, **kwargs):
-        """Get a list of customers matching a customer group
-
-        Args:
-           page: Page to show (default: 1)
-           limit: Maximum number of results to show (default: 50, maximum: 250)
-        Returns:
-           An array of customers.
-        """
         return Customer._build_list(cls.get("customers", **kwargs))
 
 
 class CustomerSavedSearch(ShopifyResource):
     def customers(cls, **kwargs):
-        """Get a list of customers matching a customer saved search
-
-        Args:
-           page: Page to show (default: 1)
-           limit: Maximum number of results to show (default: 50, maximum: 250)
-        Returns:
-           An array of customers.
-        """
         return Customer._build_list(cls.get("customers", **kwargs))
 
 
