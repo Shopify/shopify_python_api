@@ -1,10 +1,14 @@
-import pyactiveresource.formats
 import time
 import urllib
+import urllib2
 try:
     from hashlib import md5
 except ImportError:
     from md5 import md5
+try:
+    import simplejson as json
+except ImportError:
+    import json
 import re
 
 
@@ -43,7 +47,7 @@ class Session(object):
             return
 
         if not self.validate_params(params):
-            raise 'Invalid Signature: Possibly malicious login'
+            raise Exception('Invalid Signature: Possibly malicious login')
 
         self.legacy = True
         self.token = self.__computed_password(params['t'])
@@ -60,11 +64,20 @@ class Session(object):
         if redirect_uri: query_params['redirect_uri'] = redirect_uri
         return "%s://%s/admin/oauth/authorize?%s" % (cls.protocol, shop_url, urllib.urlencode(query_params))
 
-    @classmethod
-    def create_auth_url(cls, shop_url, code):
-        shop_url = cls.__prepare_url(shop_url)
-        query_params = dict(client_id=cls.api_key, client_secret=cls.secret, code=code)
-        return "%s://%s/admin/oauth/access_token?%s" % (cls.protocol, shop_url, urllib.urlencode(query_params))
+    def request_token(self, code):
+        if self.token:
+            return self.token
+        
+        url = "%s://%s/admin/oauth/access_token?" % (self.protocol, self.url)
+        query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
+        request = urllib2.Request(url, urllib.urlencode(query_params))
+        response = urllib2.urlopen(request)
+        
+        if response.code == 200:
+            self.token = json.loads(response.read())['access_token']
+            return self.token
+        else:
+            raise Exception(response.msg)
 
     @property
     def site(self):

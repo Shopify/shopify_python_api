@@ -53,7 +53,7 @@ these steps:
     the PASSWORD otherwise you'll need the API_KEY and SHARED_SECRET.
 
 2. For a private App you just need to set the base site url as 
-    follows (where hostname is your site)
+    follows:
 
     ```python
     shop_url = "https://%s:%s@SHOP_NAME.myshopify.com/admin" % (API_KEY, PASSWORD)
@@ -69,9 +69,10 @@ these steps:
     shopify.Session.setup(api_key=API_KEY, secret=SHARED_SECRET)
     ```
 
-3.  To access a shop's data apps need an access token from that specific shop.
-    This is a two-stage process. Before interacting with a shop for the first 
-    time an app should redirect the user to the following URL:
+3.  In order to access a shop's data, apps need an access token from that 
+    specific shop. This is a two-stage process. Before interacting with 
+    a shop for the first time an app should redirect the user to the 
+    following URL:
 
      GET https://SHOP_NAME.myshopify.com/admin/oauth/authorize
 
@@ -100,31 +101,34 @@ these steps:
    
     * client_id – Required – The API key for your app
     * client_secret – Required – The shared secret for your app
-    * code – Required – The token you received in step 3
+    * code – Required – The code you received in step 3
 
    and you'll get your permanent access token back in the response.
-
-    There is also a method to create this url for you:
-     ```python
-     auth_url = shopify.Session.create_auth_url("SHOP_NAME.myshopify.com", code)
-     ```
-
-5.  Use that token to instantiate a session that is ready to make 
-    calls to the given shop.
+   
+   There is a method to make the request and get the token for you, first
+   instantiate a new session with the shop url:
 
     ```python
-    session = shopify.Session("SHOP_NAME.myshopify.com", token)
-    session.valid # returns True
+    session = shopify.Session("SHOP_NAME.myshopify.com")
     ```
 
-6.  Now you can activate the session and you're set:
+    Then call:
+
+     ```python
+     token = session.request_token(code)
+     ```
+
+    Which will request the token, save it to the session object 
+    and return it.
+
+5.  The session must be activated before use:
 
     ```python
     shopify.ShopifyResource.activate_session(session)
     ```
 
-7.  Start making authorized API requests for that shop. Data is returned as
-    ActiveResource instances:
+6.  Now you're ready to make authorized API requests to your shop!
+    Data is returned as ActiveResource instances:
 
     ```python
     shop = shopify.Shop.current
@@ -150,7 +154,7 @@ these steps:
      products = shopify.Session.temp("SHOP_NAME.myshopify.com", token, "shopify.Product.find()")
      ```
 
-8.  Finally, you can also clear the session (for example if you want to work with another shop):
+7.  If you want to work with another shop, you'll first need to clear the session::
 
      ```python
      shopify.ShopifyResource.clear_session
@@ -165,7 +169,7 @@ open up an interactive console to use the API with a shop.
     (step 2 in "Getting Started")
 
 2.  Use the `shopify_api.py` script to save the credentials for the
-    shop to quickly login. The script uses [PyYAML](http://pyyaml.org/) to save
+    shop to quickly log in. The script uses [PyYAML](http://pyyaml.org/) to save
     and load connection configurations in the same format as the ruby
     shopify\_api.
 
@@ -181,7 +185,7 @@ open up an interactive console to use the API with a shop.
     shopify_api.py console
     ```
 
-4.  Enter the following for the full list of the commands.
+4.  To see the full list of commands, type:
 
     ```shell
     shopify_api.py help
@@ -218,7 +222,6 @@ Currently there is no support for:
 * python 3
 * asynchronous requests
 * persistent connections
-* json format for API requests
 
 ## Additional Resources
 
