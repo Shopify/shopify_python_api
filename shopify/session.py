@@ -57,12 +57,10 @@ class Session(object):
     def __computed_password(self, t):
         return md5(self.secret + t).hexdigest()
 
-    @classmethod
-    def create_permission_url(cls, shop_url, scope, redirect_uri=None):
-        shop_url = cls.__prepare_url(shop_url)
-        query_params = dict(client_id=cls.api_key, scope=",".join(scope))
+    def create_permission_url(self, scope, redirect_uri=None):
+        query_params = dict(client_id=self.api_key, scope=",".join(scope))
         if redirect_uri: query_params['redirect_uri'] = redirect_uri
-        return "%s://%s/admin/oauth/authorize?%s" % (cls.protocol, shop_url, urllib.urlencode(query_params))
+        return "%s://%s/admin/oauth/authorize?%s" % (self.protocol, self.url, urllib.urlencode(query_params))
 
     def request_token(self, code):
         if self.token:

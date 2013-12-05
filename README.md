@@ -81,16 +81,30 @@ these steps:
      * client_id – Required – The API key for your app
      * scope – Required – The list of required scopes (explained here:
      http://docs.shopify.com/api/tutorials/oauth)
-     * redirect_uri – Optional – The URL that the merchant will be sent 
-       to once authentication is complete. Must be the same host as the 
-       Return URL specified in the application settings
+     * redirect_uri – Optional – The URL that the merchant will be sent to
+     once authentication is complete. Defaults to the URL specified in the
+     application settings and must be the same host as that URL.
 
-    We've added the create_permision_url method to make this easier:
+    We've added the create_permision_url method to make this easier, first
+    instantiate your session object:
+
+    ```python
+    session = shopify.Session("SHOP_NAME.myshopify.com")
+    ```
+
+    Then call:
+
      ```python
      scope=["write_products"]
-     permission_url = shopify.Session.create_permission_url("SHOP_NAME.myshopify.com", scope, redirect_uri=None) 
+     permission_url = session.create_permission_url(scope) 
      ```
 
+    or if you want a custom redirect_uri:
+    
+    ```python
+    permission_url = session.create_permission_url(scope, "https://my_redirect_uri.com") 
+     ```
+   
 4. Once authorized, the shop redirects the owner to the return URL of your
    application with a parameter named 'code'. This is a temporary token
    that the app can exchange for a permanent access token. Make the following call:
@@ -105,21 +119,20 @@ these steps:
 
    and you'll get your permanent access token back in the response.
    
-   There is a method to make the request and get the token for you, first
-   instantiate a new session with the shop url:
-
-    ```python
-    session = shopify.Session("SHOP_NAME.myshopify.com")
-    ```
-
-    Then call:
+   There is a method to make the request and get the token for you:
 
      ```python
      token = session.request_token(code)
      ```
 
     Which will request the token, save it to the session object 
-    and return it.
+    and return it. For future sessions simply pass the token when
+    creating the session object.
+
+    ```python
+    session = shopify.Session("SHOP_NAME.myshopify.com", token)
+    ```
+
 
 5.  The session must be activated before use:
 

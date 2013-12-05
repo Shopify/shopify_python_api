@@ -1,6 +1,8 @@
 == Version 2.x.x
 
-* removed Session.request_token and supporting code for the time being
+* made create_permission_url an instance method, you'll need an instance 
+  of session to call this method from now on
+* Updated session.request_token
 * Updated Session to better match the ShopifyAPI Ruby gem
 * Updated the readme to better describe how to use the library
 * Added support for CustomerSavedSearch (CustomerGroup is deprecated)
