@@ -34,11 +34,14 @@ class TestCase(unittest.TestCase):
         else:
             url = "http://localhost/admin/%s%s" %(endpoint,extension)
 
-        self.http.respond_to(
-          method, url, {'User-agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])}, body = body, code = 200)
+        userAgent = 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])
+        headers = {'User-agent': userAgent}
 
-        #self.http.respond_to(
-        #  method, url, request_headers = {'content_type': "text/%s" % (format), 'content_length': 1}, body = body, code = 200)
+        if method == 'POST':
+            headers['Content-type'] = 'application/%s' % format
+
+        self.http.respond_to(
+          method, url, headers, body = body, code = 200)
 
 # require 'rubygems'
 # require 'test/unit'
@@ -90,23 +93,3 @@ class TestCase(unittest.TestCase):
 #   def assert_not(expression)
 #     assert_block("Expected <#{expression}> to be false!") { not expression }
 #   end
-
-#   def load_fixture(name, format=:json)
-#     File.read(File.dirname(__FILE__) + "/fixtures/#{name}.#{format}")
-#   end
-
-#   def fake(endpoint, options={})
-#     body   = options.has_key?(:body) ? options.delete(:body) : load_fixture(endpoint)
-#     format = options.delete(:format) || :json
-#     method = options.delete(:method) || :get
-#     extension = ".#{options.delete(:extension)||'json'}" unless options[:extension]==false
-    
-#     url = if options.has_key?(:url)
-#       options[:url]
-#     else  
-#       "http://localhost/admin/#{endpoint}#{extension}"
-#     end
-    
-#     FakeWeb.register_uri(method, url, {:body => body, :status => 200, :content_type => "text/#{format}", :content_length => 1}.merge(options))
-#   end
-# end
