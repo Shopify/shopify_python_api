@@ -1,5 +1,6 @@
 from shop import Shop
 from product import Product
+from cart import Cart
 from custom_collection import CustomCollection
 from collect import Collect
 from shipping_address import ShippingAddress
