@@ -43,16 +43,6 @@ class TestCase(unittest.TestCase):
         self.http.respond_to(
           method, url, headers, body = body, code = 200)
 
-# require 'rubygems'
-# require 'test/unit'
-# require 'fakeweb'
-# require 'mocha'
-
-# $LOAD_PATH.unshift(File.dirname(__FILE__))
-# $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-# require 'shopify_api'
-
-# FakeWeb.allow_net_connect = false
 
 # # setup ShopifyAPI with fake api_key and secret
 
@@ -83,10 +73,6 @@ class TestCase(unittest.TestCase):
 #     ShopifyAPI::Base.site = "http://localhost/admin"
 #     ShopifyAPI::Base.password = nil
 #     ShopifyAPI::Base.user = nil
-#   end
-
-#   def teardown
-#     FakeWeb.clean_registry
 #   end
   
 #   # Custom Assertions
