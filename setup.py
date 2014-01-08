@@ -24,6 +24,7 @@ setup(name=NAME,
           'pyactiveresource>=2.0.0',
           'python-dateutil<2.0', # >= 2.0 is for python>=3.0
           'PyYAML',
+          'mock>=1.0.1',
       ],
       platforms='Any',
       classifiers=['Development Status :: 5 - Production/Stable',

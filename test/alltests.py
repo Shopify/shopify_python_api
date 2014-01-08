@@ -6,6 +6,7 @@ def suite():
     modules_to_test = (
         'article_test',
         'asset_test',
+        'base_test',
         'blog_test',
         'cart_test',
         )
