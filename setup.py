@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 NAME='ShopifyAPI'
 execfile('shopify/version.py')
