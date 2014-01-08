@@ -37,6 +37,10 @@ class TestCase(unittest.TestCase):
         userAgent = 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])
         headers = {'User-agent': userAgent}
 
+        if 'headers' in kwargs:
+            if isinstance(kwargs['headers'], dict):
+                headers.update(kwargs['headers'])
+
         if method == 'POST':
             headers['Content-type'] = 'application/%s' % format
 
