@@ -1,4 +1,5 @@
 from ..base import ShopifyResource
+from customer import Customer
 
 class CustomerGroup(ShopifyResource):
     def customers(cls, **kwargs):

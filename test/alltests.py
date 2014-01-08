@@ -9,6 +9,7 @@ def suite():
         'base_test',
         'blog_test',
         'cart_test',
+        'customer_saved_search_test',
         )
     alltests = unittest.TestSuite()
     for name in modules_to_test:
