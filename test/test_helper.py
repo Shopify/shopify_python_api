@@ -1,6 +1,9 @@
 import os
 import sys
 import unittest
+from mock import patch
+from pyactiveresource.activeresource import ActiveResource
+from pyactiveresource.util import xml_to_dict
 from pyactiveresource.tests import http_fake
 import shopify
 

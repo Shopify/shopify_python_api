@@ -1,6 +1,4 @@
 from test_helper import *
-from pyactiveresource.activeresource import ActiveResource
-from pyactiveresource.util import xml_to_dict
 
 class OrderTest(TestCase):
     def setUp(self):

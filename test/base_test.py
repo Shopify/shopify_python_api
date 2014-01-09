@@ -1,6 +1,4 @@
 from test_helper import *
-from pyactiveresource.activeresource import ActiveResource
-from mock import patch
 
 class BaseTest(TestCase):
 
