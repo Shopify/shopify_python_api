@@ -3,6 +3,7 @@ from test_helper import *
 class BaseTest(TestCase):
 
     def setUp(self):
+        super(BaseTest, self).setUp()
         self.session1 = shopify.Session('shop1.myshopify.com', 'token1')
         self.session2 = shopify.Session('shop2.myshopify.com', 'token2')
 

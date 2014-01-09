@@ -10,7 +10,10 @@ import shopify
 class TestCase(unittest.TestCase):
 
     def setUp(self):
-        shopify.ShopifyResource.clear_session
+        ActiveResource.site = None
+        ActiveResource.headers = None
+
+        shopify.ShopifyResource.clear_session()
         shopify.ShopifyResource.site = "http://localhost/admin"
         shopify.ShopifyResource.password = None
         shopify.ShopifyResource.user = None
