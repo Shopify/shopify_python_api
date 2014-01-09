@@ -1,4 +1,6 @@
 from ..base import ShopifyResource
+from metafield import Metafield
+from event import Event
 
 class Shop(ShopifyResource):
     @classmethod

@@ -13,6 +13,7 @@ def suite():
         'fulfillment_test',
         'order_test',
         'product_test',
+        'shop_test',
         )
     alltests = unittest.TestSuite()
     for name in modules_to_test:
