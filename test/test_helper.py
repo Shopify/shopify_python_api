@@ -34,15 +34,16 @@ class TestCase(unittest.TestCase):
         else:
             url = "http://localhost/admin/%s%s" %(endpoint,extension)
 
-        userAgent = 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])
-        headers = {'User-agent': userAgent}
+        headers = {}
+        if kwargs.pop('userAgent', True): 
+            userAgent = 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])
+            headers['User-agent'] = userAgent
 
         if 'headers' in kwargs:
             if isinstance(kwargs['headers'], dict):
                 headers.update(kwargs['headers'])
 
-        if method == 'POST':
-            headers['Content-type'] = 'application/%s' % format
+        code = kwargs.pop('code', 200)
 
         self.http.respond_to(
-          method, url, headers, body = body, code = 200)
+          method, url, headers, body = body, code = code)

@@ -49,8 +49,9 @@ class Session(object):
         if not self.validate_params(params):
             raise Exception('Invalid Signature: Possibly malicious login')
 
-        self.legacy = True
-        self.token = self.__computed_password(params['t'])
+        if 't' in params:
+            self.legacy = True
+            self.token = self.__computed_password(params['t'])
 
         return
 
@@ -72,7 +73,7 @@ class Session(object):
         response = urllib2.urlopen(request)
         
         if response.code == 200:
-            self.token = json.loads(response.read())['access_token']
+            self.token = json.loads(response.read()).pop('access_token', None)
             return self.token
         else:
             raise Exception(response.msg)
@@ -100,7 +101,7 @@ class Session(object):
         # Avoid replay attacks by making sure the request
         # isn't more than a day old.
         one_day = 24 * 60 * 60
-        if int(params['timestamp']) < time.time() - one_day:
+        if int(params.pop('timestamp', 0)) < time.time() - one_day:
             return False
 
         return cls.validate_signature(params)

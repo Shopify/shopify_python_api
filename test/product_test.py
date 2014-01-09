@@ -9,7 +9,7 @@ class ProductTest(TestCase):
         self.product = shopify.Product.find(632910392)
 
     def test_add_metafields_to_product(self):
-        self.fake("products/632910392/metafields", method = 'POST', code = 201, body = self.load_fixture('metafield'))
+        self.fake("products/632910392/metafields", method = 'POST', code = 201, body = self.load_fixture('metafield'), headers = {'Content-type': 'application/json'})
 
         field = self.product.add_metafield(shopify.Metafield({'namespace': "contact", 'key': "email", 'value': "123@example.com", 'value_type': "string"}))
 
