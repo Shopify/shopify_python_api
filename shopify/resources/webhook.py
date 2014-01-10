@@ -1,7 +1,7 @@
 from ..base import ShopifyResource
 
 class Webhook(ShopifyResource):
-    
+
     def __get_format(self):
         return self.attributes.get("format")
 

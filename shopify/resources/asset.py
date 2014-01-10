@@ -11,7 +11,7 @@ class Asset(ShopifyResource):
         if theme_id:
             return "/admin/themes/%s/" % theme_id
         else:
-            return "/admin/" 
+            return "/admin/"
 
     @classmethod
     def _element_path(cls, id, prefix_options={}, query_options=None):
@@ -29,7 +29,7 @@ class Asset(ShopifyResource):
         """
         if not key:
             return super(Asset, cls).find(**kwargs)
-            
+
         params = {"asset[key]": key}
         params.update(kwargs)
         theme_id = params.get("theme_id")
@@ -71,5 +71,5 @@ class Asset(ShopifyResource):
 
     def __wipe_value_attributes(self):
         for attr in ("value", "attachment", "src", "source_key"):
-            if self.attributes.has_key(attr):
+            if attr in self.attributes:
                 del self.attributes[attr]

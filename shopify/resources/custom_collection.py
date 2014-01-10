@@ -3,7 +3,7 @@ from shopify import mixins
 from collect import Collect
 
 class CustomCollection(ShopifyResource, mixins.Metafields, mixins.Events):
-    
+
     def products(self):
         return Product.find(collection_id=self.id)
 

@@ -36,7 +36,7 @@ class Session(object):
         except Exception, e:
             raise e
         finally:
-            shopify.ShopifyResource.activate_session(original_session) 
+            shopify.ShopifyResource.activate_session(original_session)
 
     def __init__(self, shop_url, token=None, params=None):
         self.url = self.__prepare_url(shop_url)
@@ -66,12 +66,12 @@ class Session(object):
     def request_token(self, code):
         if self.token:
             return self.token
-        
+
         url = "%s://%s/admin/oauth/access_token?" % (self.protocol, self.url)
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
         request = urllib2.Request(url, urllib.urlencode(query_params))
         response = urllib2.urlopen(request)
-        
+
         if response.code == 200:
             self.token = json.loads(response.read())['access_token']
             return self.token
@@ -84,7 +84,7 @@ class Session(object):
 
     @property
     def valid(self):
-        return self.url is not None and self.token is not None 
+        return self.url is not None and self.token is not None
 
     @staticmethod
     def __prepare_url(url):

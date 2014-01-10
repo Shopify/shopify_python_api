@@ -1,7 +1,7 @@
 from ..base import ShopifyResource
 
 class RecurringApplicationCharge(ShopifyResource):
-    
+
     @classmethod
     def current(cls):
         return cls.find_first(status="active")

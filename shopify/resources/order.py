@@ -2,7 +2,7 @@ from ..base import ShopifyResource
 from shopify import mixins
 
 class Order(ShopifyResource, mixins.Metafields, mixins.Events):
-    
+
     def close(self):
         self._load_attributes_from_response(self.post("close"))
 
