@@ -13,5 +13,5 @@ class Image(ShopifyResource):
 
     def attach_image(self, data, filename=None):
         self.attributes["attachment"] = base64.b64encode(data)
-        if filename is not None:
+        if filename:
             self.attributes["filename"] = filename
