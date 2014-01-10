@@ -1,5 +1,5 @@
 from ..base import ShopifyResource
-import shopify.mixins as mixins
+from shopify import mixins
 
 class Variant(ShopifyResource, mixins.Metafields):
     _prefix_source = "/admin/products/$product_id/"

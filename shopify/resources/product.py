@@ -1,7 +1,8 @@
 from ..base import ShopifyResource
-import shopify.mixins as mixins
+from shopify import mixins
 
 class Product(ShopifyResource, mixins.Metafields, mixins.Events):
+    
     def price_range(self):
         prices = [variant.price for variant in self.variants]
         f = "%0.2f"

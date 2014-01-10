@@ -1,4 +1,5 @@
-from test_helper import *
+import shopify
+from test_helper import TestCase
 
 class BlogTest(TestCase):
     

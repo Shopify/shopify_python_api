@@ -1,4 +1,7 @@
-from test_helper import *
+import shopify
+from test_helper import TestCase
+from pyactiveresource.activeresource import ActiveResource
+from pyactiveresource.util import xml_to_dict
 
 class OrderTest(TestCase):
     def setUp(self):

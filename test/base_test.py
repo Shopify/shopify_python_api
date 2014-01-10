@@ -1,4 +1,7 @@
-from test_helper import *
+import shopify
+from test_helper import TestCase
+from pyactiveresource.activeresource import ActiveResource
+from mock import patch
 
 class BaseTest(TestCase):
 

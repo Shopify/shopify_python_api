@@ -1,10 +1,12 @@
 from ..base import ShopifyResource
-import shopify.mixins as mixins
+from shopify import mixins
 
 class Customer(ShopifyResource, mixins.Metafields):
+    
     @classmethod
     def search(cls, **kwargs):
-        """Search for customers matching supplied query
+        """
+        Search for customers matching supplied query
 
         Args:
            q: Text to search for customers ("q" is short for query)

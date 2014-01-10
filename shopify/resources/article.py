@@ -1,5 +1,5 @@
 from ..base import ShopifyResource
-import shopify.mixins as mixins
+from shopify import mixins
 
 class Article(ShopifyResource, mixins.Metafields, mixins.Events):
     _prefix_source = "/admin/blogs/$blog_id/"

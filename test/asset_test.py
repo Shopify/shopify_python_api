@@ -1,7 +1,10 @@
-from test_helper import *
+import shopify
+from test_helper import TestCase
 
 class AssetTest(TestCase):
+    
     def test_get_assetss(self):
+        # fix extra slash from pyactiveresource
         self.fake("themes/1//assets", method = 'GET', body = self.load_fixture('assets'))
         v = shopify.Asset.find(theme_id = 1)
 

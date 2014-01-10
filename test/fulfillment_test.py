@@ -1,4 +1,6 @@
-from test_helper import *
+import shopify
+from test_helper import TestCase
+from pyactiveresource.activeresource import ActiveResource
 
 class FulFillmentTest(TestCase):
   

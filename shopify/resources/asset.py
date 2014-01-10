@@ -18,7 +18,8 @@ class Asset(ShopifyResource):
 
     @classmethod
     def find(cls, key=None, **kwargs):
-        """Find an asset by key
+        """
+        Find an asset by key
         E.g.
             shopify.Asset.find('layout/theme.liquid', theme_id=99)
         """
