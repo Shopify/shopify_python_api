@@ -28,24 +28,27 @@ class TestCase(unittest.TestCase):
         body = kwargs.pop('body', None) or self.load_fixture(endpoint)
         format = kwargs.pop('format','json')
         method = kwargs.pop('method','GET')
-        if ( 'extension' in kwargs and kwargs['extension'] == False ):
+        
+        if ('extension' in kwargs and not kwargs['extension']):
             extension = ""
         else:
-            extension = ".%s" % (kwargs.pop('extension', None) or 'json')
+            extension = ".%s" % (kwargs.pop('extension', 'json'))
 
-        if 'url' in kwargs:
-            url = kwargs['url']
-        else:
-            url = "http://localhost/admin/%s%s" %(endpoint,extension)
+        url = "http://localhost/admin/%s%s" % (endpoint, extension)
+        try:
+           url = kwargs['url']
+        except KeyError:
+           pass
 
         headers = {}
         if kwargs.pop('has_user_agent', True):
             userAgent = 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])
             headers['User-agent'] = userAgent
 
-        if 'headers' in kwargs:
-            if isinstance(kwargs['headers'], dict):
-                headers.update(kwargs['headers'])
+        try:
+            headers.update(kwargs['headers'])
+        except KeyError:
+           pass
 
         code = kwargs.pop('code', 200)
 
