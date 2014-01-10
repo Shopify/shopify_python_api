@@ -9,7 +9,7 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         ActiveResource.site = None
-        ActiveResource.headers = None
+        ActiveResource.headers=None
 
         shopify.ShopifyResource.clear_session()
         shopify.ShopifyResource.site = "http://localhost/admin"
@@ -39,7 +39,7 @@ class TestCase(unittest.TestCase):
             url = "http://localhost/admin/%s%s" %(endpoint,extension)
 
         headers = {}
-        if kwargs.pop('userAgent', True): 
+        if kwargs.pop('has_user_agent', True):
             userAgent = 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])
             headers['User-agent'] = userAgent
 
@@ -50,4 +50,4 @@ class TestCase(unittest.TestCase):
         code = kwargs.pop('code', 200)
 
         self.http.respond_to(
-          method, url, headers, body = body, code = code)
+          method, url, headers, body=body, code=code)

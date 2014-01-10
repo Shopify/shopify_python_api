@@ -7,7 +7,11 @@ class Asset(ShopifyResource):
 
     @classmethod
     def _prefix(cls, options={}):
-        return "/admin/" if options.get("theme_id") is None else "/admin/themes/%s/" % (options["theme_id"])
+        theme_id = options.get("theme_id")
+        if theme_id:
+            return "/admin/themes/%s/" % theme_id
+        else:
+            return "/admin/" 
 
     @classmethod
     def _element_path(cls, id, prefix_options={}, query_options=None):
@@ -25,6 +29,7 @@ class Asset(ShopifyResource):
         """
         if not key:
             return super(Asset, cls).find(**kwargs)
+            
         params = {"asset[key]": key}
         params.update(kwargs)
         theme_id = params.get("theme_id")

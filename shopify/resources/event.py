@@ -5,4 +5,8 @@ class Event(ShopifyResource):
 
     @classmethod
     def _prefix(cls, options={}):
-        return "/admin/" if options.get("resource") is None else "/admin/%s/%s/" % (options["resource"], options["resource_id"])
+        resource = options.get("resource")
+        if resource:
+            return "/admin/%s/%s" % (resource, options["resource_id"])
+        else:
+            return "/admin/"

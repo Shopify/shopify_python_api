@@ -5,10 +5,13 @@ from mock import patch
 
 class BaseTest(TestCase):
 
-    def setUp(self):
-        super(BaseTest, self).setUp()
+    @classmethod
+    def setUpClass(self):
         self.session1 = shopify.Session('shop1.myshopify.com', 'token1')
         self.session2 = shopify.Session('shop2.myshopify.com', 'token2')
+
+    def setUp(self):
+        super(BaseTest, self).setUp()
 
     def tearDown(self):
         shopify.ShopifyResource.clear_session()
@@ -51,7 +54,7 @@ class BaseTest(TestCase):
     def test_delete_should_send_custom_headers_with_request(self):
         shopify.ShopifyResource.activate_session(self.session1)
         
-        org_headers = shopify.ShopifyResource.headers
+        org_headers=shopify.ShopifyResource.headers
         shopify.ShopifyResource.set_headers({'X-Custom': 'abc'})
 
         with patch('shopify.ShopifyResource.connection.delete') as mock:

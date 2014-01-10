@@ -7,7 +7,10 @@ class Article(ShopifyResource, mixins.Metafields, mixins.Events):
     @classmethod
     def _prefix(cls, options={}):
         blog_id = options.get("blog_id")
-        return "/admin/" if blog_id is None else "/admin/blogs/%s" % (blog_id)
+        if blog_id:
+            return "/admin/blogs/%s" % (blog_id)
+        else:
+            return "/admin/"
 
     def comments(self):
         return Comment.find(article_id=self.id)

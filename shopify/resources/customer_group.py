@@ -1,7 +1,5 @@
 from ..base import ShopifyResource
-from customer import Customer
+from customer_saved_search import CustomerSavedSearch
 
-class CustomerGroup(ShopifyResource):
-    
-    def customers(cls, **kwargs):
-        return Customer._build_list(cls.get("customers", **kwargs))
+class CustomerGroup(CustomerSavedSearch):
+    pass

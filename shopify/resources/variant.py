@@ -7,4 +7,7 @@ class Variant(ShopifyResource, mixins.Metafields):
     @classmethod
     def _prefix(cls, options={}):
         product_id = options.get("product_id")
-        return "/admin/" if product_id is None else "/admin/products/%s" % (product_id)
+        if product_id:
+            return "/admin/products/%s" % (product_id)
+        else:
+            return "/admin/"

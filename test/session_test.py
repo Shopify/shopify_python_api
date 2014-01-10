@@ -28,7 +28,7 @@ class SessionTest(TestCase):
             session = shopify.Session("testshop.myshopify.com", "any-token", {'foo': 'bar'})
 
     def test_setup_api_key_and_secret_for_all_sessions(self):
-        shopify.Session.setup(api_key = "My test key", secret = "My test secret")
+        shopify.Session.setup(api_key="My test key", secret="My test secret")
         self.assertEqual("My test key", shopify.Session.api_key)
         self.assertEqual("My test secret", shopify.Session.secret)
     
@@ -36,7 +36,7 @@ class SessionTest(TestCase):
         self.assertEqual('https', shopify.Session.protocol)
 
     def test_temp_reset_shopify_ShopifyResource_site_to_original_value(self):
-        shopify.Session.setup(api_key = "key", secret = "secret")
+        shopify.Session.setup(api_key="key", secret="secret")
         session1 = shopify.Session('fakeshop.myshopify.com', 'token1')
         shopify.ShopifyResource.activate_session(session1)
 
@@ -46,43 +46,43 @@ class SessionTest(TestCase):
         self.assertEqual('https://fakeshop.myshopify.com/admin', shopify.ShopifyResource.site)
 
     def test_create_permission_url_returns_correct_url_with_single_scope_no_redirect_uri(self):
-        shopify.Session.setup(api_key = "My_test_key", secret = "My test secret")
+        shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com')
         scope = ["write_products"]
         permission_url = session.create_permission_url(scope)
         self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?scope=write_products&client_id=My_test_key", permission_url)
 
     def test_create_permission_url_returns_correct_url_with_single_scope_and_redirect_uri(self):
-        shopify.Session.setup(api_key = "My_test_key", secret = "My test secret")
+        shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com')
         scope = ["write_products"]
         permission_url = session.create_permission_url(scope, "my_redirect_uri.com")
         self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?scope=write_products&redirect_uri=my_redirect_uri.com&client_id=My_test_key", permission_url)
     
     def test_create_permission_url_returns_correct_url_with_dual_scope_no_redirect_uri(self):
-        shopify.Session.setup(api_key = "My_test_key", secret = "My test secret")
+        shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com')
         scope = ["write_products","write_customers"]
         permission_url = session.create_permission_url(scope)
         self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?scope=write_products%2Cwrite_customers&client_id=My_test_key", permission_url)
 
     def test_create_permission_url_returns_correct_url_with_no_scope_no_redirect_uri(self):
-        shopify.Session.setup(api_key = "My_test_key", secret = "My test secret")
+        shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com')
         scope = []
         permission_url = session.create_permission_url(scope)
         self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?scope=&client_id=My_test_key", permission_url)
 
     def test_request_token_should_get_token(self):
-        shopify.Session.setup(api_key = "My test key", secret = "My test secret")
+        shopify.Session.setup(api_key="My test key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com')
-        self.fake(None, url = 'https://localhost.myshopify.com/admin/oauth/access_token', method = 'POST', body = '{"access_token" : "token"}', userAgent = False)
+        self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', body='{"access_token" : "token"}', has_user_agent=False)
         self.assertEqual("token", session.request_token("code"))
 
     def test_raise_exception_if_code_invalid_in_request_token(self):
-        shopify.Session.setup(api_key = "My test key", secret = "My test secret")
+        shopify.Session.setup(api_key="My test key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com')
-        self.fake(None, url = 'https://localhost.myshopify.com/admin/oauth/access_token', method = 'POST', code = 404, body = '{"error" : "invalid_request"}', userAgent = False)
+        self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', code=404, body='{"error" : "invalid_request"}', has_user_agent=False)
         
         with self.assertRaises(Exception):
             session.request_token("bad_code")
@@ -90,7 +90,7 @@ class SessionTest(TestCase):
         self.assertFalse(session.valid)
 
     def test_temp_reset_shopify_ShopifyResource_site_to_original_value_when_using_a_non_standard_port(self):
-        shopify.Session.setup(api_key = "key", secret = "secret")
+        shopify.Session.setup(api_key="key", secret="secret")
         session1 = shopify.Session('fakeshop.myshopify.com:3000', 'token1')
         shopify.ShopifyResource.activate_session(session1)
 
@@ -104,6 +104,6 @@ class SessionTest(TestCase):
         self.assertEqual("https://testshop.myshopify.com/admin", session.site)
 
     def test_raise_error_if_signature_does_not_match_expected(self):
-        shopify.Session.secret = 'secret'
+        shopify.Session.secret='secret'
         signature = md5(shopify.Session.secret).hexdigest()
-        session = shopify.Session("testshop.myshopify.com", "any-token", params = {'signature': signature, 'timestamp': time.time()})
+        session = shopify.Session("testshop.myshopify.com", "any-token", params={'signature': signature, 'timestamp': time.time()})
