@@ -25,7 +25,8 @@ class SessionTest(TestCase):
 
     def test_raise_error_if_params_passed_but_signature_omitted(self):
         with self.assertRaises(Exception):
-            session = shopify.Session("testshop.myshopify.com", "any-token", {'foo': 'bar'})
+            session = shopify.Session("testshop.myshopify.com")
+            token = session.request_token('code', {'foo': 'bar'})
 
     def test_setup_api_key_and_secret_for_all_sessions(self):
         shopify.Session.setup(api_key="My test key", secret="My test secret")
@@ -103,7 +104,46 @@ class SessionTest(TestCase):
         session = shopify.Session("testshop.myshopify.com", "any-token")
         self.assertEqual("https://testshop.myshopify.com/admin", session.site)
 
+    def test_return_session_if_signature_is_valid(self):
+        shopify.Session.secret='secret'
+        params = {'foo': 'hello', 'timestamp': time.time()}
+        sorted_params = self.make_sorted_params(params)
+        signature = md5(shopify.Session.secret + sorted_params).hexdigest()
+        params['signature'] = signature
+
+        self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', body='{"access_token" : "token"}', has_user_agent=False)
+        session = shopify.Session('http://localhost.myshopify.com')
+        token = session.request_token("code", params=params)
+        self.assertTrue(session.valid)
+
     def test_raise_error_if_signature_does_not_match_expected(self):
         shopify.Session.secret='secret'
-        signature = md5(shopify.Session.secret).hexdigest()
-        session = shopify.Session("testshop.myshopify.com", "any-token", params={'signature': signature, 'timestamp': time.time()})
+        params = {'foo': 'hello', 'timestamp': time.time()}
+        sorted_params = self.make_sorted_params(params)
+        signature = md5(shopify.Session.secret + sorted_params).hexdigest()
+        params['signature'] = signature
+        params['bar'] = 'world'
+
+        with self.assertRaises(Exception):
+            session = shopify.Session('http://localhost.myshopify.com')
+            session = session.request_token("code", params=params)
+
+    def test_raise_error_if_timestamp_is_too_old(self):
+        shopify.Session.secret='secret'
+        one_day = 24 * 60 * 60
+        params = {'foo': 'hello', 'timestamp': time.time()-(2*one_day)}
+        sorted_params = self.make_sorted_params(params)
+        signature = md5(shopify.Session.secret + sorted_params).hexdigest()
+        params['signature'] = signature
+
+        with self.assertRaises(Exception):
+            session = shopify.Session('http://localhost.myshopify.com')
+            session = session.request_token("code", params=params)
+
+
+    def make_sorted_params(self, params):
+        sorted_params = ""
+        for k in sorted(params.keys()):
+            if k != "signature":
+                sorted_params += k + "=" + str(params[k])
+        return sorted_params
