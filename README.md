@@ -124,7 +124,7 @@ these steps:
    the params, extract the temp code and then request your token:
 
      ```python
-     token = session.request_token(code)
+     token = session.request_token(params)
      ```
 
     This method will save the token to the session object
