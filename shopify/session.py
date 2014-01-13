@@ -33,44 +33,34 @@ class Session(object):
         try:
             shopify.ShopifyResource.activate_session(session)
             return eval(block)
-        except Exception, e:
-            raise e
         finally:
-            shopify.ShopifyResource.activate_session(original_session) 
+            shopify.ShopifyResource.activate_session(original_session)
 
     def __init__(self, shop_url, token=None, params=None):
         self.url = self.__prepare_url(shop_url)
         self.token = token
         self.legacy = False
-
-        if params is None:
-            return
-
-        if not self.validate_params(params):
-            raise Exception('Invalid Signature: Possibly malicious login')
-
-        self.legacy = True
-        self.token = self.__computed_password(params['t'])
-
         return
-
-    def __computed_password(self, t):
-        return md5(self.secret + t).hexdigest()
 
     def create_permission_url(self, scope, redirect_uri=None):
         query_params = dict(client_id=self.api_key, scope=",".join(scope))
         if redirect_uri: query_params['redirect_uri'] = redirect_uri
         return "%s://%s/admin/oauth/authorize?%s" % (self.protocol, self.url, urllib.urlencode(query_params))
 
-    def request_token(self, code):
+    def request_token(self, params):
         if self.token:
             return self.token
-        
+
+        if not self.validate_params(params):
+            raise Exception('Invalid Signature: Possibly malicious login')
+
+        code = params['code']
+
         url = "%s://%s/admin/oauth/access_token?" % (self.protocol, self.url)
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
         request = urllib2.Request(url, urllib.urlencode(query_params))
         response = urllib2.urlopen(request)
-        
+
         if response.code == 200:
             self.token = json.loads(response.read())['access_token']
             return self.token
@@ -83,7 +73,7 @@ class Session(object):
 
     @property
     def valid(self):
-        return self.url is not None and self.token is not None 
+        return self.url is not None and self.token is not None
 
     @staticmethod
     def __prepare_url(url):
@@ -115,6 +105,6 @@ class Session(object):
 
         for k in sorted(params.keys()):
             if k != "signature":
-                sorted_params += k + "=" + params[k]
+                sorted_params += k + "=" + str(params[k])
 
         return md5(cls.secret + sorted_params).hexdigest() == signature

@@ -1,0 +1,22 @@
+{
+  "variant": {
+    "price": "199.00",
+    "position": 1,
+    "created_at": "2011-10-20T14:05:13-04:00",
+    "title": "Pink",
+    "requires_shipping": true,
+    "updated_at": "2011-10-20T14:05:13-04:00",
+    "inventory_policy": "continue",
+    "compare_at_price": null,
+    "inventory_quantity": 10,
+    "inventory_management": "shopify",
+    "taxable": true,
+    "id": 808950810,
+    "grams": 200,
+    "sku": "IPOD2008PINK",
+    "option1": "Pink",
+    "option2": null,
+    "fulfillment_service": "manual",
+    "option3": null
+  }
+}

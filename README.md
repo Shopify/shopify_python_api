@@ -18,7 +18,7 @@ All API usage happens through Shopify applications, created by
 either shop owners for their own shops, or by Shopify Partners for
 use by other shop owners:
 
-* Shop owners can create applications for themselves through their 
+* Shop owners can create applications for themselves through their
 own admin: <http://docs.shopify.com/api/tutorials/creating-a-private-app>
 * Shopify Partners create applications through their admin:
   <http://app.shopify.com/services/partners>
@@ -49,10 +49,10 @@ URL of a particular store first. To obtain that URL you can follow
 these steps:
 
 1.  First create a new application in either the partners admin or
-    your store admin. For a private App you'll need the API_KEY and 
+    your store admin. For a private App you'll need the API_KEY and
     the PASSWORD otherwise you'll need the API_KEY and SHARED_SECRET.
 
-2. For a private App you just need to set the base site url as 
+2. For a private App you just need to set the base site url as
     follows:
 
     ```python
@@ -62,16 +62,16 @@ these steps:
 
     That's it you're done, skip to step 7 and start using the API!
 
-    For a partner App you will need to supply two parameters to the 
+    For a partner App you will need to supply two parameters to the
     Session class before you instantiate it:
 
     ```python
     shopify.Session.setup(api_key=API_KEY, secret=SHARED_SECRET)
     ```
 
-3.  In order to access a shop's data, apps need an access token from that 
-    specific shop. This is a two-stage process. Before interacting with 
-    a shop for the first time an app should redirect the user to the 
+3.  In order to access a shop's data, apps need an access token from that
+    specific shop. This is a two-stage process. Before interacting with
+    a shop for the first time an app should redirect the user to the
     following URL:
 
      GET https://SHOP_NAME.myshopify.com/admin/oauth/authorize
@@ -96,15 +96,15 @@ these steps:
 
      ```python
      scope=["write_products"]
-     permission_url = session.create_permission_url(scope) 
+     permission_url = session.create_permission_url(scope)
      ```
 
     or if you want a custom redirect_uri:
-    
+
     ```python
-    permission_url = session.create_permission_url(scope, "https://my_redirect_uri.com") 
+    permission_url = session.create_permission_url(scope, "https://my_redirect_uri.com")
      ```
-   
+
 4. Once authorized, the shop redirects the owner to the return URL of your
    application with a parameter named 'code'. This is a temporary token
    that the app can exchange for a permanent access token. Make the following call:
@@ -112,20 +112,22 @@ these steps:
     POST https://SHOP_NAME.myshopify.com/admin/oauth/access_token
 
    with the following parameters:
-   
+
     * client_id – Required – The API key for your app
     * client_secret – Required – The shared secret for your app
     * code – Required – The code you received in step 3
 
    and you'll get your permanent access token back in the response.
-   
-   There is a method to make the request and get the token for you:
+
+   There is a method to make the request and get the token for you Pass
+   all the params received from the previous call and the method will verify
+   the params, extract the temp code and then request your token:
 
      ```python
-     token = session.request_token(code)
+     token = session.request_token(params)
      ```
 
-    Which will request the token, save it to the session object 
+    This method will save the token to the session object
     and return it. For future sessions simply pass the token when
     creating the session object.
 
@@ -178,7 +180,7 @@ these steps:
 This package also includes the `shopify_api.py` script to make it easy to
 open up an interactive console to use the API with a shop.
 
-1.  Obtain a private API key and password to use with your shop 
+1.  Obtain a private API key and password to use with your shop
     (step 2 in "Getting Started")
 
 2.  Use the `shopify_api.py` script to save the credentials for the

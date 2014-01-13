@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 
 NAME='ShopifyAPI'
 execfile('shopify/version.py')
@@ -15,15 +15,18 @@ setup(name=NAME,
       description=DESCRIPTION,
       long_description=LONG_DESCRIPTION,
       author='Shopify',
-      author_email='developers@jadedpixel.com',
+      author_email='developers@shopify.com',
       url='https://github.com/Shopify/shopify_python_api',
       packages=['shopify'],
       scripts=['scripts/shopify_api.py'],
       license='MIT License',
       install_requires=[
           'pyactiveresource>=2.0.0',
-          'python-dateutil<2.0', # >= 2.0 is for python>=3.0
           'PyYAML',
+      ],
+      test_suite='test',
+      tests_require=[
+        'mock>=1.0.1',
       ],
       platforms='Any',
       classifiers=['Development Status :: 5 - Production/Stable',

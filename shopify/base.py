@@ -12,10 +12,10 @@ import sys
 # Store the response from the last request in the connection object
 class ShopifyConnection(pyactiveresource.connection.Connection):
     response = None
-    
+
     def __init__(self, site, user=None, password=None, timeout=None,
                  format=formats.JSONFormat):
-        super(ShopifyConnection,self).__init__(site, user, password, timeout, format)
+        super(ShopifyConnection, self).__init__(site, user, password, timeout, format)
 
     def _open(self, *args, **kwargs):
         self.response = None
@@ -28,6 +28,7 @@ class ShopifyConnection(pyactiveresource.connection.Connection):
 
 # Inherit from pyactiveresource's metaclass in order to use ShopifyConnection
 class ShopifyResourceMeta(ResourceMeta):
+
     @property
     def connection(cls):
         """HTTP connection for the current thread"""
@@ -121,7 +122,7 @@ class ShopifyResource(ActiveResource, mixins.Countable):
     __metaclass__ = ShopifyResourceMeta
     _format = formats.JSONFormat
     _threadlocal = threading.local()
-    _headers = { 'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0]) }
+    _headers = {'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])}
 
     def __init__(self, attributes=None, prefix_options=None):
         if attributes is not None and prefix_options is None:
@@ -147,5 +148,4 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         cls.site = None
         cls.user = None
         cls.password = None
-        if 'X-Shopify-Access-Token' in cls.headers:
-            del cls.headers['X-Shopify-Access-Token']
+        cls.headers.pop('X-Shopify-Access-Token', None)
