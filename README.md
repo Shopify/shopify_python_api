@@ -119,17 +119,17 @@ these steps:
 
    and you'll get your permanent access token back in the response.
 
-   There is a method to make the request and get the token for you:
+   There is a method to make the request and get the token for you, pass
+   all the params recieved from the previous call and the method will verify
+   the params, extract the temp code and then request your token:
 
      ```python
      token = session.request_token(code)
      ```
 
-    Which will request the token, save it to the session object
+    This method will save the token to the session object
     and return it. For future sessions simply pass the token when
-    creating the session object. You can optionally pass 'params'
-    as a second argument containing the other params returned along
-    with 'code' which will verify the response.
+    creating the session object.
 
     ```python
     session = shopify.Session("SHOP_NAME.myshopify.com", token)

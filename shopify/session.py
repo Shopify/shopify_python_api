@@ -47,13 +47,15 @@ class Session(object):
         if redirect_uri: query_params['redirect_uri'] = redirect_uri
         return "%s://%s/admin/oauth/authorize?%s" % (self.protocol, self.url, urllib.urlencode(query_params))
 
-    def request_token(self, code, params=None):
+    def request_token(self, params):
         if self.token:
             return self.token
 
         if params:
             if not self.validate_params(params):
                 raise Exception('Invalid Signature: Possibly malicious login')
+
+        code = params.pop('code')
 
         url = "%s://%s/admin/oauth/access_token?" % (self.protocol, self.url)
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
