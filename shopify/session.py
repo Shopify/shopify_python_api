@@ -54,7 +54,7 @@ class Session(object):
         if not self.validate_params(params):
             raise Exception('Invalid Signature: Possibly malicious login')
 
-        code = params.pop('code')
+        code = params['code']
 
         url = "%s://%s/admin/oauth/access_token?" % (self.protocol, self.url)
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
