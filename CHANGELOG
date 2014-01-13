@@ -1,6 +1,8 @@
 == Version 2.x.x
 
-* made create_permission_url an instance method, you'll need an instance 
+* in Session::request_token params is no longer optional, you must pass all the params
+  and the method will now extract the code
+* made create_permission_url an instance method, you'll need an instance
   of session to call this method from now on
 * Updated session.request_token
 * Updated Session to better match the ShopifyAPI Ruby gem
