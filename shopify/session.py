@@ -33,8 +33,6 @@ class Session(object):
         try:
             shopify.ShopifyResource.activate_session(session)
             return eval(block)
-        except Exception, e:
-            raise e
         finally:
             shopify.ShopifyResource.activate_session(original_session)
 
@@ -42,30 +40,21 @@ class Session(object):
         self.url = self.__prepare_url(shop_url)
         self.token = token
         self.legacy = False
-
-        if params is None:
-            return
-
-        if not self.validate_params(params):
-            raise Exception('Invalid Signature: Possibly malicious login')
-
-        if 't' in params:
-            self.legacy = True
-            self.token = self.__computed_password(params['t'])
-
         return
-
-    def __computed_password(self, t):
-        return md5(self.secret + t).hexdigest()
 
     def create_permission_url(self, scope, redirect_uri=None):
         query_params = dict(client_id=self.api_key, scope=",".join(scope))
         if redirect_uri: query_params['redirect_uri'] = redirect_uri
         return "%s://%s/admin/oauth/authorize?%s" % (self.protocol, self.url, urllib.urlencode(query_params))
 
-    def request_token(self, code):
+    def request_token(self, params):
         if self.token:
             return self.token
+
+        if not self.validate_params(params):
+            raise Exception('Invalid Signature: Possibly malicious login')
+
+        code = params['code']
 
         url = "%s://%s/admin/oauth/access_token?" % (self.protocol, self.url)
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
@@ -101,7 +90,7 @@ class Session(object):
         # Avoid replay attacks by making sure the request
         # isn't more than a day old.
         one_day = 24 * 60 * 60
-        if int(params.pop('timestamp', 0)) < time.time() - one_day:
+        if int(params['timestamp']) < time.time() - one_day:
             return False
 
         return cls.validate_signature(params)
@@ -116,6 +105,6 @@ class Session(object):
 
         for k in sorted(params.keys()):
             if k != "signature":
-                sorted_params += k + "=" + params[k]
+                sorted_params += k + "=" + str(params[k])
 
         return md5(cls.secret + sorted_params).hexdigest() == signature
