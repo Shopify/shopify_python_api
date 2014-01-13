@@ -51,9 +51,8 @@ class Session(object):
         if self.token:
             return self.token
 
-        if params:
-            if not self.validate_params(params):
-                raise Exception('Invalid Signature: Possibly malicious login')
+        if not self.validate_params(params):
+            raise Exception('Invalid Signature: Possibly malicious login')
 
         code = params.pop('code')
 
