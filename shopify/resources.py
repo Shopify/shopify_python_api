@@ -113,31 +113,8 @@ class Variant(ShopifyResource, mixins.Metafields):
         return "/admin/" if product_id is None else "/admin/products/%s" % (product_id)
 
     def save(self):
-        try:
-            if self.id:
-                response = self.klass.connection.put(
-                        self._element_path(self.id, self._prefix_options),
-                        self.klass.headers,
-                        data=self.to_xml())
-            else:
-                self._prefix_options['product_id'] = self.product_id
-                response = self.klass.connection.post(
-                        self._collection_path(self._prefix_options),
-                        self.klass.headers,
-                        data=self.to_xml())
-                new_id = self._id_from_response(response)
-                if new_id:
-                    self.attributes['id'] = new_id
-        except connection.ResourceInvalid, err:
-            self.errors.from_xml(err.response.body)
-            return False
-        try:
-            attributes = self.klass.format.decode(response.body)
-        except formats.Error:
-            return True
-        if attributes:
-            self._update(attributes)
-        return True
+        self._prefix_options['product_id'] = self.product_id
+        super(ShopifyResource, self).save()
 
 class Image(ShopifyResource):
     _prefix_source = "/admin/products/$product_id/"
