@@ -103,6 +103,10 @@ class Product(ShopifyResource, mixins.Metafields, mixins.Events):
     def remove_from_collection(self, collection):
         return collection.remove_product(self)
 
+    def add_variant(self, variant):
+        variant.attributes['product_id'] = self.id
+        variant.save()
+
 
 class Variant(ShopifyResource, mixins.Metafields):
     _prefix_source = "/admin/products/$product_id/"
@@ -114,7 +118,7 @@ class Variant(ShopifyResource, mixins.Metafields):
 
     def save(self):
         self._prefix_options['product_id'] = self.product_id
-        super(ShopifyResource, self).save()
+        return super(ShopifyResource, self).save()
 
 class Image(ShopifyResource):
     _prefix_source = "/admin/products/$product_id/"

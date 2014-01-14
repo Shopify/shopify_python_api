@@ -102,10 +102,10 @@ these steps:
 
     # Create a new product
     new_product = shopify.Product()
-    new_product.title = "Burton Custom Freestlye 151"
+    new_product.title = "Burton Custom Freestyle 151"
     new_product.product_type = "Snowboard"
     new_product.vendor = "Burton"
-    new_product.save()
+    success = new_product.save() # save() returns false if the record is invalid
 
     # Update a product
     product.handle = "burton-snowboard"
