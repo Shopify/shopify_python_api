@@ -41,10 +41,24 @@ class SessionTest(TestCase):
         session1 = shopify.Session('fakeshop.myshopify.com', 'token1')
         shopify.ShopifyResource.activate_session(session1)
 
-        assigned_site = shopify.Session.temp("testshop.myshopify.com", "any-token", "shopify.ShopifyResource.site")
+        assigned_site = ""
+        with shopify.Session.temp("testshop.myshopify.com", "any-token"):
+            assigned_site = shopify.ShopifyResource.site
 
         self.assertEqual('https://testshop.myshopify.com/admin', assigned_site)
         self.assertEqual('https://fakeshop.myshopify.com/admin', shopify.ShopifyResource.site)
+
+    def test_temp_reset_shopify_ShopifyResource_site_to_original_value_when_using_a_non_standard_port(self):
+        shopify.Session.setup(api_key="key", secret="secret")
+        session1 = shopify.Session('fakeshop.myshopify.com:3000', 'token1')
+        shopify.ShopifyResource.activate_session(session1)
+
+        assigned_site = ""
+        with shopify.Session.temp("testshop.myshopify.com", "any-token"):
+            assigned_site = shopify.ShopifyResource.site
+
+        self.assertEqual('https://testshop.myshopify.com/admin', assigned_site)
+        self.assertEqual('https://fakeshop.myshopify.com:3000/admin', shopify.ShopifyResource.site)
 
     def test_create_permission_url_returns_correct_url_with_single_scope_no_redirect_uri(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
@@ -83,16 +97,6 @@ class SessionTest(TestCase):
             session.request_token({"code":"any-code"})
 
         self.assertFalse(session.valid)
-
-    def test_temp_reset_shopify_ShopifyResource_site_to_original_value_when_using_a_non_standard_port(self):
-        shopify.Session.setup(api_key="key", secret="secret")
-        session1 = shopify.Session('fakeshop.myshopify.com:3000', 'token1')
-        shopify.ShopifyResource.activate_session(session1)
-
-        assigned_site = shopify.Session.temp("testshop.myshopify.com", "any-token", "shopify.ShopifyResource.site")
-
-        self.assertEqual('https://testshop.myshopify.com/admin', assigned_site)
-        self.assertEqual('https://fakeshop.myshopify.com:3000/admin', shopify.ShopifyResource.site)
 
     def test_return_site_for_session(self):
         session = shopify.Session("testshop.myshopify.com", "any-token")

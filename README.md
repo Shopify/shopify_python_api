@@ -166,7 +166,8 @@ these steps:
     Alternatively, you can use temp to initialize a Session and execute a command which also handles temporarily setting ActiveResource::Base.site:
 
      ```python
-     products = shopify.Session.temp("SHOP_NAME.myshopify.com", token, "shopify.Product.find()")
+     with shopify.Session.temp("SHOP_NAME.myshopify.com", token):
+        product = shopify.Product.find()
      ```
 
 7.  If you want to work with another shop, you'll first need to clear the session::

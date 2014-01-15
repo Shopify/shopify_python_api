@@ -10,7 +10,7 @@ try:
 except ImportError:
     import json
 import re
-
+from contextlib import contextmanager
 
 class Session(object):
     api_key = None
@@ -23,18 +23,17 @@ class Session(object):
             setattr(cls, k, v)
 
     @classmethod
-    def temp(cls, domain, token, block):
-        session = Session(domain, token)
+    @contextmanager
+    def temp(cls, domain, token):
         import shopify
         original_domain = shopify.ShopifyResource.get_site()
         original_token = shopify.ShopifyResource.headers['X-Shopify-Access-Token']
         original_session = shopify.Session(original_domain, original_token)
 
-        try:
-            shopify.ShopifyResource.activate_session(session)
-            return eval(block)
-        finally:
-            shopify.ShopifyResource.activate_session(original_session)
+        session = Session(domain, token)
+        shopify.ShopifyResource.activate_session(session)
+        yield
+        shopify.ShopifyResource.activate_session(original_session)
 
     def __init__(self, shop_url, token=None, params=None):
         self.url = self.__prepare_url(shop_url)
