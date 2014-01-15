@@ -1,0 +1,9 @@
+{
+  "asset": {
+    "created_at": "2010-07-12T15:31:50-04:00",
+    "updated_at": "2010-07-12T15:31:50-04:00",
+    "public_url": null,
+    "value": "<!-- LIST 3 PER ROW -->\n<h2>Featured Products</h2>\n<table id=\"products\" cellspacing=\"0\" cellpadding=\"0\">\n{% tablerow product in collections.frontpage.products cols:3  %}\n   <a href=\"{{product.url}}\">{{ product.featured_image | product_img_url: 'small' | img_tag }}</a>\n   <h3><a href=\"{{product.url}}\">{{product.title}}</a></h3>\n   <ul class=\"attributes\">\n     <li><span class=\"money\">{{product.price_min | money}}</span></li>\n   </ul>\n{% endtablerow %}\n</table>\n<!-- /LIST 3 PER ROW  -->\n\n  <div id=\"articles\">\n  \t{% assign article = pages.frontpage %}\n\n    <div class=\"article\">\n    {% if article.content != \"\" %}\n\t\t  <h3>{{ article.title }}</h3>\n      <div class=\"article-body textile\">\n  \t\t  {{ article.content }}\n  \t\t</div>\n  \t{% else %}\n      <div class=\"article-body textile\">\n  \t  In <em>Admin &gt; Blogs &amp; Pages</em>, create a page with the handle <strong><code>frontpage</code></strong> and it will show up here.<br />\n  \t  {{ \"Learn more about handles\" | link_to \"http://wiki.shopify.com/Handle\" }}\n      </div>\n  \t{% endif %}\n    </div>\n\n  </div>\n\n",
+    "key": "templates/index.liquid"
+  }
+}

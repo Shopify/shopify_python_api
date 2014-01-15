@@ -1,0 +1,136 @@
+{
+  "assets": [
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/bg-body-green.gif?1",
+      "key": "assets/bg-body-green.gif"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/bg-body-orange.gif?1",
+      "key": "assets/bg-body-orange.gif"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/bg-body-pink.gif?1",
+      "key": "assets/bg-body-pink.gif"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/bg-body.gif?1",
+      "key": "assets/bg-body.gif"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/bg-content.gif?1",
+      "key": "assets/bg-content.gif"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/bg-footer.gif?1",
+      "key": "assets/bg-footer.gif"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/bg-main.gif?1",
+      "key": "assets/bg-main.gif"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/bg-sidebar.gif?1",
+      "key": "assets/bg-sidebar.gif"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/shop.css?1",
+      "key": "assets/shop.css"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/shop.css.liquid?1",
+      "key": "assets/shop.css.liquid"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/shop.js?1",
+      "key": "assets/shop.js"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/sidebar-devider.gif?1",
+      "key": "assets/sidebar-devider.gif"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": "http://static.shopify.com/s/files/1/6909/3384/t/1/assets/sidebar-menu.jpg?1",
+      "key": "assets/sidebar-menu.jpg"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": null,
+      "key": "config/settings.html"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": null,
+      "key": "layout/theme.liquid"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": null,
+      "key": "templates/article.liquid"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": null,
+      "key": "templates/blog.liquid"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": null,
+      "key": "templates/cart.liquid"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": null,
+      "key": "templates/collection.liquid"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": null,
+      "key": "templates/index.liquid"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": null,
+      "key": "templates/page.liquid"
+    },
+    {
+      "created_at": "2010-07-12T15:31:50-04:00",
+      "updated_at": "2010-07-12T15:31:50-04:00",
+      "public_url": null,
+      "key": "templates/product.liquid"
+    }
+  ]
+}

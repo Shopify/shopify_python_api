@@ -1,0 +1,29 @@
+{
+  "transaction": {
+    "amount": "409.94",
+    "authorization": "authorization-key",
+    "created_at": "2005-08-01T11:57:11-04:00",
+    "gateway": "bogus",
+    "id": 389404469,
+    "kind": "authorization",
+    "location_id": null,
+    "message": null,
+    "order_id": 450789469,
+    "parent_id": null,
+    "status": "success",
+    "test": false,
+    "user_id": null,
+    "device_id": null,
+    "receipt": {
+      "testcase": true,
+      "authorization": "123456"
+    },
+    "payment_details": {
+      "avs_result_code": null,
+      "credit_card_bin": null,
+      "cvv_result_code": null,
+      "credit_card_number": "XXXX-XXXX-XXXX-4242",
+      "credit_card_company": "Visa"
+    }
+  }
+}
