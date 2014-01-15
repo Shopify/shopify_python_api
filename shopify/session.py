@@ -39,7 +39,6 @@ class Session(object):
     def __init__(self, shop_url, token=None, params=None):
         self.url = self.__prepare_url(shop_url)
         self.token = token
-        self.legacy = False
         return
 
     def create_permission_url(self, scope, redirect_uri=None):
