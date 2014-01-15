@@ -1,6 +1,7 @@
 == Version 2.0.0
 
-* Uses pyactiveresource v2.0.0 which changes the default form to JSON
+* Removed support for legacy auth
+* Updated to pyactiveresource v2.0.0 which changes the default form to JSON
 * in Session::request_token params is no longer optional, you must pass all the params
   and the method will now extract the code
 * made create_permission_url an instance method, you'll need an instance
