@@ -1,0 +1,20 @@
+{
+  "images": [
+    {
+      "created_at": "2014-01-17T16:11:52-05:00",
+      "id": 850703190,
+      "position": 1,
+      "product_id": 632910392,
+      "updated_at": "2014-01-17T16:11:52-05:00",
+      "src": "http://cdn.shopify.com/s/files/1/0006/9093/3842/products/ipod-nano.png?v=1389993112"
+    },
+    {
+      "created_at": "2014-01-17T16:11:52-05:00",
+      "id": 562641783,
+      "position": 2,
+      "product_id": 632910392,
+      "updated_at": "2014-01-17T16:11:52-05:00",
+      "src": "http://cdn.shopify.com/s/files/1/0006/9093/3842/products/ipod-nano-2.png?v=1389993112"
+    }
+  ]
+}
