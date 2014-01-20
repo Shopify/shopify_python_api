@@ -1,3 +1,11 @@
+== Version 2.0.2
+
+* Add access to FulfillmentService endpoint
+
+== Version 2.0.1
+
+* Package bug fix
+
 == Version 2.0.0
 
 * Removed support for legacy auth
