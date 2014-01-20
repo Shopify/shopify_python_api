@@ -5,3 +5,4 @@ tags
 /dist
 /MANIFEST
 /ShopifyAPI.egg-info
+*.egg

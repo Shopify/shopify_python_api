@@ -1,0 +1,10 @@
+{
+  "fulfillment_service": {
+    "name": "SomeService",
+    "id": 123456,
+    "inventory_management": false,
+    "tracking_support": true,
+    "requires_shipping_method": false,
+    "format": "json"
+  }
+}
