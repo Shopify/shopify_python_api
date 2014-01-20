@@ -1,0 +1,14 @@
+{
+  "risk": {
+    "cause_cancel": true,
+    "checkout_id": null,
+    "display": true,
+    "id": 284138680,
+    "message": "This order was placed from a proxy IP",
+    "order_id": 450789469,
+    "recommendation": "cancel",
+    "score": "1.0",
+    "source": "External",
+    "merchant_message": "This order was placed from a proxy IP"
+  }
+}
