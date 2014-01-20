@@ -9,4 +9,4 @@ class Event(ShopifyResource):
         if resource:
             return "/admin/%s/%s" % (resource, options["resource_id"])
         else:
-            return "/admin/"
+            return "/admin"

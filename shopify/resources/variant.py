@@ -10,4 +10,4 @@ class Variant(ShopifyResource, mixins.Metafields):
         if product_id:
             return "/admin/products/%s" % (product_id)
         else:
-            return "/admin/"
+            return "/admin"

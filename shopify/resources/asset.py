@@ -9,9 +9,9 @@ class Asset(ShopifyResource):
     def _prefix(cls, options={}):
         theme_id = options.get("theme_id")
         if theme_id:
-            return "/admin/themes/%s/" % theme_id
+            return "/admin/themes/%s" % theme_id
         else:
-            return "/admin/"
+            return "/admin"
 
     @classmethod
     def _element_path(cls, id, prefix_options={}, query_options=None):

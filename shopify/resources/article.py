@@ -10,7 +10,7 @@ class Article(ShopifyResource, mixins.Metafields, mixins.Events):
         if blog_id:
             return "/admin/blogs/%s" % (blog_id)
         else:
-            return "/admin/"
+            return "/admin"
 
     def comments(self):
         return Comment.find(article_id=self.id)

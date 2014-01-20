@@ -16,8 +16,7 @@ class ShopTest(TestCase):
         self.assertIsNone(self.shop.tax_shipping)
 
     def test_get_metafields_for_shop(self):
-        # fix extra slash from pyactiveresource
-        self.fake("/metafields")
+        self.fake("metafields")
 
         metafields = self.shop.metafields()
 
@@ -26,19 +25,17 @@ class ShopTest(TestCase):
             self.assertTrue(isinstance(field, shopify.Metafield))
 
     def test_add_metafield(self):
-        # fix extra slash from pyactiveresource
-        self.fake("/metafields", method='POST', code=201, body=self.load_fixture('metafield'), headers={'Content-type': 'application/json'})
+        self.fake("metafields", method='POST', code=201, body=self.load_fixture('metafield'), headers={'Content-type': 'application/json'})
 
         field = self.shop.add_metafield( shopify.Metafield({'namespace': "contact", 'key': "email", 'value': "123@example.com", 'value_type': "string"}))
-        
+
         self.assertFalse(field.is_new())
         self.assertEqual("contact", field.namespace)
         self.assertEqual("email", field.key)
         self.assertEqual("123@example.com", field.value)
 
     def test_events(self):
-        # fix extra slash from pyactiveresource
-        self.fake("/events")
+        self.fake("events")
 
         events = self.shop.events()
 
