@@ -12,6 +12,5 @@ class VariantTest(TestCase):
         v = shopify.Variant.find(808950810, product_id = 632910392)
 
     def test_get_variant(self):
-        # fix extra slash from pyactiveresource
-        self.fake("/variants/808950810", method='GET', body=self.load_fixture('variant'))
+        self.fake("variants/808950810", method='GET', body=self.load_fixture('variant'))
         v = shopify.Variant.find(808950810)
