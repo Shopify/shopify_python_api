@@ -35,3 +35,15 @@ class OrderTest(TestCase):
         attribute = note_attributes[0]
         self.assertEqual("color", attribute["name"])
         self.assertEqual("blue", attribute["value"])
+
+    def test_get_order(self):
+        self.fake('orders/450789469', method='GET', body=self.load_fixture('order'))
+        order = shopify.Order.find(450789469)
+        self.assertEqual('bob.norman@hostmail.com', order.email)
+
+    def test_get_order_transaction(self):
+        self.fake('orders/450789469', method='GET', body=self.load_fixture('order'))
+        order = shopify.Order.find(450789469)
+        self.fake('orders/450789469/transactions', method='GET', body=self.load_fixture('transaction'))
+        transactions = order.transactions()
+        self.assertEqual("409.94", transactions[0].amount)
