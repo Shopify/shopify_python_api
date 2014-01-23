@@ -1,6 +1,7 @@
 from ..base import ShopifyResource
 import base64
 
+
 class Asset(ShopifyResource):
     _primary_key = "key"
     _prefix_source = "/admin/themes/$theme_id/"
