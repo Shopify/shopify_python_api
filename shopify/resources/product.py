@@ -1,7 +1,7 @@
 from ..base import ShopifyResource
 from shopify import mixins
-from .custom_collection import CustomCollection
-from .smart_collection import SmartCollection
+from custom_collection import CustomCollection
+from smart_collection import SmartCollection
 
 
 class Product(ShopifyResource, mixins.Metafields, mixins.Events):
