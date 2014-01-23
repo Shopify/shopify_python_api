@@ -1,6 +1,7 @@
 from ..base import ShopifyResource
 from shopify import mixins
 
+
 class Customer(ShopifyResource, mixins.Metafields):
 
     @classmethod

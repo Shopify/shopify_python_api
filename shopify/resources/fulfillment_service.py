@@ -1,5 +1,5 @@
 from ..base import ShopifyResource
 
-class FulfillmentService(ShopifyResource):
-  pass
 
+class FulfillmentService(ShopifyResource):
+    pass

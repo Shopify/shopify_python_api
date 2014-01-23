@@ -1,5 +1,6 @@
 from ..base import ShopifyResource
 
+
 class Comment(ShopifyResource):
 
     def remove(self):
