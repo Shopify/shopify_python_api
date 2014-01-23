@@ -1,5 +1,6 @@
 from ..base import ShopifyResource
 
+
 class RecurringApplicationCharge(ShopifyResource):
 
     @classmethod

@@ -1,5 +1,7 @@
 from ..base import ShopifyResource
 from shopify import mixins
+from .comment import Comment
+
 
 class Article(ShopifyResource, mixins.Metafields, mixins.Events):
     _prefix_source = "/admin/blogs/$blog_id/"
