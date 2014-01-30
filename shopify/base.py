@@ -133,7 +133,8 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         return not self.id
 
     def _load_attributes_from_response(self, response):
-        self._update(self.__class__.format.decode(response.body))
+        if response.body.strip():
+            self._update(self.__class__.format.decode(response.body))
 
     @classmethod
     def activate_session(cls, session):
