@@ -12,14 +12,14 @@ class TestCase(unittest.TestCase):
         ActiveResource.headers=None
 
         shopify.ShopifyResource.clear_session()
-        shopify.ShopifyResource.site = "http://localhost/admin"
+        shopify.ShopifyResource.site = "https://this-is-my-test-show.myshopify.com/admin"
         shopify.ShopifyResource.password = None
         shopify.ShopifyResource.user = None
 
         http_fake.initialize()
         self.http = http_fake.TestHandler
         self.http.set_response(Exception('Bad request'))
-        self.http.site = 'https://localhost'
+        self.http.site = 'https://this-is-my-test-show.myshopify.com'
 
     def load_fixture(self, name, format='json'):
         return open(os.path.dirname(__file__)+'/fixtures/%s.%s' % (name, format), 'r').read()
@@ -28,13 +28,13 @@ class TestCase(unittest.TestCase):
         body = kwargs.pop('body', None) or self.load_fixture(endpoint)
         format = kwargs.pop('format','json')
         method = kwargs.pop('method','GET')
-        
+
         if ('extension' in kwargs and not kwargs['extension']):
             extension = ""
         else:
             extension = ".%s" % (kwargs.pop('extension', 'json'))
 
-        url = "http://localhost/admin/%s%s" % (endpoint, extension)
+        url = "https://this-is-my-test-show.myshopify.com/admin/%s%s" % (endpoint, extension)
         try:
            url = kwargs['url']
         except KeyError:
