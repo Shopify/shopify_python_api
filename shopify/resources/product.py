@@ -7,7 +7,7 @@ from smart_collection import SmartCollection
 class Product(ShopifyResource, mixins.Metafields, mixins.Events):
 
     def price_range(self):
-        prices = [variant.price for variant in self.variants]
+        prices = [float(variant.price) for variant in self.variants]
         f = "%0.2f"
         min_price = min(prices)
         max_price = max(prices)
