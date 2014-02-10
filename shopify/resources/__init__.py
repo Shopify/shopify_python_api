@@ -35,6 +35,7 @@ from page import Page
 from country import Country
 from fulfillment import Fulfillment
 from fulfillment_service import FulfillmentService
+from carrier_service import CarrierService
 from transaction import Transaction
 from image import Image
 from variant import Variant
