@@ -60,7 +60,7 @@ these steps:
     shopify.ShopifyResource.set_site(shop_url)
     ```
 
-    That's it you're done, skip to step 7 and start using the API!
+    That's it you're done, skip to step 6 and start using the API!
 
     For a partner App you will need to supply two parameters to the
     Session class before you instantiate it:
@@ -104,6 +104,7 @@ these steps:
     ```python
     permission_url = session.create_permission_url(scope, "https://my_redirect_uri.com")
      ```
+
 
 4. Once authorized, the shop redirects the owner to the return URL of your
    application with a parameter named 'code'. This is a temporary token
