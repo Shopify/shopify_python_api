@@ -52,7 +52,7 @@ these steps:
     your store admin. For a private App you'll need the API_KEY and
     the PASSWORD otherwise you'll need the API_KEY and SHARED_SECRET.
 
-2. For a private App you just need to set the base site url as
+2.  For a private App you just need to set the base site url as
     follows:
 
     ```python
@@ -74,9 +74,9 @@ these steps:
     a shop for the first time an app should redirect the user to the
     following URL:
 
-     GET https://SHOP_NAME.myshopify.com/admin/oauth/authorize
+    `GET https://SHOP_NAME.myshopify.com/admin/oauth/authorize`
 
-    with the following parameters:
+  with the following parameters:
 
      * client_id – Required – The API key for your app
      * scope – Required – The list of required scopes (explained here:
@@ -85,8 +85,8 @@ these steps:
      once authentication is complete. Defaults to the URL specified in the
      application settings and must be the same host as that URL.
 
-    We've added the create_permision_url method to make this easier, first
-    instantiate your session object:
+  We've added the create_permision_url method to make this easier, first
+  instantiate your session object:
 
     ```python
     session = shopify.Session("SHOP_NAME.myshopify.com")
@@ -109,7 +109,7 @@ these steps:
     application with a parameter named 'code'. This is a temporary token
     that the app can exchange for a permanent access token. Make the following call:
 
-    POST https://SHOP_NAME.myshopify.com/admin/oauth/access_token
+    `POST https://SHOP_NAME.myshopify.com/admin/oauth/access_token`
 
    with the following parameters:
 
