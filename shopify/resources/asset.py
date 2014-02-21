@@ -18,7 +18,7 @@ class Asset(ShopifyResource):
     def _element_path(cls, id, prefix_options={}, query_options=None):
         if query_options is None:
             prefix_options, query_options = cls._split_options(prefix_options)
-        return "%s%s.%s%s" % (cls._prefix(prefix_options), cls.plural,
+        return "%s%s.%s%s" % (cls._prefix(prefix_options)+'/', cls.plural,
                               cls.format.extension, cls._query_string(query_options))
 
     @classmethod
@@ -35,7 +35,9 @@ class Asset(ShopifyResource):
         params.update(kwargs)
         theme_id = params.get("theme_id")
         path_prefix = "/admin/themes/%s" % (theme_id) if theme_id else "/admin"
+
         resource = cls.find_one("%s/assets.%s" % (path_prefix, cls.format.extension), **params)
+
         if theme_id and resource:
             resource._prefix_options["theme_id"] = theme_id
         return resource

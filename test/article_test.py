@@ -14,6 +14,13 @@ class ArticleTest(TestCase):
         article = shopify.Article.find(6242736)
         self.assertEqual("First Post", article.title)
 
+    def test_update_article(self):
+        self.fake('articles/6242736', method='GET', body=self.load_fixture('article'))
+        article = shopify.Article.find(6242736)
+
+        self.fake('articles/6242736', method='PUT', body=self.load_fixture('article'), headers={'Content-type': 'application/json'})
+        article.save()
+
     def test_get_articles(self):
         self.fake("articles", method='GET', body=self.load_fixture('articles'))
         articles = shopify.Article.find()
