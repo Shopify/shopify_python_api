@@ -105,10 +105,9 @@ these steps:
     permission_url = session.create_permission_url(scope, "https://my_redirect_uri.com")
      ```
 
-
-4. Once authorized, the shop redirects the owner to the return URL of your
-   application with a parameter named 'code'. This is a temporary token
-   that the app can exchange for a permanent access token. Make the following call:
+4.  Once authorized, the shop redirects the owner to the return URL of your
+    application with a parameter named 'code'. This is a temporary token
+    that the app can exchange for a permanent access token. Make the following call:
 
     POST https://SHOP_NAME.myshopify.com/admin/oauth/access_token
 
