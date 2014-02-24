@@ -1,5 +1,6 @@
-== Version 2.0.4 (Unreleased)
+== Version 2.0.4
 
+* Bug fixes
 * Added CarrierService resource
 * Added Property resource to LineItem
 
