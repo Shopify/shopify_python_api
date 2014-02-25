@@ -30,5 +30,4 @@ class Product(ShopifyResource, mixins.Metafields, mixins.Events):
 
     def add_variant(self, variant):
           variant.attributes['product_id'] = self.id
-          variant.save()
           return variant.save()
