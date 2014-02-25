@@ -23,6 +23,12 @@ class VariantTest(TestCase):
         v = shopify.Variant({'product_id':632910392})
         v.save()
 
+    def test_create_variant2(self):
+        self.fake("products/632910392/variants", method='POST', body=self.load_fixture('variant'), headers={'Content-type': 'application/json'})
+        v = shopify.Variant()
+        v.product_id = 632910392
+        v.save()
+
     def test_get_variant(self):
         self.fake("variants/808950810", method='GET', body=self.load_fixture('variant'))
         v = shopify.Variant.find(808950810)
