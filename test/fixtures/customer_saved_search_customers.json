@@ -1,0 +1,60 @@
+{
+  "customers": [
+    {
+      "accepts_marketing": true,
+      "created_at": "2013-01-29T16:33:35-05:00",
+      "email": "john.smith@gmail.com",
+      "first_name": "John",
+      "id": 112223902,
+      "last_name": "Smith",
+      "last_order_id": null,
+      "multipass_identifier": null,
+      "note": "This is sample note",
+      "orders_count": 0,
+      "state": "disabled",
+      "total_spent": "0.00",
+      "updated_at": "2013-03-05T17:00:05-05:00",
+      "verified_email": true,
+      "tags": "Buyer, Canadian",
+      "last_order_name": null,
+      "default_address": {
+        "address1": "1234 Simple Road",
+        "address2": null,
+        "city": "Ottawa",
+        "company": null,
+        "country": "Canada",
+        "first_name": "John",
+        "id": 152583148,
+        "last_name": "Smith",
+        "phone": "555-555-5555",
+        "province": "Ontario",
+        "zip": "K2H 0A0",
+        "name": "John Smith",
+        "province_code": "ON",
+        "country_code": "CA",
+        "country_name": "Canada",
+        "default": true
+      },
+      "addresses": [
+        {
+          "address1": "1234 Simple Road",
+          "address2": null,
+          "city": "Ottawa",
+          "company": null,
+          "country": "Canada",
+          "first_name": "John",
+          "id": 152583148,
+          "last_name": "Smith",
+          "phone": "555-555-5555",
+          "province": "Ontario",
+          "zip": "K2H 0A0",
+          "name": "John Smith",
+          "province_code": "ON",
+          "country_code": "CA",
+          "country_name": "Canada",
+          "default": true
+        }
+      ]
+    }
+  ]
+}

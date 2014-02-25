@@ -4,3 +4,5 @@ tags
 *.swp
 /dist
 /MANIFEST
+/ShopifyAPI.egg-info
+*.egg

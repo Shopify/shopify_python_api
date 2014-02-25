@@ -1,0 +1,24 @@
+{
+  "metafields": [
+    {
+      "created_at": "2011-10-20T14:05:13-04:00",
+      "updated_at": "2011-10-20T14:05:13-04:00",
+      "namespace": "affiliates",
+      "id": 721389482,
+      "value": "app_key",
+      "description": null,
+      "key": "app_key",
+      "value_type": "string"
+     },
+    {
+      "created_at": "2011-10-20T14:05:13-04:00",
+      "updated_at": "2011-10-20T14:05:13-04:00",
+      "namespace": "contact",
+      "id": 721389480,
+      "value": "1231231231",
+      "description": null,
+      "key": "phone",
+      "value_type": "string"
+    }
+  ]
+}
