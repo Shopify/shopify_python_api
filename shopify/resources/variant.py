@@ -12,3 +12,8 @@ class Variant(ShopifyResource, mixins.Metafields):
             return "/admin/products/%s" % (product_id)
         else:
             return "/admin"
+
+    def save(self):
+        if 'product_id' not in self._prefix_options:
+            self._prefix_options['product_id'] = self.product_id
+        return super(ShopifyResource, self).save()

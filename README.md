@@ -155,7 +155,10 @@ these steps:
     new_product.title = "Burton Custom Freestyle 151"
     new_product.product_type = "Snowboard"
     new_product.vendor = "Burton"
-    new_product.save()
+    success = new_product.save() #returns false if the record is invalid
+    # or
+    if new_product.errors:
+        #something went wrong, see new_product.errors.full_messages() for example
 
     # Update a product
     product.handle = "burton-snowboard"

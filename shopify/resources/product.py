@@ -27,3 +27,7 @@ class Product(ShopifyResource, mixins.Metafields, mixins.Events):
 
     def remove_from_collection(self, collection):
         return collection.remove_product(self)
+
+    def add_variant(self, variant):
+        variant.attributes['product_id'] = self.id
+        return variant.save()
