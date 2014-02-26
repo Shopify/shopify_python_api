@@ -34,3 +34,9 @@ class ProductTest(TestCase):
         variant = self.product.variants[0]
         variant.price = "0.50"
         variant.save
+
+    def test_add_variant_to_product(self):
+        self.fake("products/632910392/variants", method='POST', body=self.load_fixture('variant'), headers={'Content-type': 'application/json'})
+        self.fake("products/632910392/variants/808950810", method='PUT', code=200, body=self.load_fixture('variant'), headers={'Content-type': 'application/json'})
+        v = shopify.Variant()
+        self.assertTrue(self.product.add_variant(v))
