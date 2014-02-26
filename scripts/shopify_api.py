@@ -86,7 +86,7 @@ class TasksMeta(type):
 class Tasks(object):
     __metaclass__ = TasksMeta
 
-    _shop_config_dir = os.path.join(os.environ["HOME"], ".shopify", "shops")
+    _shop_config_dir = os.path.join(os.path.expanduser('~'), ".shopify", "shops")
     _default_symlink = os.path.join(_shop_config_dir, "default")
 
     @classmethod
@@ -117,7 +117,7 @@ class Tasks(object):
             if not os.path.isdir(cls._shop_config_dir):
                 os.makedirs(cls._shop_config_dir)
             file(filename, 'w').write(yaml.dump(config, default_flow_style=False, explicit_start="---"))
-        if len(cls._available_connections()) == 1:
+        if cls._supports_default() and len(cls._available_connections()) == 1:
             cls.default(connection)
 
     @classmethod
@@ -126,7 +126,7 @@ class Tasks(object):
         """remove the config file for CONNECTION"""
         filename = cls._get_config_filename(connection)
         if os.path.exists(filename):
-            if cls._is_default(connection):
+            if cls._supports_default() and cls._is_default(connection):
                 os.remove(cls._default_symlink)
             os.remove(filename)
         else:
@@ -163,6 +163,9 @@ class Tasks(object):
     @usage("default [CONNECTION]")
     def default(cls, connection=None):
         """show the default connection, or make CONNECTION the default"""
+        if not cls._supports_default():
+            print("Sorry - this OS doesn't yet support default")
+            return
         if connection is not None:
             target = cls._get_config_filename(connection)
             if os.path.exists(target):
@@ -231,6 +234,10 @@ class Tasks(object):
         session.api_key = config.get("api_key")
         session.token = config.get("password")
         return session
+    
+    @classmethod
+    def _supports_default(cls):
+        return os.name not in ['nt']
 
     @classmethod
     def _is_default(cls, connection):
