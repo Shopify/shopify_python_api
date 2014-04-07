@@ -115,11 +115,13 @@ these steps:
     * client_id – Required – The API key for your app
     * client_secret – Required – The shared secret for your app
     * code – Required – The code you received in step 3
+    * timestamp - Required - Received when the shop redirects the owner to the return URL
+    * signature - Required - Received when the shop redirects the owner to the return URL
     ```
     
     and you'll get your permanent access token back in the response.
 
-    There is a method to make the request and get the token for you Pass
+    There is a method to make the request and get the token for you. Pass
     all the params received from the previous call and the method will verify
     the params, extract the temp code and then request your token:
 
