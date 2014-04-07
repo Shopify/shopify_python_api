@@ -128,12 +128,6 @@ these steps:
     ```python
     token = session.request_token(params)
     ```
-    
-    or you can call this way:
-    
-    ```python
-    token = session.request_token(request.REQUEST)
-    ```
 
     This method will save the token to the session object
     and return it. For future sessions simply pass the token when
