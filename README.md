@@ -116,7 +116,7 @@ these steps:
     * client_secret – Required – The shared secret for your app
     * code – Required – The code you received in step 3
     * timestamp - Required - Received when the shop redirects the owner to the return URL
-    * Signature - Required - Received when the shop redirects the owner to the return URL
+    * signature - Required - Received when the shop redirects the owner to the return URL
     ```
     
     and you'll get your permanent access token back in the response.
