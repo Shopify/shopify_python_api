@@ -60,6 +60,16 @@ class SessionTest(TestCase):
         self.assertEqual('https://testshop.myshopify.com/admin', assigned_site)
         self.assertEqual('https://fakeshop.myshopify.com:3000/admin', shopify.ShopifyResource.site)
 
+    def test_temp_works_without_currently_active_session(self):
+        shopify.ShopifyResource.clear_session()
+
+        assigned_site = ""
+        with shopify.Session.temp("testshop.myshopify.com", "any-token"):
+            assigned_site = shopify.ShopifyResource.site
+
+        self.assertEqual('https://testshop.myshopify.com/admin', assigned_site)
+        self.assertEqual('https://None/admin', shopify.ShopifyResource.site)
+
     def test_create_permission_url_returns_correct_url_with_single_scope_no_redirect_uri(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com')
