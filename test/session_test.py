@@ -24,9 +24,9 @@ class SessionTest(TestCase):
         session = shopify.Session("testshop.myshopify.com", "any-token")
 
     def test_raise_error_if_params_passed_but_signature_omitted(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(shopify.ValidationException):
             session = shopify.Session("testshop.myshopify.com")
-            token = session.request_token('code', {'foo': 'bar'})
+            token = session.request_token({'code':'any_code', 'foo': 'bar', 'timestamp':'1234'})
 
     def test_setup_api_key_and_secret_for_all_sessions(self):
         shopify.Session.setup(api_key="My test key", secret="My test secret")
@@ -103,8 +103,8 @@ class SessionTest(TestCase):
         session = shopify.Session('http://localhost.myshopify.com')
         self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', code=404, body='{"error" : "invalid_request"}', has_user_agent=False)
 
-        with self.assertRaises(Exception):
-            session.request_token({"code":"any-code"})
+        with self.assertRaises(shopify.ValidationException):
+            session.request_token({'code':'any-code', 'timestamp':'1234'})
 
         self.assertFalse(session.valid)
 
@@ -131,10 +131,11 @@ class SessionTest(TestCase):
         signature = md5(shopify.Session.secret + sorted_params).hexdigest()
         params['signature'] = signature
         params['bar'] = 'world'
+        params['code'] = 'code'
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(shopify.ValidationException):
             session = shopify.Session('http://localhost.myshopify.com')
-            session = session.request_token("code", params=params)
+            session = session.request_token(params)
 
     def test_raise_error_if_timestamp_is_too_old(self):
         shopify.Session.secret='secret'
@@ -144,7 +145,7 @@ class SessionTest(TestCase):
         signature = md5(shopify.Session.secret + sorted_params).hexdigest()
         params['signature'] = signature
 
-        with self.assertRaises(Exception):
+        with self.assertRaises(shopify.ValidationException):
             session = shopify.Session('http://localhost.myshopify.com')
             session = session.request_token(params)
 

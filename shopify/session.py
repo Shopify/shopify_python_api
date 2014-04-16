@@ -12,6 +12,9 @@ except ImportError:
 import re
 from contextlib import contextmanager
 
+class ValidationException(Exception):
+    pass
+
 class Session(object):
     api_key = None
     secret = None
@@ -50,7 +53,7 @@ class Session(object):
             return self.token
 
         if not self.validate_params(params):
-            raise Exception('Invalid Signature: Possibly malicious login')
+            raise ValidationException('Invalid Signature: Possibly malicious login')
 
         code = params['code']
 
