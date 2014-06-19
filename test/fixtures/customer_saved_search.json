@@ -1,9 +1,0 @@
-{
-  "customer_saved_search": {
-    "created_at": "2013-01-21T13:26:12-05:00",
-    "id": 8899730,
-    "name": "Accepts Marketing",
-    "updated_at": "2013-01-21T13:26:12-05:00",
-    "query": "accepts_marketing:1"
-  }
-}

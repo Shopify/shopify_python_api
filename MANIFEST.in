@@ -1,4 +1,0 @@
-include LICENSE
-include CHANGELOG
-include README.md
-include bin/shopify_api.py

@@ -1,9 +1,0 @@
-{
-  "carrier_service": {
-    "name": "Some Postal Service",
-    "id": 123456,
-    "callback_url": "http://google.com",
-    "format": "json",
-    "service_discovery": true
-  }
-}

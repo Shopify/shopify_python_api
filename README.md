@@ -1,3 +1,7 @@
+---
+layout: index
+---
+
 # Shopify API
 
 The ShopifyAPI library allows Python developers to programmatically
