@@ -10,6 +10,7 @@ except ImportError:
 import re
 from contextlib import contextmanager
 from six.moves import urllib
+import six
 
 class ValidationException(Exception):
     pass
@@ -21,7 +22,7 @@ class Session(object):
 
     @classmethod
     def setup(cls, **kwargs):
-        for k, v in kwargs.iteritems():
+        for k, v in six.iteritems(kwargs):
             setattr(cls, k, v)
 
     @classmethod
