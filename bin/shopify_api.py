@@ -8,4 +8,5 @@ import os.path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 
-execfile(os.path.join(project_root, 'scripts', 'shopify_api.py'))
+with open(os.path.join(project_root, 'scripts', 'shopify_api.py')) as f:
+    exec(f.read())
