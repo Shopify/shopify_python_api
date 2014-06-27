@@ -6,6 +6,7 @@ import shopify
 import threading
 import sys
 from six.moves import urllib
+import six
 
 
 # Store the response from the last request in the connection object
@@ -114,8 +115,8 @@ class ShopifyResourceMeta(ResourceMeta):
                       'Encoding used for request and responses')
 
 
+@six.add_metaclass(ShopifyResourceMeta)
 class ShopifyResource(ActiveResource, mixins.Countable):
-    __metaclass__ = ShopifyResourceMeta
     _format = formats.JSONFormat
     _threadlocal = threading.local()
     _headers = {'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])}
