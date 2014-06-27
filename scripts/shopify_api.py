@@ -15,7 +15,7 @@ def start_interpreter(**variables):
     import readline
     console(variables).interact()
 
-class ConfigFileError(StandardError):
+class ConfigFileError(Exception):
     pass
 
 def usage(usage_string):
