@@ -116,7 +116,7 @@ class SessionTest(TestCase):
         shopify.Session.secret='secret'
         params = {'code': 'any-code', 'timestamp': time.time()}
         sorted_params = self.make_sorted_params(params)
-        signature = md5(shopify.Session.secret + sorted_params).hexdigest()
+        signature = md5((shopify.Session.secret + sorted_params).encode('utf-8')).hexdigest()
         params['signature'] = signature
 
         self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', body='{"access_token" : "token"}', has_user_agent=False)
@@ -128,7 +128,7 @@ class SessionTest(TestCase):
         shopify.Session.secret='secret'
         params = {'foo': 'hello', 'timestamp': time.time()}
         sorted_params = self.make_sorted_params(params)
-        signature = md5(shopify.Session.secret + sorted_params).hexdigest()
+        signature = md5((shopify.Session.secret + sorted_params).encode('utf-8')).hexdigest()
         params['signature'] = signature
         params['bar'] = 'world'
         params['code'] = 'code'
@@ -142,7 +142,7 @@ class SessionTest(TestCase):
         one_day = 24 * 60 * 60
         params = {'code': 'any-code', 'timestamp': time.time()-(2*one_day)}
         sorted_params = self.make_sorted_params(params)
-        signature = md5(shopify.Session.secret + sorted_params).hexdigest()
+        signature = md5((shopify.Session.secret + sorted_params).encode('utf-8')).hexdigest()
         params['signature'] = signature
 
         with self.assertRaises(shopify.ValidationException):

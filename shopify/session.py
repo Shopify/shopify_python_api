@@ -108,4 +108,4 @@ class Session(object):
             if k != "signature":
                 sorted_params += k + "=" + str(params[k])
 
-        return md5(cls.secret + sorted_params).hexdigest() == signature
+        return md5((cls.secret + sorted_params).encode('utf-8')).hexdigest() == signature
