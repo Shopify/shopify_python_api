@@ -117,7 +117,8 @@ class Tasks(object):
             config['password'] = raw_input("Password? ")
             if not os.path.isdir(cls._shop_config_dir):
                 os.makedirs(cls._shop_config_dir)
-            file(filename, 'w').write(yaml.dump(config, default_flow_style=False, explicit_start="---"))
+            with open(filename, 'w') as f:
+                f.write(yaml.dump(config, default_flow_style=False, explicit_start="---"))
         if len(cls._available_connections()) == 1:
             cls.default(connection)
 
@@ -156,7 +157,8 @@ class Tasks(object):
         filename = cls._get_config_filename(connection)
         if os.path.exists(filename):
             print(filename)
-            print(file(filename).read())
+            with open(filename) as f:
+                print(f.read())
         else:
             cls._no_config_file_error(filename)
 
@@ -185,7 +187,8 @@ class Tasks(object):
         if not os.path.exists(filename):
             cls._no_config_file_error(filename)
 
-        config = yaml.safe_load(file(filename).read())
+        with open(filename) as f:
+            config = yaml.safe_load(f.read())
         print("using %s" % (config["domain"]))
         session = cls._session_from_config(config)
         shopify.ShopifyResource.activate_session(session)
