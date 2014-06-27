@@ -59,11 +59,11 @@ class Session(object):
 
         url = "%s://%s/admin/oauth/access_token?" % (self.protocol, self.url)
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
-        request = urllib.request.Request(url, urllib.parse.urlencode(query_params))
+        request = urllib.request.Request(url, urllib.parse.urlencode(query_params).encode('utf-8'))
         response = urllib.request.urlopen(request)
 
         if response.code == 200:
-            self.token = json.loads(response.read())['access_token']
+            self.token = json.loads(response.read().decode('utf-8'))['access_token']
             return self.token
         else:
             raise Exception(response.msg)

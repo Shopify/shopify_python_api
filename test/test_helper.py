@@ -22,7 +22,7 @@ class TestCase(unittest.TestCase):
         self.http.site = 'https://this-is-my-test-show.myshopify.com'
 
     def load_fixture(self, name, format='json'):
-        return open(os.path.dirname(__file__)+'/fixtures/%s.%s' % (name, format), 'r').read()
+        return open(os.path.dirname(__file__)+'/fixtures/%s.%s' % (name, format), 'rb').read()
 
     def fake(self, endpoint, **kwargs):
         body = kwargs.pop('body', None) or self.load_fixture(endpoint)

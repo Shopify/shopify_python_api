@@ -12,7 +12,7 @@ class FulFillmentTest(TestCase):
         fulfillment = shopify.Fulfillment.find(255858046, order_id=450789469)
 
         success = self.load_fixture('fulfillment')
-        success = success.replace('pending','success')
+        success = success.replace(b'pending',b'success')
         self.fake("orders/450789469/fulfillments/255858046/complete", method='POST', headers={'Content-length':'0', 'Content-type': 'application/json'}, body=success)
 
         self.assertEqual('pending', fulfillment.status)
@@ -23,7 +23,7 @@ class FulFillmentTest(TestCase):
         fulfillment = shopify.Fulfillment.find(255858046, order_id=450789469)
 
         cancelled = self.load_fixture('fulfillment')
-        cancelled = cancelled.replace('pending', 'cancelled')
+        cancelled = cancelled.replace(b'pending', b'cancelled')
         self.fake("orders/450789469/fulfillments/255858046/cancel", method='POST', headers={'Content-length':'0', 'Content-type': 'application/json'}, body=cancelled)
 
         self.assertEqual('pending', fulfillment.status)
