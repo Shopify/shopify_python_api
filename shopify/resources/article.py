@@ -1,6 +1,6 @@
 from ..base import ShopifyResource
 from shopify import mixins
-from comment import Comment
+from .comment import Comment
 
 
 class Article(ShopifyResource, mixins.Metafields, mixins.Events):

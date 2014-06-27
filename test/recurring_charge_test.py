@@ -1,5 +1,5 @@
 import shopify
-from test_helper import TestCase
+from test.test_helper import TestCase
 
 class RecurringApplicationChargeTest(TestCase):
     def test_activate_charge(self):

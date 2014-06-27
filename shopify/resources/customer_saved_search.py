@@ -1,5 +1,5 @@
 from ..base import ShopifyResource
-from customer import Customer
+from .customer import Customer
 
 
 class CustomerSavedSearch(ShopifyResource):
