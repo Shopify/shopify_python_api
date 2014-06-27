@@ -23,6 +23,7 @@ setup(name=NAME,
       install_requires=[
           'pyactiveresource>=2.0.0',
           'PyYAML',
+          'six',
       ],
       test_suite='test',
       tests_require=[
