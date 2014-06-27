@@ -242,5 +242,5 @@ class Tasks(object):
 
 try:
     Tasks.run_task(*sys.argv[1:])
-except ConfigFileError, e:
+except ConfigFileError as e:
     print(e)

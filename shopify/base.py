@@ -21,7 +21,7 @@ class ShopifyConnection(pyactiveresource.connection.Connection):
         self.response = None
         try:
             self.response = super(ShopifyConnection, self)._open(*args, **kwargs)
-        except pyactiveresource.connection.ConnectionError, err:
+        except pyactiveresource.connection.ConnectionError as err:
             self.response = err.response
             raise
         return self.response
