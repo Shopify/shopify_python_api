@@ -32,7 +32,7 @@ class TasksMeta(type):
     def __new__(mcs, name, bases, new_attrs):
         cls = type.__new__(mcs, name, bases, new_attrs)
 
-        tasks = new_attrs.keys()
+        tasks = list(new_attrs.keys())
         tasks.append("help")
         def filter_func(item):
             return not item.startswith("_") and hasattr(getattr(cls, item), "__call__")
