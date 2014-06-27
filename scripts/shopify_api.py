@@ -7,6 +7,7 @@ import os
 import os.path
 import glob
 import subprocess
+import functools
 import yaml
 import six
 
@@ -66,7 +67,7 @@ class TasksMeta(type):
                 usage_string = "  %s %s" % (cls._prog, task_func.usage)
                 desc = task_func.__doc__.splitlines()[0]
                 usage_list.append((usage_string, desc))
-            max_len = reduce(lambda m, item: max(m, len(item[0])), usage_list, 0)
+            max_len = functools.reduce(lambda m, item: max(m, len(item[0])), usage_list, 0)
             print("Tasks:")
             cols = int(os.environ.get("COLUMNS", 80))
             for line, desc in usage_list:
