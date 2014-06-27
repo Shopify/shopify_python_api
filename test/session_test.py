@@ -5,6 +5,7 @@ try:
 except ImportError:
     from md5 import md5
 import time
+from six.moves import urllib
 
 class SessionTest(TestCase):
 
@@ -75,28 +76,28 @@ class SessionTest(TestCase):
         session = shopify.Session('http://localhost.myshopify.com')
         scope = ["write_products"]
         permission_url = session.create_permission_url(scope)
-        self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?scope=write_products&client_id=My_test_key", permission_url)
+        self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&scope=write_products", self.normalize_url(permission_url))
 
     def test_create_permission_url_returns_correct_url_with_single_scope_and_redirect_uri(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com')
         scope = ["write_products"]
         permission_url = session.create_permission_url(scope, "my_redirect_uri.com")
-        self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?scope=write_products&redirect_uri=my_redirect_uri.com&client_id=My_test_key", permission_url)
+        self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=write_products", self.normalize_url(permission_url))
 
     def test_create_permission_url_returns_correct_url_with_dual_scope_no_redirect_uri(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com')
         scope = ["write_products","write_customers"]
         permission_url = session.create_permission_url(scope)
-        self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?scope=write_products%2Cwrite_customers&client_id=My_test_key", permission_url)
+        self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&scope=write_products%2Cwrite_customers", self.normalize_url(permission_url))
 
     def test_create_permission_url_returns_correct_url_with_no_scope_no_redirect_uri(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com')
         scope = []
         permission_url = session.create_permission_url(scope)
-        self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?scope=&client_id=My_test_key", permission_url)
+        self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&scope=", self.normalize_url(permission_url))
 
     def test_raise_exception_if_code_invalid_in_request_token(self):
         shopify.Session.setup(api_key="My test key", secret="My test secret")
@@ -156,3 +157,8 @@ class SessionTest(TestCase):
             if k != "signature":
                 sorted_params += k + "=" + str(params[k])
         return sorted_params
+
+    def normalize_url(self, url):
+        scheme, netloc, path, query, fragment = urllib.parse.urlsplit(url)
+        query = "&".join(sorted(query.split("&")))
+        return urllib.parse.urlunsplit((scheme, netloc, path, query, fragment))
