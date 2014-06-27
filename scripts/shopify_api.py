@@ -50,7 +50,7 @@ class TasksMeta(type):
             if len(matches) == 1:
                 task = matches[0]
             else:
-                print >>sys.stderr, 'Could not find task "%s".' % (task)
+                sys.stderr.write('Could not find task "%s".\n' % (task))
 
         task_func = getattr(cls, task)
         task_func(*args)
