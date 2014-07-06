@@ -1,6 +1,6 @@
 from ..base import ShopifyResource
 from shopify import mixins
-from transaction import Transaction
+from .transaction import Transaction
 
 
 class Order(ShopifyResource, mixins.Metafields, mixins.Events):

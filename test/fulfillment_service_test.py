@@ -1,5 +1,5 @@
 import shopify
-from test_helper import TestCase
+from test.test_helper import TestCase
 
 class FulfillmentServiceTest(TestCase):
     def test_create_new_fulfillment_service(self):

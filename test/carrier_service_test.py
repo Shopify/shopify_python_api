@@ -1,5 +1,5 @@
 import shopify
-from test_helper import TestCase
+from test.test_helper import TestCase
 
 class CarrierServiceTest(TestCase):
     def test_create_new_carrier_service(self):

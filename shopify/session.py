@@ -1,6 +1,4 @@
 import time
-import urllib
-import urllib2
 try:
     from hashlib import md5
 except ImportError:
@@ -11,6 +9,8 @@ except ImportError:
     import json
 import re
 from contextlib import contextmanager
+from six.moves import urllib
+import six
 
 class ValidationException(Exception):
     pass
@@ -22,7 +22,7 @@ class Session(object):
 
     @classmethod
     def setup(cls, **kwargs):
-        for k, v in kwargs.iteritems():
+        for k, v in six.iteritems(kwargs):
             setattr(cls, k, v)
 
     @classmethod
@@ -46,7 +46,7 @@ class Session(object):
     def create_permission_url(self, scope, redirect_uri=None):
         query_params = dict(client_id=self.api_key, scope=",".join(scope))
         if redirect_uri: query_params['redirect_uri'] = redirect_uri
-        return "%s://%s/admin/oauth/authorize?%s" % (self.protocol, self.url, urllib.urlencode(query_params))
+        return "%s://%s/admin/oauth/authorize?%s" % (self.protocol, self.url, urllib.parse.urlencode(query_params))
 
     def request_token(self, params):
         if self.token:
@@ -59,11 +59,11 @@ class Session(object):
 
         url = "%s://%s/admin/oauth/access_token?" % (self.protocol, self.url)
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
-        request = urllib2.Request(url, urllib.urlencode(query_params))
-        response = urllib2.urlopen(request)
+        request = urllib.request.Request(url, urllib.parse.urlencode(query_params).encode('utf-8'))
+        response = urllib.request.urlopen(request)
 
         if response.code == 200:
-            self.token = json.loads(response.read())['access_token']
+            self.token = json.loads(response.read().decode('utf-8'))['access_token']
             return self.token
         else:
             raise Exception(response.msg)
@@ -108,4 +108,4 @@ class Session(object):
             if k != "signature":
                 sorted_params += k + "=" + str(params[k])
 
-        return md5(cls.secret + sorted_params).hexdigest() == signature
+        return md5((cls.secret + sorted_params).encode('utf-8')).hexdigest() == signature

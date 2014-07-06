@@ -4,10 +4,10 @@ import shopify.yamlobjects
 import shopify.mixins as mixins
 import shopify
 import threading
-import urllib
-import urllib2
-import urlparse
 import sys
+from six.moves import urllib
+import six
+
 
 # Store the response from the last request in the connection object
 class ShopifyConnection(pyactiveresource.connection.Connection):
@@ -21,7 +21,7 @@ class ShopifyConnection(pyactiveresource.connection.Connection):
         self.response = None
         try:
             self.response = super(ShopifyConnection, self)._open(*args, **kwargs)
-        except pyactiveresource.connection.ConnectionError, err:
+        except pyactiveresource.connection.ConnectionError as err:
             self.response = err.response
             raise
         return self.response
@@ -74,14 +74,11 @@ class ShopifyResourceMeta(ResourceMeta):
         cls._threadlocal.connection = None
         ShopifyResource._site = cls._threadlocal.site = value
         if value is not None:
-            host = urlparse.urlsplit(value)[1]
-            auth_info, host = urllib2.splituser(host)
-            if auth_info:
-                user, password = urllib2.splitpasswd(auth_info)
-                if user:
-                    cls.user = urllib.unquote(user)
-                if password:
-                    cls.password = urllib.unquote(password)
+            parts = urllib.parse.urlparse(value)
+            if parts.username:
+                cls.user = urllib.parse.unquote(parts.username)
+            if parts.password:
+                cls.password = urllib.parse.unquote(parts.password)
 
     site = property(get_site, set_site, None,
                     'The base REST site to connect to.')
@@ -118,8 +115,8 @@ class ShopifyResourceMeta(ResourceMeta):
                       'Encoding used for request and responses')
 
 
+@six.add_metaclass(ShopifyResourceMeta)
 class ShopifyResource(ActiveResource, mixins.Countable):
-    __metaclass__ = ShopifyResourceMeta
     _format = formats.JSONFormat
     _threadlocal = threading.local()
     _headers = {'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])}

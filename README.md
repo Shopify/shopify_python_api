@@ -238,7 +238,6 @@ version won't be used.
 
 Currently there is no support for:
 
-* python 3
 * asynchronous requests
 * persistent connections
 

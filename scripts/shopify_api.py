@@ -7,14 +7,16 @@ import os
 import os.path
 import glob
 import subprocess
+import functools
 import yaml
+import six
 
 def start_interpreter(**variables):
     console = type('shopify ' + shopify.version.VERSION, (code.InteractiveConsole, object), {})
     import readline
     console(variables).interact()
 
-class ConfigFileError(StandardError):
+class ConfigFileError(Exception):
     pass
 
 def usage(usage_string):
@@ -30,7 +32,7 @@ class TasksMeta(type):
     def __new__(mcs, name, bases, new_attrs):
         cls = type.__new__(mcs, name, bases, new_attrs)
 
-        tasks = new_attrs.keys()
+        tasks = list(new_attrs.keys())
         tasks.append("help")
         def filter_func(item):
             return not item.startswith("_") and hasattr(getattr(cls, item), "__call__")
@@ -50,7 +52,7 @@ class TasksMeta(type):
             if len(matches) == 1:
                 task = matches[0]
             else:
-                print >>sys.stderr, 'Could not find task "%s".' % (task)
+                sys.stderr.write('Could not find task "%s".\n' % (task))
 
         task_func = getattr(cls, task)
         task_func(*args)
@@ -65,7 +67,7 @@ class TasksMeta(type):
                 usage_string = "  %s %s" % (cls._prog, task_func.usage)
                 desc = task_func.__doc__.splitlines()[0]
                 usage_list.append((usage_string, desc))
-            max_len = reduce(lambda m, item: max(m, len(item[0])), usage_list, 0)
+            max_len = functools.reduce(lambda m, item: max(m, len(item[0])), usage_list, 0)
             print("Tasks:")
             cols = int(os.environ.get("COLUMNS", 80))
             for line, desc in usage_list:
@@ -83,9 +85,8 @@ class TasksMeta(type):
             print(task_func.__doc__)
 
 
+@six.add_metaclass(TasksMeta)
 class Tasks(object):
-    __metaclass__ = TasksMeta
-
     _shop_config_dir = os.path.join(os.environ["HOME"], ".shopify", "shops")
     _default_symlink = os.path.join(_shop_config_dir, "default")
 
@@ -116,7 +117,8 @@ class Tasks(object):
             config['password'] = raw_input("Password? ")
             if not os.path.isdir(cls._shop_config_dir):
                 os.makedirs(cls._shop_config_dir)
-            file(filename, 'w').write(yaml.dump(config, default_flow_style=False, explicit_start="---"))
+            with open(filename, 'w') as f:
+                f.write(yaml.dump(config, default_flow_style=False, explicit_start="---"))
         if len(cls._available_connections()) == 1:
             cls.default(connection)
 
@@ -155,7 +157,8 @@ class Tasks(object):
         filename = cls._get_config_filename(connection)
         if os.path.exists(filename):
             print(filename)
-            print(file(filename).read())
+            with open(filename) as f:
+                print(f.read())
         else:
             cls._no_config_file_error(filename)
 
@@ -184,7 +187,8 @@ class Tasks(object):
         if not os.path.exists(filename):
             cls._no_config_file_error(filename)
 
-        config = yaml.safe_load(file(filename).read())
+        with open(filename) as f:
+            config = yaml.safe_load(f.read())
         print("using %s" % (config["domain"]))
         session = cls._session_from_config(config)
         shopify.ShopifyResource.activate_session(session)
@@ -242,5 +246,5 @@ class Tasks(object):
 
 try:
     Tasks.run_task(*sys.argv[1:])
-except ConfigFileError, e:
+except ConfigFileError as e:
     print(e)
