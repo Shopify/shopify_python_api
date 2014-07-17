@@ -1,5 +1,6 @@
-== Version 2.0.5 unreleased
+== Version 2.1.0 unreleased
 
+* Added python 3 compatibility
 * Add a specific exception for signature validation failures
 
 == Version 2.0.4
