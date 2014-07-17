@@ -13,3 +13,8 @@ class CarrierServiceTest(TestCase):
 
         carrier_service = shopify.CarrierService.find(123456)
         self.assertEqual("Some Postal Service", carrier_service.name)
+
+    def test_set_format_attribute(self):
+        carrier_service = shopify.CarrierService()
+        carrier_service.format = "json"
+        self.assertEqual("json", carrier_service.attributes['format'])

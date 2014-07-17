@@ -1,6 +1,7 @@
 == Version 2.1.0 unreleased
 
 * Added python 3 compatibility
+* Fixed setting the format attribute on carrier and fulfillment services
 * Add a specific exception for signature validation failures
 
 == Version 2.0.4
