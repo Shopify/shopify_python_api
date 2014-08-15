@@ -234,6 +234,12 @@ Note Use the `bin/shopify_api.py` script when running from the source tree.
 It will add the lib directory to start of sys.path, so the installed
 version won't be used.
 
+To run tests, simply open up the project directory in a terminal and run:
+
+```shell
+python setup.py test
+```
+
 ## Limitations
 
 Currently there is no support for:
