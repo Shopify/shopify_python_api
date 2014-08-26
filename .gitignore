@@ -6,3 +6,4 @@ tags
 /MANIFEST
 /ShopifyAPI.egg-info
 *.egg
+/.idea

@@ -1,0 +1,16 @@
+{
+  "metafields": [
+    {
+      "created_at": "2014-08-17T19:06:50+09:00",
+      "description": null,
+      "id": 850703198,
+      "key": "alt",
+      "namespace": "tags",
+      "owner_id": 850703190,
+      "updated_at": "2014-08-27T00:30:17+09:00",
+      "value": "Image Alt Tag",
+      "value_type": "string",
+      "owner_resource": "product_image"
+    }
+  ]
+}
