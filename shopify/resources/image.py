@@ -1,4 +1,6 @@
 from ..base import ShopifyResource
+from ..resources import Metafield
+from six.moves import urllib
 import base64
 import re
 
@@ -16,3 +18,9 @@ class Image(ShopifyResource):
         self.attributes["attachment"] = base64.b64encode(data)
         if filename:
             self.attributes["filename"] = filename
+
+    def metafields(self):
+        if self.is_new():
+            return []
+        query_params = { 'metafield[owner_id]': self.id, 'metafield[owner_resource]': 'product_image' }
+        return Metafield.find(from_ = '/admin/metafields.json?%s' % urllib.parse.urlencode(query_params))
