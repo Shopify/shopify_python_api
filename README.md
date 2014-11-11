@@ -146,7 +146,7 @@ these steps:
     Data is returned as ActiveResource instances:
 
     ```python
-    shop = shopify.Shop.current
+    shop = shopify.Shop.current()
 
     # Get a specific product
     product = shopify.Product.find(179761209)
@@ -176,7 +176,7 @@ these steps:
 7.  If you want to work with another shop, you'll first need to clear the session::
 
      ```python
-     shopify.ShopifyResource.clear_session
+     shopify.ShopifyResource.clear_session()
      ```
 
 ### Console
