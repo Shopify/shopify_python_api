@@ -42,6 +42,7 @@ from .image import Image
 from .variant import Variant
 from .order import Order
 from .order_risk import OrderRisk
+from .policy import Policy
 from .smart_collection import SmartCollection
 
 from ..base import ShopifyResource
