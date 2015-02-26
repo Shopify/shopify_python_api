@@ -159,14 +159,6 @@ class SessionTest(TestCase):
             session = shopify.Session('http://localhost.myshopify.com')
             session = session.request_token(params)
 
-
-    def make_sorted_params(self, params):
-        sorted_params = ""
-        for k in sorted(params.keys()):
-            if k != "signature":
-                sorted_params += k + "=" + str(params[k])
-        return sorted_params
-
     def normalize_url(self, url):
         scheme, netloc, path, query, fragment = urllib.parse.urlsplit(url)
         query = "&".join(sorted(query.split("&")))
