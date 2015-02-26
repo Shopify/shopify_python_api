@@ -1,4 +1,6 @@
 import time
+import hmac
+from hashlib import sha256
 try:
     from hashlib import md5
 except ImportError:
@@ -109,3 +111,14 @@ class Session(object):
                 sorted_params += k + "=" + str(params[k])
 
         return md5((cls.secret + sorted_params).encode('utf-8')).hexdigest() == signature
+
+    @classmethod
+    def calculate_hmac(cls, params):
+        """
+        Calculate the HMAC of the given parameters in line with Shopify's rules for OAuth authentication.
+        See http://docs.shopify.com/api/authentication/oauth#verification.
+        """
+        # Sort and combine query parameters into a single string, excluding those that should be removed and joining with '&'.
+        sorted_params = '&'.join(['{0}={1}'.format(k, params[k]) for k in sorted(params.keys()) if k not in ['signature', 'hmac']])
+        # Generate the hex digest for the sorted parameters using the secret.
+        return hmac.new(cls.secret, sorted_params, sha256).hexdigest()
