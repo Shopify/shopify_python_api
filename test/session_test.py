@@ -125,24 +125,22 @@ class SessionTest(TestCase):
         }
         self.assertEqual(shopify.Session.calculate_hmac(params), params['hmac'])
 
-    def test_return_token_if_signature_is_valid(self):
+    def test_return_token_if_hmac_is_valid(self):
         shopify.Session.secret='secret'
         params = {'code': 'any-code', 'timestamp': time.time()}
-        sorted_params = self.make_sorted_params(params)
-        signature = md5((shopify.Session.secret + sorted_params).encode('utf-8')).hexdigest()
-        params['signature'] = signature
+        hmac = shopify.Session.calculate_hmac(params)
+        params['hmac'] = hmac
 
         self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', body='{"access_token" : "token"}', has_user_agent=False)
         session = shopify.Session('http://localhost.myshopify.com')
         token = session.request_token(params)
         self.assertEqual("token", token)
 
-    def test_raise_error_if_signature_does_not_match_expected(self):
+    def test_raise_error_if_hmac_does_not_match_expected(self):
         shopify.Session.secret='secret'
         params = {'foo': 'hello', 'timestamp': time.time()}
-        sorted_params = self.make_sorted_params(params)
-        signature = md5((shopify.Session.secret + sorted_params).encode('utf-8')).hexdigest()
-        params['signature'] = signature
+        hmac = shopify.Session.calculate_hmac(params)
+        params['hmac'] = hmac
         params['bar'] = 'world'
         params['code'] = 'code'
 
@@ -154,9 +152,8 @@ class SessionTest(TestCase):
         shopify.Session.secret='secret'
         one_day = 24 * 60 * 60
         params = {'code': 'any-code', 'timestamp': time.time()-(2*one_day)}
-        sorted_params = self.make_sorted_params(params)
-        signature = md5((shopify.Session.secret + sorted_params).encode('utf-8')).hexdigest()
-        params['signature'] = signature
+        hmac = shopify.Session.calculate_hmac(params)
+        params['hmac'] = hmac
 
         with self.assertRaises(shopify.ValidationException):
             session = shopify.Session('http://localhost.myshopify.com')
