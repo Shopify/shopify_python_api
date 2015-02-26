@@ -2,10 +2,6 @@ import time
 import hmac
 from hashlib import sha256
 try:
-    from hashlib import md5
-except ImportError:
-    from md5 import md5
-try:
     import simplejson as json
 except ImportError:
     import json
