@@ -136,6 +136,26 @@ class SessionTest(TestCase):
         token = session.request_token(params)
         self.assertEqual("token", token)
 
+    def test_return_token_if_hmac_is_valid_but_signature_also_provided(self):
+        shopify.Session.secret='secret'
+        params = {'code': 'any-code', 'timestamp': time.time(), 'signature': '6e39a2'}
+        hmac = shopify.Session.calculate_hmac(params)
+        params['hmac'] = hmac
+
+        self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', body='{"access_token" : "token"}', has_user_agent=False)
+        session = shopify.Session('http://localhost.myshopify.com')
+        token = session.request_token(params)
+        self.assertEqual("token", token)
+
+    def test_raise_error_if_hmac_is_invalid(self):
+        shopify.Session.secret='secret'
+        params = {'code': 'any-code', 'timestamp': time.time()}
+        params['hmac'] = 'a94a110d86d2452e92a4a64275b128e9273be3037f2c339eb3e2af4cfb8a3828'
+
+        with self.assertRaises(shopify.ValidationException):
+            session = shopify.Session('http://localhost.myshopify.com')
+            session = session.request_token(params)
+
     def test_raise_error_if_hmac_does_not_match_expected(self):
         shopify.Session.secret='secret'
         params = {'foo': 'hello', 'timestamp': time.time()}
