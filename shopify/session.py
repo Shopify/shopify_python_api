@@ -118,4 +118,4 @@ class Session(object):
         # Sort and combine query parameters into a single string, excluding those that should be removed and joining with '&'.
         sorted_params = '&'.join(['{0}={1}'.format(k, params[k]) for k in sorted(params.keys()) if k not in ['signature', 'hmac']])
         # Generate the hex digest for the sorted parameters using the secret.
-        return hmac.new(cls.secret, sorted_params, sha256).hexdigest()
+        return hmac.new(cls.secret.encode(), sorted_params.encode(), sha256).hexdigest()
