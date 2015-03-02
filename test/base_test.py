@@ -41,7 +41,7 @@ class BaseTest(TestCase):
 
     def test_activate_session_with_one_session_then_clearing_and_activating_with_another_session_shoul_request_to_correct_shop(self):
         shopify.ShopifyResource.activate_session(self.session1)
-        shopify.ShopifyResource.clear_session
+        shopify.ShopifyResource.clear_session()
         shopify.ShopifyResource.activate_session(self.session2)
 
         self.assertIsNone(ActiveResource.site)
@@ -59,8 +59,9 @@ class BaseTest(TestCase):
         shopify.ShopifyResource.set_headers({'X-Custom': 'abc'})
 
         with patch('shopify.ShopifyResource.connection.delete') as mock:
+            url = shopify.ShopifyResource._custom_method_collection_url('1', {})
             shopify.ShopifyResource.delete('1')
-            mock.assert_called_with('/admin/shopify_resources/1.json', {'X-Custom': 'abc'})
+            mock.assert_called_with(url, {'X-Custom': 'abc'})
 
         shopify.ShopifyResource.set_headers(org_headers)
 
