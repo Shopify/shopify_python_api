@@ -21,7 +21,7 @@ setup(name=NAME,
       scripts=['scripts/shopify_api.py'],
       license='MIT License',
       install_requires=[
-          'pyactiveresource>=2.1.0',
+          'pyactiveresource>=2.1.1',
           'PyYAML',
           'six',
       ],
