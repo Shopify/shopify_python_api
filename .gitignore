@@ -7,3 +7,4 @@ tags
 /ShopifyAPI.egg-info
 *.egg
 /.idea
+.DS_Store

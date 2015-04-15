@@ -1,0 +1,38 @@
+{
+  "recurring_application_charges": [
+    {
+      "activated_on": null,
+      "api_client_id": 755357713,
+      "billing_on": "2015-01-15T00:00:00+00:00",
+      "cancelled_on": null,
+      "created_at": "2015-01-16T11:45:44-05:00",
+      "id": 455696195,
+      "name": "Super Mega Plan",
+      "price": "15.00",
+      "return_url": "http://yourapp.com",
+      "status": "accepted",
+      "test": null,
+      "trial_days": 0,
+      "trial_ends_on": null,
+      "updated_at": "2015-01-16T11:46:56-05:00",
+      "decorated_return_url": "http://yourapp.com?charge_id=455696195"
+    },
+    {
+      "activated_on": "2015-01-15T00:00:00+00:00",
+      "api_client_id": 755357713,
+      "billing_on": "2015-01-15T00:00:00+00:00",
+      "cancelled_on": null,
+      "created_at": "2015-01-16T11:45:44-05:00",
+      "id": 455696195,
+      "name": "Super Mega Plan 2",
+      "price": "15.00",
+      "return_url": "http://yourapp.com",
+      "status": "rejected",
+      "test": null,
+      "trial_days": 0,
+      "trial_ends_on": null,
+      "updated_at": "2015-01-16T11:46:56-05:00",
+      "decorated_return_url": "http://yourapp.com?charge_id=455696195"
+    }
+  ]
+}
