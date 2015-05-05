@@ -17,6 +17,8 @@ class Session(object):
     api_key = None
     secret = None
     protocol = 'https'
+    myshopify_domain = 'myshopify.com'
+    port = None
 
     @classmethod
     def setup(cls, **kwargs):
@@ -27,9 +29,9 @@ class Session(object):
     @contextmanager
     def temp(cls, domain, token):
         import shopify
-        original_domain = shopify.ShopifyResource.get_site()
+        original_site = shopify.ShopifyResource.get_site()
         original_token = shopify.ShopifyResource.get_headers().get('X-Shopify-Access-Token')
-        original_session = shopify.Session(original_domain, original_token)
+        original_session = shopify.Session(original_site, original_token)
 
         session = Session(domain, token)
         shopify.ShopifyResource.activate_session(session)
@@ -44,7 +46,7 @@ class Session(object):
     def create_permission_url(self, scope, redirect_uri=None):
         query_params = dict(client_id=self.api_key, scope=",".join(scope))
         if redirect_uri: query_params['redirect_uri'] = redirect_uri
-        return "%s://%s/admin/oauth/authorize?%s" % (self.protocol, self.url, urllib.parse.urlencode(query_params))
+        return "%s/oauth/authorize?%s" % (self.site, urllib.parse.urlencode(query_params))
 
     def request_token(self, params):
         if self.token:
@@ -55,7 +57,7 @@ class Session(object):
 
         code = params['code']
 
-        url = "%s://%s/admin/oauth/access_token?" % (self.protocol, self.url)
+        url = "%s/oauth/access_token?" % self.site
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
         request = urllib.request.Request(url, urllib.parse.urlencode(query_params).encode('utf-8'))
         response = urllib.request.urlopen(request)
@@ -74,15 +76,23 @@ class Session(object):
     def valid(self):
         return self.url is not None and self.token is not None
 
-    @staticmethod
-    def __prepare_url(url):
+    @classmethod
+    def __prepare_url(cls, url):
         if not url or (url.strip() == ""):
             return None
-        url = re.sub("https?://", "", url)
-        url = re.sub("/.*", "", url)
-        if url.find(".") == -1:
-            url += ".myshopify.com"
-        return url
+        url = re.sub("^https?://", "", url)
+        shop = urllib.parse.urlparse("https://" + url).hostname
+        if shop is None:
+            return None
+        idx = shop.find(".")
+        if idx != -1:
+            shop = shop[0:idx]
+        if len(shop) == 0:
+            return None
+        shop += "." + cls.myshopify_domain
+        if cls.port:
+            shop += ":" + str(cls.port)
+        return shop
 
     @classmethod
     def validate_params(cls, params):

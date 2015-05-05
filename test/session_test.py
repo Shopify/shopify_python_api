@@ -22,6 +22,14 @@ class SessionTest(TestCase):
         session = shopify.Session("testshop.myshopify.com", "any-token")
         self.assertTrue(session.valid)
 
+    def test_ignore_everything_but_the_subdomain_in_the_shop(self):
+        session = shopify.Session("http://user:pass@testshop.notshopify.net/path", "any-token")
+        self.assertEqual("https://testshop.myshopify.com/admin", session.site)
+
+    def test_append_the_myshopify_domain_if_not_given(self):
+        session = shopify.Session("testshop", "any-token")
+        self.assertEqual("https://testshop.myshopify.com/admin", session.site)
+
     def test_not_raise_error_without_params(self):
         session = shopify.Session("testshop.myshopify.com", "any-token")
 
@@ -50,17 +58,19 @@ class SessionTest(TestCase):
         self.assertEqual('https://testshop.myshopify.com/admin', assigned_site)
         self.assertEqual('https://fakeshop.myshopify.com/admin', shopify.ShopifyResource.site)
 
-    def test_temp_reset_shopify_ShopifyResource_site_to_original_value_when_using_a_non_standard_port(self):
-        shopify.Session.setup(api_key="key", secret="secret")
-        session1 = shopify.Session('fakeshop.myshopify.com:3000', 'token1')
-        shopify.ShopifyResource.activate_session(session1)
+    def test_myshopify_domain_supports_non_standard_ports(self):
+        try:
+            shopify.Session.setup(api_key="key", secret="secret", myshopify_domain="localhost", port=3000)
 
-        assigned_site = ""
-        with shopify.Session.temp("testshop.myshopify.com", "any-token"):
-            assigned_site = shopify.ShopifyResource.site
+            session = shopify.Session('fakeshop.localhost:3000', 'token1')
+            shopify.ShopifyResource.activate_session(session)
+            self.assertEqual('https://fakeshop.localhost:3000/admin', shopify.ShopifyResource.site)
 
-        self.assertEqual('https://testshop.myshopify.com/admin', assigned_site)
-        self.assertEqual('https://fakeshop.myshopify.com:3000/admin', shopify.ShopifyResource.site)
+            session = shopify.Session('fakeshop', 'token1')
+            shopify.ShopifyResource.activate_session(session)
+            self.assertEqual('https://fakeshop.localhost:3000/admin', shopify.ShopifyResource.site)
+        finally:
+            shopify.Session.setup(myshopify_domain="myshopify.com", port=None)
 
     def test_temp_works_without_currently_active_session(self):
         shopify.ShopifyResource.clear_session()
