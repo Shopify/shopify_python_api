@@ -99,8 +99,8 @@ class Session(object):
         if 'hmac' not in params:
             return False
 
-        hmac_calculated = cls.calculate_hmac(params)
-        hmac_to_verify = params['hmac']
+        hmac_calculated = cls.calculate_hmac(params).encode('utf-8')
+        hmac_to_verify = params['hmac'].encode('utf-8')
 
         # Try to use compare_digest() to reduce vulnerability to timing attacks.
         # If it's not available, just fall back to regular string comparison.
