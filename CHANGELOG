@@ -1,4 +1,9 @@
-== Version 2.1.1 (unreleased)
+== Version 2.1.2
+
+* Fixed an issue with unicode strings in params passed to validate_hmac
+* Added shop domain verification when creating a session
+
+== Version 2.1.1
 
 * Added Checkout resource
 * Updated to pyactiveresource v2.1.1 which includes a test-related bugfix

@@ -8,3 +8,4 @@ tags
 *.egg
 /.idea
 .DS_Store
+.eggs
