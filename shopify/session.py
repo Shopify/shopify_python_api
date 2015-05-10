@@ -125,7 +125,21 @@ class Session(object):
         Calculate the HMAC of the given parameters in line with Shopify's rules for OAuth authentication.
         See http://docs.shopify.com/api/authentication/oauth#verification.
         """
-        # Sort and combine query parameters into a single string, excluding those that should be removed and joining with '&'.
-        sorted_params = '&'.join(['{0}={1}'.format(k, params[k]) for k in sorted(params.keys()) if k not in ['signature', 'hmac']])
+        encoded_params = cls.__encoded_params_for_signature(params)
         # Generate the hex digest for the sorted parameters using the secret.
-        return hmac.new(cls.secret.encode(), sorted_params.encode(), sha256).hexdigest()
+        return hmac.new(cls.secret.encode(), encoded_params.encode(), sha256).hexdigest()
+
+    @classmethod
+    def __encoded_params_for_signature(cls, params):
+        """
+        Sort and combine query parameters into a single string, excluding those that should be removed and joining with '&'
+        """
+        def encoded_pairs(params):
+            for k, v in six.iteritems(params):
+                if k not in ['signature', 'hmac']:
+                    # escape delimiters to avoid tampering
+                    k = str(k).replace("%", "%25").replace("=", "%3D")
+                    v = str(v).replace("%", "%25")
+                    yield '{0}={1}'.format(k, v).replace("&", "%26")
+
+        return "&".join(sorted(encoded_pairs(params)))

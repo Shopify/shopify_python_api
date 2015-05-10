@@ -1,9 +1,7 @@
 import shopify
 from test.test_helper import TestCase
-try:
-    from hashlib import md5
-except ImportError:
-    from md5 import md5
+import hmac
+from hashlib import sha256
 import time
 from six.moves import urllib
 from six import u
@@ -135,6 +133,13 @@ class SessionTest(TestCase):
           'hmac': '2cb1a277650a659f1b11e92a4a64275b128e037f2c3390e3c8fd2d8721dac9e2',
         }
         self.assertEqual(shopify.Session.calculate_hmac(params), params['hmac'])
+
+    def test_hmac_calculation_with_ampersand_and_equal_sign_characters(self):
+        shopify.Session.secret='secret'
+        params = { 'a': '1&b=2', 'c=3&d': '4' }
+        to_sign = "a=1%26b=2&c%3D3%26d=4"
+        expected_hmac = hmac.new('secret'.encode(), to_sign.encode(), sha256).hexdigest()
+        self.assertEqual(shopify.Session.calculate_hmac(params), expected_hmac)
 
     def test_hmac_validation(self):
         # Test using the secret and parameter examples given in the Shopify API documentation.
