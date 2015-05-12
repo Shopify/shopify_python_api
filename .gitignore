@@ -9,3 +9,4 @@ tags
 /.idea
 .DS_Store
 .eggs
+.python-version
