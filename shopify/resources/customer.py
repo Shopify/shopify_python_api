@@ -10,10 +10,11 @@ class Customer(ShopifyResource, mixins.Metafields):
         Search for customers matching supplied query
 
         Args:
-           q: Text to search for customers ("q" is short for query)
-           f: Filters to apply to customers ("f" is short for query)
+           order: Field and direction to order results by (default: last_order_date DESC)
+           query: Text to search for customers
            page: Page to show (default: 1)
-           limit: Maximum number of results to show (default: 50, maximum: 250)
+           limit: Amount of results (default: 50) (maximum: 250)
+           fields: comma-seperated list of fields to include in the response
         Returns:
            An array of customers.
         """
