@@ -82,7 +82,7 @@ these steps:
 
    * ``client_id``– Required – The API key for your app
    * ``scope`` – Required – The list of required scopes (explained here: http://docs.shopify.com/api/tutorials/oauth)
-   * ``redirect_uri`` – Required – The URL that the merchant will be sent to once authentication is complete. Defaults to the URL specified in the application settings and must be the same host as that URL.
+   * ``redirect_uri`` – Required – The URL where you want to redirect the users after they authorize the client. The complete URL specified here must be identical to one of the Application Redirect URLs set in the App's section of the Partners dashboard. Note: in older applications, this parameter was optional, and redirected to the Application Callback URL when no other value was specified.
    * ``state`` – Optional – A randomly selected value provided by your application, which is unique for each authorization request. During the OAuth callback phase, your application must check that this value matches the one you provided during authorization. [This mechanism is important for the security of your application](https://tools.ietf.org/html/rfc6819#section-3.6).
 
     We've added the create_permision_url method to make this easier, first
@@ -109,7 +109,7 @@ these steps:
 
    Before you proceed, make sure your application performs the following security checks. If any of the checks fails, your application must reject the request with an error, and must not proceed further.
 
-   * Ensure the provided state is the same one that your application provided to Shopify during Step 3.
+   * Ensure the provided ``state`` is the same one that your application provided to Shopify during Step 3.
    * Ensure the provided hmac is valid. The hmac is signed by Shopify as explained below, in the Verification section.
    * Ensure the provided hostname parameter is a valid hostname, ends with myshopify.com, and does not contain characters other than letters (a-z), numbers (0-9), dots, and hyphens.
 
