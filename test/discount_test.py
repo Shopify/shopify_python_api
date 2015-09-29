@@ -36,7 +36,7 @@ class DiscountTest(TestCase):
         self.fake('discounts/992807812/disable',
                   method='POST',
                   code=200,
-                  body=self.load_fixture('discounts_disabled'),
+                  body=self.load_fixture('discount_disabled'),
                   headers={'Content-length': '0',
                            'Content-type': 'application/json'})
         discount = shopify.Discount.find(992807812)
