@@ -32,7 +32,7 @@ class DiscountTest(TestCase):
         self.fake('discounts/992807812',
                   method='GET',
                   code=200,
-                  body=self.load_fixture('discounts'))
+                  body=self.load_fixture('discount'))
         self.fake('discounts/992807812/disable',
                   method='POST',
                   code=200,
