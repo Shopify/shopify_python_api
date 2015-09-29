@@ -45,5 +45,6 @@ from .order_risk import OrderRisk
 from .policy import Policy
 from .smart_collection import SmartCollection
 from .gift_card import GiftCard
+from .discount import Discount
 
 from ..base import ShopifyResource
