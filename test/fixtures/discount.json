@@ -1,0 +1,17 @@
+{
+  "discount": {
+    "id": 992807812,
+    "code": "quidagis?",
+    "value": "9999999.00",
+    "ends_at": "2015-08-27T23:59:59-04:00",
+    "starts_at": "2015-08-23T00:00:00-04:00",
+    "status": "enabled",
+    "usage_limit": 20,
+    "minimum_order_amount": "0.00",
+    "applies_to_id": null,
+    "applies_once": false,
+    "discount_type": "shipping",
+    "applies_to_resource": null,
+    "times_used": 0
+  }
+}
