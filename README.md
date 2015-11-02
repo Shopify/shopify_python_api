@@ -174,6 +174,9 @@ these steps:
     # Update a product
     product.handle = "burton-snowboard"
     product.save()
+
+    # Remove a product
+    product.destroy()
     ```
 
     Alternatively, you can use temp to initialize a Session and execute a command which also handles temporarily setting ActiveResource::Base.site:
