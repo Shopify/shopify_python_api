@@ -46,5 +46,6 @@ from .policy import Policy
 from .smart_collection import SmartCollection
 from .gift_card import GiftCard
 from .discount import Discount
+from .shipping_zone import ShippingZone
 
 from ..base import ShopifyResource
