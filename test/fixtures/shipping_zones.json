@@ -1,0 +1,114 @@
+{
+  "shipping_zones": [
+    {
+      "id": 1,
+      "name": "Some zone",
+      "countries": [
+        {
+          "id": 817138619,
+          "name": "United States",
+          "tax": 0.0,
+          "code": "US",
+          "tax_name": "Federal Tax",
+          "provinces": [
+            {
+              "id": 1013111685,
+              "country_id": 817138619,
+              "name": "New York",
+              "code": "NY",
+              "tax": 0.04,
+              "tax_name": "Tax",
+              "tax_type": null,
+              "shipping_zone_id": 1,
+              "tax_percentage": 4.0
+            },
+            {
+              "id": 1069646654,
+              "country_id": 817138619,
+              "name": "Ohio",
+              "code": "OH",
+              "tax": 0.0,
+              "tax_name": "State Tax",
+              "tax_type": null,
+              "shipping_zone_id": 1,
+              "tax_percentage": 0.0
+            }
+          ]
+        },
+        {
+          "id": 879921427,
+          "name": "Canada",
+          "tax": 0.05,
+          "code": "CA",
+          "tax_name": "GST",
+          "provinces": [
+            {
+              "id": 702530425,
+              "country_id": 879921427,
+              "name": "Ontario",
+              "code": "ON",
+              "tax": 0.08,
+              "tax_name": "Tax",
+              "tax_type": null,
+              "shipping_zone_id": 1,
+              "tax_percentage": 8.0
+            },
+            {
+              "id": 224293623,
+              "country_id": 879921427,
+              "name": "Quebec",
+              "code": "QC",
+              "tax": 0.09,
+              "tax_name": "HST",
+              "tax_type": "compounded",
+              "shipping_zone_id": 1,
+              "tax_percentage": 9.0
+            }
+          ]
+        },
+        {
+          "id": 988409122,
+          "name": "Yemen",
+          "tax": 0.0,
+          "code": "YE",
+          "tax_name": "GST",
+          "provinces": [
+          ]
+        }
+      ],
+      "weight_based_shipping_rates": [
+        {
+          "id": 760465697,
+          "weight_low": 1.2,
+          "weight_high": 10.0,
+          "name": "Austria Express Heavy Shipping",
+          "price": "40.00",
+          "shipping_zone_id": 1
+        }
+      ],
+      "price_based_shipping_rates": [
+        {
+          "id": 583276424,
+          "name": "Standard Shipping",
+          "min_order_subtotal": "0.00",
+          "price": "10.99",
+          "max_order_subtotal": "2000.00",
+          "shipping_zone_id": 1
+        }
+      ],
+      "carrier_shipping_rate_providers": [
+        {
+          "id": 972083812,
+          "country_id": null,
+          "carrier_service_id": 61629186,
+          "flat_modifier": "0.00",
+          "percent_modifier": 0,
+          "service_filter": {
+            "*": "+"
+          },
+          "shipping_zone_id": 1
+        }
+      ]
+    }
+  ]
+}
