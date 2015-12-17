@@ -1,0 +1,19 @@
+{
+  "location": {
+    "id": 487838322,
+    "name": "Fifth Avenue AppleStore",
+    "deleted_at": null,
+    "address1": null,
+    "address2": null,
+    "city": null,
+    "zip": null,
+    "province": null,
+    "country": "US",
+    "phone": null,
+    "created_at": "2015-12-08T11:44:58-05:00",
+    "updated_at": "2015-12-08T11:44:58-05:00",
+    "country_code": "US",
+    "country_name": "United States",
+    "province_code": null
+  }
+}
