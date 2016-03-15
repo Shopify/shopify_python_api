@@ -32,7 +32,9 @@
       "trial_days": 0,
       "trial_ends_on": null,
       "updated_at": "2015-01-16T11:46:56-05:00",
-      "decorated_return_url": "http://yourapp.com?charge_id=455696195"
+      "decorated_return_url": "http://yourapp.com?charge_id=455696195",
+      "capped_amount": 100,
+      "terms": "$1 for 1000 emails"
     }
   ]
 }
