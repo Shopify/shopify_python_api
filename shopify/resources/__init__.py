@@ -19,6 +19,7 @@ from .script_tag import ScriptTag
 from .product_search_engine import ProductSearchEngine
 from .application_charge import ApplicationCharge
 from .recurring_application_charge import RecurringApplicationCharge
+from .usage_charge import UsageCharge
 from .asset import Asset
 from .theme import Theme
 from .customer_saved_search import CustomerSavedSearch

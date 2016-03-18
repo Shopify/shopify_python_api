@@ -1,0 +1,11 @@
+{
+  "usage_charge": {
+    "id": 359376002,
+    "description": "1000 emails",
+    "price": "9.00",
+    "recurring_application_charge_id": 654381177,
+    "billing_on": "2015-07-08",
+    "balance_remaining": "91.00",
+    "balance_used": "9.00"
+  }
+}

@@ -21,3 +21,20 @@ class RecurringApplicationChargeTest(TestCase):
         self.fake("recurring_application_charges", body=self.load_fixture("recurring_application_charges_no_active"))
         charge = shopify.RecurringApplicationCharge.current()
         self.assertEqual(charge, None)
+
+    def test_usage_charges_method_returns_associated_usage_charges(self):
+        self.fake("recurring_application_charges")
+        charge = shopify.RecurringApplicationCharge.current()
+
+        self.fake("recurring_application_charges/455696195/usage_charges", method='GET', body=self.load_fixture('usage_charges'))
+        usage_charges = charge.usage_charges()
+        self.assertEqual(len(usage_charges), 2)
+
+    def test_customize_method_increases_capped_amount(self):
+        self.fake("recurring_application_charges")
+        charge = shopify.RecurringApplicationCharge.current()
+        self.assertEqual(charge.capped_amount, 100)
+
+        self.fake("recurring_application_charges/455696195/customize.json?recurring_application_charge%5Bcapped_amount%5D=200", extension=False, method='PUT', headers={'Content-length':'0', 'Content-type': 'application/json'}, body=self.load_fixture('recurring_application_charge_adjustment'))
+        charge.customize(capped_amount= 200)
+        self.assertTrue(charge.update_capped_amount_url)
