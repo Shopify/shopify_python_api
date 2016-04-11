@@ -180,7 +180,6 @@ Use the `bin/shopify_api.py` script when running from the source tree. It will a
 
 Currently there is no support for:
 
-* python 3
 * asynchronous requests
 * persistent connections
 
