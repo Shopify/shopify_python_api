@@ -11,8 +11,10 @@ class Countable(object):
 
 class Metafields(object):
 
-    def metafields(self):
-        return shopify.resources.Metafield.find(resource=self.__class__.plural, resource_id=self.id)
+    def metafields(self, _options=None, **kwargs):
+        if _options is None:
+            _options = kwargs
+        return shopify.resources.Metafield.find(resource=self.__class__.plural, resource_id=self.id, **_options)
 
     def add_metafield(self, metafield):
         if self.is_new():
