@@ -253,6 +253,24 @@ To run tests, simply open up the project directory in a terminal and run:
 python setup.py test
 ```
 
+Alternatively, use [tox](http://tox.readthedocs.org/en/latest/) to
+sequentially test against different versions of Python in isolated
+environments:
+
+```shell
+pip install tox
+tox
+```
+
+See the tox documentation for help on running only specific environments
+at a time. The related tool [detox](https://pypi.python.org/pypi/detox)
+can be used to run tests in these environments in parallel:
+
+```shell
+pip install detox
+detox
+```
+
 ## Limitations
 
 Currently there is no support for:
