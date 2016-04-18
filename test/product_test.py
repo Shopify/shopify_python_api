@@ -28,6 +28,26 @@ class ProductTest(TestCase):
         for field in metafields:
             self.assertTrue(isinstance(field, shopify.Metafield))
 
+    def test_get_metafields_for_product_with_params(self):
+        self.fake("products/632910392/metafields.json?limit=2", extension=False, body=self.load_fixture('metafields'))
+
+        metafields = self.product.metafields(limit=2)
+        self.assertEqual(2, len(metafields))
+        for field in metafields:
+            self.assertTrue(isinstance(field, shopify.Metafield))
+
+    def test_get_metafields_for_product_count(self):
+        self.fake("products/632910392/metafields/count", body=self.load_fixture('metafields_count'))
+
+        metafields_count = self.product.metafields_count()
+        self.assertEqual(2, metafields_count)
+
+    def test_get_metafields_for_product_count_with_params(self):
+        self.fake("products/632910392/metafields/count.json?value_type=string", extension=False, body=self.load_fixture('metafields_count'))
+
+        metafields_count = self.product.metafields_count(value_type="string")
+        self.assertEqual(2, metafields_count)
+
     def test_update_loaded_variant(self):
         self.fake("products/632910392/variants/808950810", method='PUT', code=200, body=self.load_fixture('variant'))
 
