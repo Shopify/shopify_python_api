@@ -153,7 +153,7 @@ these steps:
     ```
 
 6.  Now you're ready to make authorized API requests to your shop!
-    Data is returned as ActiveResource instances:
+    Data is returned as [ActiveResource](https://github.com/Shopify/pyactiveresource) instances:
 
     ```python
     # Get the current shop
