@@ -156,6 +156,7 @@ these steps:
     Data is returned as ActiveResource instances:
 
     ```python
+    # Get the current shop
     shop = shopify.Shop.current()
 
     # Get a specific product
