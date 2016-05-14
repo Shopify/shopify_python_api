@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/Shopify/shopify_python_api.svg?branch=master)](https://travis-ci.org/Shopify/shopify_python_api)
-[![Package Version](https://pypip.in/version/ShopifyAPI/badge.svg)](https://pypi.python.org/pypi/ShopifyAPI)
+[![PyPI version](https://badge.fury.io/py/shopifyapi.svg)](https://badge.fury.io/py/shopifyapi)
 
 # Shopify API
 
