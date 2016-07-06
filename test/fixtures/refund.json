@@ -1,0 +1,116 @@
+{
+  "refund": {
+      "id": 509562969,
+      "order_id": 450789469,
+      "created_at": "2016-06-20T13:35:06-04:00",
+      "note": "it broke during shipping",
+      "restock": true,
+      "user_id": 799407056,
+      "refund_line_items": [
+        {
+          "id": 104689539,
+          "quantity": 1,
+          "line_item_id": 703073504,
+          "line_item": {
+            "id": 703073504,
+            "variant_id": 457924702,
+            "title": "IPod Nano - 8gb",
+            "quantity": 1,
+            "price": "199.00",
+            "grams": 200,
+            "sku": "IPOD2008BLACK",
+            "variant_title": "black",
+            "vendor": null,
+            "fulfillment_service": "manual",
+            "product_id": 632910392,
+            "requires_shipping": true,
+            "taxable": true,
+            "gift_card": false,
+            "name": "IPod Nano - 8gb - black",
+            "variant_inventory_management": "shopify",
+            "properties": [
+            ],
+            "product_exists": true,
+            "fulfillable_quantity": 1,
+            "total_discount": "0.00",
+            "fulfillment_status": null,
+            "tax_lines": [
+              {
+                "title": "State Tax",
+                "price": "3.98",
+                "rate": 0.06
+              }
+            ]
+          }
+        },
+        {
+          "id": 709875399,
+          "quantity": 1,
+          "line_item_id": 466157049,
+          "line_item": {
+            "id": 466157049,
+            "variant_id": 39072856,
+            "title": "IPod Nano - 8gb",
+            "quantity": 1,
+            "price": "199.00",
+            "grams": 200,
+            "sku": "IPOD2008GREEN",
+            "variant_title": "green",
+            "vendor": null,
+            "fulfillment_service": "manual",
+            "product_id": 632910392,
+            "requires_shipping": true,
+            "taxable": true,
+            "gift_card": false,
+            "name": "IPod Nano - 8gb - green",
+            "variant_inventory_management": "shopify",
+            "properties": [
+              {
+                "name": "Custom Engraving Front",
+                "value": "Happy Birthday"
+              },
+              {
+                "name": "Custom Engraving Back",
+                "value": "Merry Christmas"
+              }
+            ],
+            "product_exists": true,
+            "fulfillable_quantity": 1,
+            "total_discount": "0.00",
+            "fulfillment_status": null,
+            "tax_lines": [
+              {
+                "title": "State Tax",
+                "price": "3.98",
+                "rate": 0.06
+              }
+            ]
+          }
+        }
+      ],
+      "transactions": [
+        {
+          "id": 179259969,
+          "order_id": 450789469,
+          "amount": "209.00",
+          "kind": "refund",
+          "gateway": "bogus",
+          "status": "success",
+          "message": null,
+          "created_at": "2005-08-05T12:59:12-04:00",
+          "test": false,
+          "authorization": "authorization-key",
+          "currency": "USD",
+          "location_id": null,
+          "user_id": null,
+          "parent_id": null,
+          "device_id": null,
+          "receipt": {},
+          "error_code": null,
+          "source_name": "web"
+        }
+      ],
+      "order_adjustments": [
+      ]
+    }
+}
