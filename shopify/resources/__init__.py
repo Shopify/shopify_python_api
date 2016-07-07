@@ -35,6 +35,7 @@ from .article import Article
 from .blog import Blog
 from .page import Page
 from .country import Country
+from .refund import Refund
 from .fulfillment import Fulfillment
 from .fulfillment_service import FulfillmentService
 from .carrier_service import CarrierService
