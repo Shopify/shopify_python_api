@@ -1,4 +1,9 @@
+== Version 2.1.6
+
+* Added Refund resource
+
 == Version 2.1.5
+
 * bump pyactiveresource for camelcase bugfix
 
 == Version 2.1.4
