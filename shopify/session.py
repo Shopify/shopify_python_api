@@ -136,7 +136,7 @@ class Session(object):
         """
         def encoded_pairs(params):
             for k, v in six.iteritems(params):
-                if k not in ['signature', 'hmac']:
+                if k != 'hmac':
                     # escape delimiters to avoid tampering
                     k = str(k).replace("%", "%25").replace("=", "%3D")
                     v = str(v).replace("%", "%25")
