@@ -129,7 +129,6 @@ class SessionTest(TestCase):
           'shop': 'some-shop.myshopify.com',
           'code': 'a94a110d86d2452eb3e2af4cfb8a3828',
           'timestamp': '1337178173',
-          'signature': '6e39a2ea9e497af6cb806720da1f1bf3',
           'hmac': '2cb1a277650a659f1b11e92a4a64275b128e037f2c3390e3c8fd2d8721dac9e2',
         }
         self.assertEqual(shopify.Session.calculate_hmac(params), params['hmac'])
@@ -148,7 +147,6 @@ class SessionTest(TestCase):
           'shop': 'some-shop.myshopify.com',
           'code': 'a94a110d86d2452eb3e2af4cfb8a3828',
           'timestamp': '1337178173',
-          'signature': '6e39a2ea9e497af6cb806720da1f1bf3',
           'hmac': u('2cb1a277650a659f1b11e92a4a64275b128e037f2c3390e3c8fd2d8721dac9e2'),
         }
         self.assertTrue(shopify.Session.validate_hmac(params))
@@ -156,17 +154,6 @@ class SessionTest(TestCase):
     def test_return_token_if_hmac_is_valid(self):
         shopify.Session.secret='secret'
         params = {'code': 'any-code', 'timestamp': time.time()}
-        hmac = shopify.Session.calculate_hmac(params)
-        params['hmac'] = hmac
-
-        self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', body='{"access_token" : "token"}', has_user_agent=False)
-        session = shopify.Session('http://localhost.myshopify.com')
-        token = session.request_token(params)
-        self.assertEqual("token", token)
-
-    def test_return_token_if_hmac_is_valid_but_signature_also_provided(self):
-        shopify.Session.secret='secret'
-        params = {'code': 'any-code', 'timestamp': time.time(), 'signature': '6e39a2'}
         hmac = shopify.Session.calculate_hmac(params)
         params['hmac'] = hmac
 
