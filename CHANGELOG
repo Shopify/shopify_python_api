@@ -1,3 +1,7 @@
+== Version 2.1.7
+
+* Removed all references to the deprecated MD5 `signature` parameter which is no longer provided by Shopify.
+
 == Version 2.1.6
 
 * Added Refund resource
