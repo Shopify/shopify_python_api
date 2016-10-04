@@ -9,3 +9,6 @@ class Fulfillment(ShopifyResource):
 
     def complete(self):
         self._load_attributes_from_response(self.post("complete"))
+
+    def open(self):
+        self._load_attributes_from_response(self.post("open"))
