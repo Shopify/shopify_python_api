@@ -112,7 +112,7 @@ class Tasks(object):
                 domain = "%s.myshopify.com" % (connection)
             config['domain'] = domain
             print("")
-            print("open https://%s/admin/api in your browser to get API credentials" % (domain))
+            print("open https://%s/admin/apps/private in your browser to generate API credentials" % (domain))
             config['api_key'] = raw_input("API key? ")
             config['password'] = raw_input("Password? ")
             if not os.path.isdir(cls._shop_config_dir):
