@@ -17,3 +17,6 @@ class Variant(ShopifyResource, mixins.Metafields):
         if 'product_id' not in self._prefix_options:
             self._prefix_options['product_id'] = self.product_id
         return super(ShopifyResource, self).save()
+
+    def add_image(self, image):
+        self.attributes['image_id'] = image.id

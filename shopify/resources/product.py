@@ -30,3 +30,7 @@ class Product(ShopifyResource, mixins.Metafields, mixins.Events):
     def add_variant(self, variant):
         variant.attributes['product_id'] = self.id
         return variant.save()
+
+    def add_image(self, image):
+        image.attributes['product_id'] = self.id
+        return image.save()
