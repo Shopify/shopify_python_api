@@ -28,11 +28,11 @@ def credit_maxed():
 maxed = credit_maxed
 
 def credit_limit():
-    return api_credit_limit_param()[1]
+    return int(api_credit_limit_param()[1])
 
 call_limit = credit_limit
 
 def credit_used():
-    return api_credit_limit_param()[0]
+    return int(api_credit_limit_param()[0])
 
 call_count = credit_used
