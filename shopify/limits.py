@@ -9,13 +9,13 @@
 
 
 # Imports
-from shopify import ShopifyResource
+import shopify
 
 CREDIT_LIMIT_HEADER_PARAM = 'x-shopify-shop-api-call-limit'
 
 # Functions
 def api_credit_limit_param():
-    return ShopifyResource.connection.response.headers[CREDIT_LIMIT_HEADER_PARAM].split('/')
+    return shopify.ShopifyResource.connection.response.headers[CREDIT_LIMIT_HEADER_PARAM].split('/')
 
 def credit_left():
     return credit_limit() - credit_used()
