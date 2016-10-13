@@ -19,3 +19,10 @@ class Order(ShopifyResource, mixins.Metafields, mixins.Events):
 
     def capture(self, amount=""):
         return Transaction.create({"amount": amount, "kind": "capture", "order_id": self.id})
+
+    def add_fulfillment(self, fulfillment):
+        if not self.id:
+            self.save()
+        fulfillment.order_id = self.id
+        fulfillment.save()
+
