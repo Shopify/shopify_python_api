@@ -1,6 +1,7 @@
 from ..base import ShopifyResource
 from shopify import mixins
 import shopify
+from collections import Iterable
 
 
 class Product(ShopifyResource, mixins.Metafields, mixins.Events):
@@ -31,10 +32,24 @@ class Product(ShopifyResource, mixins.Metafields, mixins.Events):
         if not self.id:
             self.save()
         variant.attributes['product_id'] = self.id
-        return variant.save()
+
+        result =  variant.save()
+        if result:
+            if not isinstance(self.attributes.get('variants'), Iterable):
+                self.variants = []
+            self.variants.append(variant)
+
+        return result
 
     def add_image(self, image):
         if not self.id:
             self.save()
         image.attributes['product_id'] = self.id
-        return image.save()
+
+        result = image.save()
+        if result:
+            if not isinstance(self.attributes.get('images'), Iterable):
+                self.images = []
+            self.images.append(image)
+
+        return result

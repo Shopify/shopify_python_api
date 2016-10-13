@@ -1,6 +1,7 @@
 from ..base import ShopifyResource
 from shopify import mixins
 from .transaction import Transaction
+from collections import Iterable
 
 
 class Order(ShopifyResource, mixins.Metafields, mixins.Events):
@@ -24,5 +25,11 @@ class Order(ShopifyResource, mixins.Metafields, mixins.Events):
         if not self.id:
             self.save()
         fulfillment.order_id = self.id
-        fulfillment.save()
 
+        result = fulfillment.save()
+        if result:
+            if not isinstance(self.attributes.get('fulfillments'), Iterable):
+                self.fulfillments = []
+            self.fulfillments.append(fulfillment)
+
+        return result
