@@ -35,4 +35,6 @@ class Variant(ShopifyResource, mixins.Metafields):
         return super(ShopifyResource, self).save()
 
     def add_image(self, image):
+        if not image.id:
+            image.save()
         self.attributes['image_id'] = image.id
