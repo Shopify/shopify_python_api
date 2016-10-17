@@ -1,13 +1,5 @@
 #!/usr/bin/python
 
-############################################################
-#
-# Copyright 2016 Paladin Logic, Ltd
-#           All Rights Reserved
-#
-############################################################
-
-
 # Imports
 import shopify
 
