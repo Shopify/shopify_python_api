@@ -13,20 +13,6 @@ class Variant(ShopifyResource, mixins.Metafields):
         else:
             return "/admin"
 
-    @classmethod
-    def find_first(cls, from_=None, sku=None, **kwargs):
-        variant = None
-        if sku:
-            variants = cls._find_every(from_=from_, **kwargs)
-            for v in variants:
-                if v.sku == sku:
-                    variant = v
-                    break
-        else:
-            variant = ShopifyResource.find_first(cls, from_, **kwargs) 
-
-        return variant
-
     def save(self):
         if 'product_id' not in self._prefix_options:
             self._prefix_options['product_id'] = self.product_id
