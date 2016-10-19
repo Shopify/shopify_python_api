@@ -24,12 +24,12 @@ class Order(ShopifyResource, mixins.Metafields, mixins.Events):
     def add_fulfillment(self, fulfillment):
         if not self.id:
             self.save()
-        fulfillment.order_id = self.id
+        fulfillment.attributes['order_id'] = self.id
 
         result = fulfillment.save()
         if result:
             if not isinstance(self.attributes.get('fulfillments'), Iterable):
-                self.fulfillments = []
-            self.fulfillments.append(fulfillment)
+                self.attributes['fulfillments'] = []
+            self.attributes['fulfillments'].append(fulfillment)
 
         return result
