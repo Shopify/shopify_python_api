@@ -29,8 +29,9 @@ class Product(ShopifyResource, mixins.Metafields, mixins.Events):
         return collection.remove_product(self)
 
     def add_variant(self, variant):
-        if not self.id:
-            self.save()
+        if self.is_new():
+            raise ValueError("You can only add variants to a resource that has been saved")
+
         variant.attributes['product_id'] = self.id
 
         result =  variant.save()
@@ -42,8 +43,9 @@ class Product(ShopifyResource, mixins.Metafields, mixins.Events):
         return result
 
     def add_image(self, image):
-        if not self.id:
-            self.save()
+        if self.is_new():
+            raise ValueError("You can only add images to a resource that has been saved")
+
         image.attributes['product_id'] = self.id
 
         result = image.save()
