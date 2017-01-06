@@ -8,7 +8,7 @@ class Variant(ShopifyResource, mixins.Metafields):
     @classmethod
     def _prefix(cls, options={}):
         product_id = options.get("product_id")
-        if options.get('is_new'):
+        if product_id:
             return "/admin/products/%s" % (product_id)
         else:
             return "/admin"
