@@ -23,7 +23,7 @@ class Image(ShopifyResource):
             return super(Image, self).__getattr__(name)
 
     def attach_image(self, data, filename=None):
-        self.attributes["attachment"] = base64.b64encode(data)
+        self.attributes["attachment"] = base64.b64encode(data).decode()
         if filename:
             self.attributes["filename"] = filename
 
