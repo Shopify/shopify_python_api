@@ -1,0 +1,9 @@
+{
+  "draft_order_invoice": {
+    "to": "paul.norman@example.com",
+    "from": "steve@apple.com",
+    "subject": "Here is your new order invoice!",
+    "custom_message": "This is a test custom message.",
+    "bcc": [ ]
+  }
+}
