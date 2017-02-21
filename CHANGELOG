@@ -1,3 +1,6 @@
+== Version 2.2.0
+* Add support for draft orders
+
 == Version 2.1.8
 * Added support for `open` method on fulfillments
 
