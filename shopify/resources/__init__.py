@@ -50,5 +50,7 @@ from .gift_card import GiftCard
 from .discount import Discount
 from .shipping_zone import ShippingZone
 from .location import Location
+from .draft_order import DraftOrder
+from .draft_order_invoice import DraftOrderInvoice
 
 from ..base import ShopifyResource
