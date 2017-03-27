@@ -151,6 +151,16 @@ class SessionTest(TestCase):
         }
         self.assertTrue(shopify.Session.validate_hmac(params))
 
+    def test_parameter_validation_handles_missing_params(self):
+        # Test using the secret and parameter examples given in the Shopify API documentation.
+        shopify.Session.secret='hush'
+        params = {
+          'shop': 'some-shop.myshopify.com',
+          'code': 'a94a110d86d2452eb3e2af4cfb8a3828',
+          'hmac': u('2cb1a277650a659f1b11e92a4a64275b128e037f2c3390e3c8fd2d8721dac9e2'),
+        }
+        self.assertFalse(shopify.Session.validate_params(params))
+
     def test_return_token_if_hmac_is_valid(self):
         shopify.Session.secret='secret'
         params = {'code': 'any-code', 'timestamp': time.time()}

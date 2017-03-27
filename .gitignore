@@ -10,3 +10,4 @@ tags
 .DS_Store
 .eggs
 .python-version
+.cache
