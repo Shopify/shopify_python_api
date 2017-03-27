@@ -99,7 +99,7 @@ class Session(object):
         # Avoid replay attacks by making sure the request
         # isn't more than a day old.
         one_day = 24 * 60 * 60
-        if int(params['timestamp']) < time.time() - one_day:
+        if int(params.get('timestamp', 0)) < time.time() - one_day:
             return False
 
         return cls.validate_hmac(params)
