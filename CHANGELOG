@@ -1,3 +1,6 @@
+== Version 2.3.0
+* Add support for customer#send_invite
+
 == Version 2.2.0
 * Add support for draft orders
 
