@@ -1,0 +1,9 @@
+{
+  "customer_invite": {
+    "to": "paul.norman@example.com",
+    "from": "steve@apple.com",
+    "subject": "Welcome to my new store!",
+    "custom_message": "This is a test custom message.",
+    "bcc": [ ]
+  }
+}
