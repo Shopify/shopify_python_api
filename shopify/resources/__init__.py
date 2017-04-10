@@ -24,6 +24,7 @@ from .asset import Asset
 from .theme import Theme
 from .customer_saved_search import CustomerSavedSearch
 from .customer_group import CustomerGroup
+from .customer_invite import CustomerInvite
 from .customer import Customer
 from .event import Event
 from .webhook import Webhook
