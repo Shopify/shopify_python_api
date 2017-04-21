@@ -1,0 +1,9 @@
+{
+  "report": {
+    "id": 987,
+    "name": "Custom App Report",
+    "shopify_ql": "SHOW quantity_count, total_sales BY product_type, vendor, product_title FROM products SINCE -1m UNTIL -0m ORDER BY total_sales DESC",
+    "updated_at": "2017-04-12T14:00:54-04:00",
+    "category": "custom_app_reports"
+  }
+}
