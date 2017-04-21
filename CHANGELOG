@@ -1,3 +1,6 @@
+== Version 2.4.0
+* Add support for report publishing
+
 == Version 2.3.0
 * Add support for customer#send_invite
 
