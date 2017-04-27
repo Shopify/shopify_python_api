@@ -117,11 +117,11 @@ class Session(object):
             return hmac.compare_digest(hmac_calculated, hmac_to_verify)
         except AttributeError:
             if len(hmac_calculated) != len(hmac_to_verify):
-                print False
+                return False
             result = 0
             for x, y in zip(hmac_calculated, hmac_to_verify):
                 result |= ord(x) ^ ord(y)
-            print result == 0
+            return result == 0
 
     @classmethod
     def calculate_hmac(cls, params):
