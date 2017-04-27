@@ -10,4 +10,4 @@ Releasing shopify_python_api
 6. Push the changes to github
     git push --tags origin master
 7. Upload the source package to pypi
-    python setup.py sdist upload
+    python setup.py sdist upload --repository pypi
