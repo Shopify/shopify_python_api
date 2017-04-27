@@ -113,11 +113,15 @@ class Session(object):
         hmac_to_verify = params['hmac'].encode('utf-8')
 
         # Try to use compare_digest() to reduce vulnerability to timing attacks.
-        # If it's not available, just fall back to regular string comparison.
         try:
             return hmac.compare_digest(hmac_calculated, hmac_to_verify)
         except AttributeError:
-            return hmac_calculated == hmac_to_verify
+            if len(hmac_calculated) != len(hmac_to_verify):
+                print False
+            result = 0
+            for x, y in zip(hmac_calculated, hmac_to_verify):
+                result |= ord(x) ^ ord(y)
+            print result == 0
 
     @classmethod
     def calculate_hmac(cls, params):
