@@ -53,5 +53,6 @@ from .shipping_zone import ShippingZone
 from .location import Location
 from .draft_order import DraftOrder
 from .draft_order_invoice import DraftOrderInvoice
+from .report import Report
 
 from ..base import ShopifyResource
