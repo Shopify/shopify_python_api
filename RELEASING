@@ -9,5 +9,7 @@ Releasing shopify_python_api
     git tag -m "Release X.Y.Z" vX.Y.Z
 6. Push the changes to github
     git push --tags origin master
-7. Upload the source package to pypi
+7. Configure your credentials for pypi in $HOME/pypi.rc
+    (see https://docs.python.org/2/distutils/packageindex.html#the-pypirc-file for instructions)
+8. Upload the source package to pypi – you need to be a package owner in pypi to do this
     python setup.py sdist upload --repository pypi
