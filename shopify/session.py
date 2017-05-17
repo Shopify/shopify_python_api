@@ -104,6 +104,13 @@ class Session(object):
 
         return cls.validate_hmac(params)
 
+    # From https://github.com/kennethreitz/requests
+    def constant_time_compare(a, b):
+        result = abs(len(a) - len(b))
+        for l, r in zip(bytearray(a), bytearray(b)):
+            result |= l ^ r
+        return result == 0
+
     @classmethod
     def validate_hmac(cls, params):
         if 'hmac' not in params:
@@ -116,12 +123,8 @@ class Session(object):
         try:
             return hmac.compare_digest(hmac_calculated, hmac_to_verify)
         except AttributeError:
-            if len(hmac_calculated) != len(hmac_to_verify):
-                return False
-            result = 0
-            for x, y in zip(hmac_calculated, hmac_to_verify):
-                result |= ord(x) ^ ord(y)
-            return result == 0
+            return constant_time_compare(hmac_calculated, hmac_to_verify)
+        
 
     @classmethod
     def calculate_hmac(cls, params):
