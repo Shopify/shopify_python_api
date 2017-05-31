@@ -71,3 +71,4 @@ class PriceRuleTest(TestCase):
         self.assertEqual(discount_code, json.loads(self.http.request.data.decode("utf-8")))
         self.assertIsInstance(price_rule_discount_response, shopify.DiscountCode)
         self.assertEqual(discount_code['discount_code']['code'], price_rule_discount_response.code)
+
