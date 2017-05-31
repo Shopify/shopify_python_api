@@ -67,7 +67,7 @@ class PriceRuleTest(TestCase):
                   method='POST', 
                   body=price_rule_discount_fixture, 
                   headers={'Content-type': 'application/json'})
-        price_rule_discount_response = self.price_rule.add_discount(shopify.DiscountCode(discount_code['discount_code']))
+        price_rule_discount_response = self.price_rule.add_discount_code(shopify.DiscountCode(discount_code['discount_code']))
         self.assertEqual(discount_code, json.loads(self.http.request.data.decode("utf-8")))
         self.assertIsInstance(price_rule_discount_response, shopify.DiscountCode)
         self.assertEqual(discount_code['discount_code']['code'], price_rule_discount_response.code)
