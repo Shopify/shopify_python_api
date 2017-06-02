@@ -104,6 +104,13 @@ class Session(object):
 
         return cls.validate_hmac(params)
 
+    # From https://github.com/kennethreitz/requests
+    def constant_time_compare(a, b):
+        result = abs(len(a) - len(b))
+        for l, r in zip(bytearray(a), bytearray(b)):
+            result |= l ^ r
+        return result == 0
+
     @classmethod
     def validate_hmac(cls, params):
         if 'hmac' not in params:
@@ -113,11 +120,11 @@ class Session(object):
         hmac_to_verify = params['hmac'].encode('utf-8')
 
         # Try to use compare_digest() to reduce vulnerability to timing attacks.
-        # If it's not available, just fall back to regular string comparison.
         try:
             return hmac.compare_digest(hmac_calculated, hmac_to_verify)
         except AttributeError:
-            return hmac_calculated == hmac_to_verify
+            return constant_time_compare(hmac_calculated, hmac_to_verify)
+        
 
     @classmethod
     def calculate_hmac(cls, params):
