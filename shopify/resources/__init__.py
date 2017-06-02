@@ -54,5 +54,6 @@ from .location import Location
 from .draft_order import DraftOrder
 from .draft_order_invoice import DraftOrderInvoice
 from .report import Report
-
+from .price_rule import PriceRule
+from .discount_code import DiscountCode
 from ..base import ShopifyResource

@@ -1,0 +1,18 @@
+{
+  "price_rule": {
+    "id": 1213131,
+    "title": "BOGO",
+    "target_type": "line_item",
+    "target_selection": "all",
+    "allocation_method": "across",
+    "value_type": "percentage",
+    "value": -100,
+    "once_per_customer": true,
+    "usage_limit": null,
+    "customer_selection": "all",
+    "prerequisite_subtotal_range": null,
+    "prerequisite_shipping_price_range": null,
+    "starts_at": "2017-05-30T04:13:56Z",
+    "ends_at": null
+  }
+}
