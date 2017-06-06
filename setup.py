@@ -24,6 +24,7 @@ setup(name=NAME,
           'pyactiveresource>=2.1.2',
           'PyYAML',
           'six',
+          'pbr>=1.8.0',
       ],
       test_suite='test',
       tests_require=[
