@@ -11,3 +11,4 @@ tags
 .eggs
 .python-version
 .cache
+.tox/
