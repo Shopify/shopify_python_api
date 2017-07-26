@@ -167,10 +167,11 @@ class SessionTest(TestCase):
         hmac = shopify.Session.calculate_hmac(params)
         params['hmac'] = hmac
 
-        self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', body='{"access_token" : "token"}', has_user_agent=False)
+        self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', body='{"access_token" : "token", "scopes" : "a,b,c"}', has_user_agent=False)
         session = shopify.Session('http://localhost.myshopify.com')
-        token = session.request_token(params)
+        token, scopes = session.request_token(params)
         self.assertEqual("token", token)
+        self.assertEqual("a,b,c", scopes)
 
     def test_raise_error_if_hmac_is_invalid(self):
         shopify.Session.secret='secret'

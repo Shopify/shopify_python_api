@@ -38,9 +38,12 @@ class Session(object):
         yield
         shopify.ShopifyResource.activate_session(original_session)
 
-    def __init__(self, shop_url, token=None, params=None):
+    def __init__(self, shop_url, token=None, params=None, scopes=None):
+        if scopes is None:
+            scopes = []
         self.url = self.__prepare_url(shop_url)
         self.token = token
+        self.scopes = scopes
         return
 
     def create_permission_url(self, scope, redirect_uri=None):
@@ -63,8 +66,10 @@ class Session(object):
         response = urllib.request.urlopen(request)
 
         if response.code == 200:
-            self.token = json.loads(response.read().decode('utf-8'))['access_token']
-            return self.token
+            json_response = json.loads(response.read().decode('utf-8'))
+            self.token = json_response['access_token']
+            self.scopes = json_response['scopes']
+            return self.token, self.scopes
         else:
             raise Exception(response.msg)
 
