@@ -1,16 +1,27 @@
 Releasing shopify_python_api
 
 1. Check the Semantic Versioning page for info on how to version the new release: http://semver.org
+
 2. Update version in shopify/version.py
+
 3. Update CHANGELOG entry for the release.
+
 4. Commit the changes
     git commit -m "Release vX.Y.Z"
+    
 5. Tag the release with the version
     git tag -m "Release X.Y.Z" vX.Y.Z
+    
 6. Push the changes to github
     git push --tags origin master
-7. Configure your credentials for pypi in $HOME/pypi.rc
-    - Set the repository to https://pypi.python.org/pypi
+    
+7. Configure your credentials for pypi in $HOME/.pypirc. Do not specify a repository URL.
     (see https://docs.python.org/2/distutils/packageindex.html#the-pypirc-file for further instructions)
-8. Upload the source package to pypi – you need to be a package owner in pypi to do this
-    python setup.py sdist upload --repository pypi
+    
+8. Create the source package using sdist
+    python setup.py sdist
+
+8. Upload the source package to pypi using twine – you need to be a package owner in pypi to do this
+    twine upload dist/ShopifyAPI-x.y.z.tar.gz
+    
+If you need access to pypi (in general, this is only for Shopify staff members) ping [@jamiemtdwyer](https://github.com/jamiemtdwyer).
