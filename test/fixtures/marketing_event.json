@@ -1,0 +1,28 @@
+{
+  "marketing_event": {
+    "id": 998730532,
+    "event_target": "",
+    "event_type": "post",
+    "remote_id": "12345678",
+    "started_at": "2017-01-15T10:56:18-05:00",
+    "ended_at": null,
+    "scheduled_to_end_at": null,
+    "budget": "10.11",
+    "currency": "GBP",
+    "manage_url": null,
+    "preview_url": null,
+    "utm_campaign": "1234567890",
+    "utm_source": "facebook",
+    "utm_medium": "facebook-post",
+    "utm_content": null,
+    "utm_term": null,
+    "budget_type": "daily",
+    "description": null,
+    "marketing_channel": "social",
+    "paid": false,
+    "referring_domain": "facebook.com",
+    "breadcrumb_id": null,
+    "marketed_resources": [
+    ]
+  }
+}

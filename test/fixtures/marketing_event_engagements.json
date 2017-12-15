@@ -1,0 +1,15 @@
+{
+  "engagements": [
+    {
+      "occurred_on": "2017-01-15",
+      "views_count": 0,
+      "impressions_count": null,
+      "clicks_count": 0,
+      "favorites_count": 0,
+      "comments_count": null,
+      "shares_count": null,
+      "ad_spend": "10.00",
+      "is_cumulative": true
+    }
+  ]
+}
