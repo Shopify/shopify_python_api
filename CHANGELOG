@@ -1,3 +1,6 @@
+== Version 2.6.0
+* Added support for Marketing Event API through Marketing Event resource
+
 == Version 2.5.1
 * Fixed an issue preventing creation of Order Risk resources
 
