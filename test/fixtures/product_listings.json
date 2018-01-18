@@ -1,0 +1,174 @@
+[
+  {
+    "product_id": 2,
+    "created_at": "2017-01-06T14:52:56-05:00",
+    "updated_at": "2017-01-06T14:52:56-05:00",
+    "body_html": null,
+    "handle": "synergistic-silk-chair",
+    "product_type": "morph magnetic solutions",
+    "title": "Synergistic Silk Chair",
+    "vendor": "O'Hara, Fritsch and Hudson",
+    "available": true,
+    "tags": "",
+    "published_at": "2017-01-06T14:52:53-05:00",
+    "images": [
+
+    ],
+    "options": [
+      {
+        "id": 2,
+        "name": "Color or something",
+        "product_id": 2,
+        "position": 1
+      }
+    ],
+    "variants": [
+      {
+        "id": 3,
+        "title": "Aerodynamic Copper Clock",
+        "option_values": [
+          {
+            "option_id": 2,
+            "name": "Color or something",
+            "value": "Aerodynamic Copper Clock"
+          }
+        ],
+        "price": "179.99",
+        "formatted_price": "$179.99",
+        "compare_at_price": null,
+        "grams": 8400,
+        "requires_shipping": true,
+        "sku": "",
+        "barcode": null,
+        "taxable": true,
+        "position": 1,
+        "available": true,
+        "inventory_policy": "deny",
+        "inventory_quantity": 810,
+        "inventory_management": "shopify",
+        "fulfillment_service": "manual",
+        "weight": 8.4,
+        "weight_unit": "kg",
+        "image_id": null,
+        "created_at": "2017-01-04T17:07:47-05:00",
+        "updated_at": "2017-01-04T17:07:47-05:00"
+      },
+      {
+        "id": 4,
+        "title": "Awesome Concrete Knife",
+        "option_values": [
+          {
+            "option_id": 2,
+            "name": "Color or something",
+            "value": "Awesome Concrete Knife"
+          }
+        ],
+        "price": "179.99",
+        "formatted_price": "$179.99",
+        "compare_at_price": null,
+        "grams": 8400,
+        "requires_shipping": true,
+        "sku": "",
+        "barcode": null,
+        "taxable": true,
+        "position": 2,
+        "available": true,
+        "inventory_policy": "deny",
+        "inventory_quantity": 1,
+        "inventory_management": null,
+        "fulfillment_service": "manual",
+        "weight": 8.4,
+        "weight_unit": "kg",
+        "image_id": null,
+        "created_at": "2017-01-04T17:07:47-05:00",
+        "updated_at": "2017-01-04T17:07:47-05:00"
+      }
+    ]
+  },
+  {
+    "product_id": 1,
+    "created_at": "2017-01-06T14:52:54-05:00",
+    "updated_at": "2017-01-06T14:52:54-05:00",
+    "body_html": null,
+    "handle": "rustic-copper-bottle",
+    "product_type": "maximize viral channels",
+    "title": "Rustic Copper Bottle",
+    "vendor": "Kuphal and Sons",
+    "available": true,
+    "tags": "",
+    "published_at": "2017-01-06T14:52:52-05:00",
+    "images": [
+
+    ],
+    "options": [
+      {
+        "id": 1,
+        "name": "Color or something",
+        "product_id": 1,
+        "position": 1
+      }
+    ],
+    "variants": [
+      {
+        "id": 1,
+        "title": "Awesome Bronze Hat",
+        "option_values": [
+          {
+            "option_id": 1,
+            "name": "Color or something",
+            "value": "Awesome Bronze Hat"
+          }
+        ],
+        "price": "111.99",
+        "formatted_price": "$111.99",
+        "compare_at_price": null,
+        "grams": 1800,
+        "requires_shipping": true,
+        "sku": "",
+        "barcode": null,
+        "taxable": true,
+        "position": 1,
+        "available": true,
+        "inventory_policy": "deny",
+        "inventory_quantity": 65,
+        "inventory_management": "shopify",
+        "fulfillment_service": "manual",
+        "weight": 1.8,
+        "weight_unit": "kg",
+        "image_id": null,
+        "created_at": "2017-01-04T17:07:07-05:00",
+        "updated_at": "2017-01-04T17:07:07-05:00"
+      },
+      {
+        "id": 2,
+        "title": "Rustic Marble Bottle",
+        "option_values": [
+          {
+            "option_id": 1,
+            "name": "Color or something",
+            "value": "Rustic Marble Bottle"
+          }
+        ],
+        "price": "111.99",
+        "formatted_price": "$111.99",
+        "compare_at_price": null,
+        "grams": 1800,
+        "requires_shipping": true,
+        "sku": "",
+        "barcode": null,
+        "taxable": true,
+        "position": 2,
+        "available": true,
+        "inventory_policy": "deny",
+        "inventory_quantity": 1,
+        "inventory_management": null,
+        "fulfillment_service": "manual",
+        "weight": 1.8,
+        "weight_unit": "kg",
+        "image_id": null,
+        "created_at": "2017-01-04T17:07:07-05:00",
+        "updated_at": "2017-01-04T17:07:07-05:00"
+      }
+    ]
+  }
+]
