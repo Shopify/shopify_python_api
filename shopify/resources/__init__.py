@@ -16,7 +16,6 @@ from .receipt import Receipt
 from .rule import Rule
 from .tax_line import TaxLine
 from .script_tag import ScriptTag
-from .product_search_engine import ProductSearchEngine
 from .application_charge import ApplicationCharge
 from .recurring_application_charge import RecurringApplicationCharge
 from .usage_charge import UsageCharge
