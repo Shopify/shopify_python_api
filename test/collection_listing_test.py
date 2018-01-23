@@ -23,7 +23,7 @@ class CollectionListingTest(TestCase):
         self.fake('collection_listings/1', method='GET', status=200, body=self.load_fixture('collection_listing'))
 
         collection_listing = shopify.CollectionListing()
-        collection_listing.id = 1
+        collection_listing.collection_id = 1
         collection_listing.reload()
 
         self.assertEqual(1, collection_listing.collection_id)
