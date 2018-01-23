@@ -251,6 +251,7 @@ version won't be used.
 To run tests, simply open up the project directory in a terminal and run:
 
 ```shell
+pip install setuptools --upgrade`
 python setup.py test
 ```
 
