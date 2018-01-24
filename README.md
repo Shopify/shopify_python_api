@@ -193,6 +193,33 @@ these steps:
      shopify.ShopifyResource.clear_session()
      ```
 
+### Advanced Usage
+It is recommended to have at least a basic grasp on the principles of [ActiveResource](https://apidock.com/rails/ActiveResource/Base). The [pyactiveresource](https://github.com/Shopify/pyactiveresource) library, which this package relies heavily upon is a port of rails/ActiveResource to Python.
+
+Instances of `pyactiveresource` resources map to RESTful resources in the Shopify API.
+
+`pyactiveresource` exposes life cycle methods for creating, finding, updating, and deleting resources which are equivalent to the `POST`, `GET`, `PUT`, and `DELETE` HTTP verbs.
+
+```python
+product = shopify.Product()
+product.title = "Shopify Logo T-Shirt"
+product.id                          # => 292082188312
+product.save()                      # => True
+
+shopify.Product.exists(product.id)  # => True
+
+product = shopify.Product.find(292082188312)
+# Resource holding our newly created Product object
+# Inspect attributes with person.attributes
+
+product.price = 19.99
+product.save()                      # => True
+product.destroy()
+# Delete the resource from the remote server (i.e. Shopify)
+```
+
+The [tests for this package](https://github.com/Shopify/shopify_python_api/tree/master/test) also serve to provide advanced examples of usage.
+
 ### Console
 
 This package also includes the `shopify_api.py` script to make it easy to
