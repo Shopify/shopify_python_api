@@ -210,7 +210,7 @@ shopify.Product.exists(product.id)  # => True
 
 product = shopify.Product.find(292082188312)
 # Resource holding our newly created Product object
-# Inspect attributes with person.attributes
+# Inspect attributes with product.attributes
 
 product.price = 19.99
 product.save()                      # => True
