@@ -1,0 +1,18 @@
+{
+  "storefront_access_tokens": [
+    {
+      "id": 1,
+      "access_token": "477697f16c722efd66918cff7b3657a7",
+      "access_scope": "unauthenticated_read_product_listings",
+      "created_at": "2016-11-15T14:15:10-05:00",
+      "title": "Test 1"
+    },
+    {
+      "id": 2,
+      "access_token": "477697f16c722efd66918cff7b3657a7",
+      "access_scope": "unauthenticated_read_product_listings",
+      "created_at": "2016-11-15T14:15:10-05:00",
+      "title": "Test 2"
+    }
+  ]
+}

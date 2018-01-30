@@ -58,5 +58,7 @@ from .discount_code import DiscountCode
 from .marketing_event import MarketingEvent
 from .collection_listing import CollectionListing
 from .product_listing import ProductListing
+from .resource_feedback import ResourceFeedback
+from .storefront_access_token import StorefrontAccessToken
 
 from ..base import ShopifyResource
