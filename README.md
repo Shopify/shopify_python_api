@@ -220,6 +220,16 @@ product.destroy()
 
 The [tests for this package](https://github.com/Shopify/shopify_python_api/tree/master/test) also serve to provide advanced examples of usage.
 
+### Prefix options
+
+Some resources such as `Fulfillment` are prefixed by a parent resource in the Shopify API.
+
+e.g. `orders/450789469/fulfillments/255858046`
+
+In order to interact with these resources, you must specify the identifier of the parent resource in your request.
+
+e.g. `shopify.Fulfillment.find(255858046, order_id=450789469)`
+
 ### Console
 
 This package also includes the `shopify_api.py` script to make it easy to
