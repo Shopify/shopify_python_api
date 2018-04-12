@@ -1,0 +1,17 @@
+{
+  "adjustment": {
+    "remote_transaction_url": null,
+    "user_id": 0,
+    "created_at": "2018-04-02T16:45:14-04:00",
+    "updated_at": "2018-04-02T16:45:14-04:00",
+    "number": 3,
+    "note": null,
+    "amount": "100.00",
+    "gift_card_id": 4208208,
+    "order_transaction_id": null,
+    "processed_at": "2018-04-02T16:45:14-04:00",
+    "api_client_id": 2349816,
+    "remote_transaction_ref": null,
+    "id": 1796440070
+  }
+}

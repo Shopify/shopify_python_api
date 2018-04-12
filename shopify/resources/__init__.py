@@ -47,6 +47,7 @@ from .order_risk import OrderRisk
 from .policy import Policy
 from .smart_collection import SmartCollection
 from .gift_card import GiftCard
+from .gift_card_adjustment import GiftCardAdjustment
 from .shipping_zone import ShippingZone
 from .location import Location
 from .draft_order import DraftOrder
