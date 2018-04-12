@@ -48,7 +48,7 @@ class Asset(ShopifyResource):
             return data
         data = self.attributes.get("attachment")
         if data:
-            return base64.b64decode(data)
+            return base64.b64decode(data).decode()
 
     def __set_value(self, data):
         self.__wipe_value_attributes()
@@ -57,7 +57,7 @@ class Asset(ShopifyResource):
     value = property(__get_value, __set_value, None, "The asset's value or attachment")
 
     def attach(self, data):
-        self.attachment = base64.b64encode(data)
+        self.attachment = base64.b64encode(data).decode()
 
     def destroy(self):
         options = {"asset[key]": self.key}

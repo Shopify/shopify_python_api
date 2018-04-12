@@ -1,3 +1,5 @@
+import base64
+
 import shopify
 from test.test_helper import TestCase
 
@@ -39,3 +41,13 @@ class AssetTest(TestCase):
 
         self.fake("themes/1/assets.json?asset%5Bkey%5D=templates%2Findex.liquid", extension=False, method='DELETE', body="{}")
         v.destroy()
+
+    def test_attach(self):
+        self.fake("themes/1/assets", method='PUT', body=self.load_fixture('asset'), headers={'Content-type': 'application/json'})
+        attachment = b'dGVzdCBiaW5hcnkgZGF0YTogAAE='
+        key = 'assets/test.jpeg'
+        theme_id = 1
+        asset = shopify.Asset({'key': key, 'theme_id': theme_id})
+        asset.attach(attachment)
+        asset.save()
+        self.assertEqual(base64.b64encode(attachment).decode(), asset.attributes['attachment'])
