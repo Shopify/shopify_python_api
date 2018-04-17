@@ -1,0 +1,24 @@
+{
+  "inventory_levels": [
+    {
+      "inventory_item_id": 39072856,
+      "location_id": 487838322,
+      "available": 27
+    },
+    {
+      "inventory_item_id": 808950810,
+      "location_id": 905684977,
+      "available": 1
+    },
+    {
+      "inventory_item_id": 808950810,
+      "location_id": 487838322,
+      "available": 9
+    },
+    {
+      "inventory_item_id": 39072856,
+      "location_id": 905684977,
+      "available": 3
+    }
+  ]
+}
