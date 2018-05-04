@@ -60,5 +60,7 @@ from .collection_listing import CollectionListing
 from .product_listing import ProductListing
 from .resource_feedback import ResourceFeedback
 from .storefront_access_token import StorefrontAccessToken
+from .inventory_item import InventoryItem
+from .inventory_level import InventoryLevel
 
 from ..base import ShopifyResource
