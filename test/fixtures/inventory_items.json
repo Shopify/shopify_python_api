@@ -1,0 +1,25 @@
+{
+  "inventory_items": [
+    {
+      "id": 39072856,
+      "sku": "IPOD2008GREEN",
+      "created_at": "2018-05-07T15:33:38-04:00",
+      "updated_at": "2018-05-07T15:33:38-04:00",
+      "tracked": true
+    },
+    {
+      "id": 457924702,
+      "sku": "IPOD2008BLACK",
+      "created_at": "2018-05-07T15:33:38-04:00",
+      "updated_at": "2018-05-07T15:33:38-04:00",
+      "tracked": true
+    },
+    {
+      "id": 808950810,
+      "sku": "IPOD2008PINK",
+      "created_at": "2018-05-07T15:33:38-04:00",
+      "updated_at": "2018-05-07T15:33:38-04:00",
+      "tracked": true
+    }
+  ]
+}

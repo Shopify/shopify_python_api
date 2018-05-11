@@ -1,0 +1,28 @@
+{
+  "inventory_levels": [
+    {
+      "inventory_item_id": 39072856,
+      "location_id": 487838322,
+      "available": 27,
+      "updated_at": "2018-05-07T15:33:38-04:00"
+    },
+    {
+      "inventory_item_id": 808950810,
+      "location_id": 905684977,
+      "available": 1,
+      "updated_at": "2018-05-07T15:33:38-04:00"
+    },
+    {
+      "inventory_item_id": 808950810,
+      "location_id": 487838322,
+      "available": 9,
+      "updated_at": "2018-05-07T15:33:38-04:00"
+    },
+    {
+      "inventory_item_id": 39072856,
+      "location_id": 905684977,
+      "available": 3,
+      "updated_at": "2018-05-07T15:33:38-04:00"
+    }
+  ]
+}
