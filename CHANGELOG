@@ -1,3 +1,9 @@
+== Version 3.1.0
+* Adds InventoryItem resource
+* Adds InventoryLevel resource
+* Adds GiftCardAdjustment resource
+* Fix to properly handle byte data for Asset.attach()
+
 == Version 3.0.0
 * Added CollectListing resource
 * Added ResourceFeedback resource
