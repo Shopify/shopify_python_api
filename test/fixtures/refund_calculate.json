@@ -1,0 +1,31 @@
+{
+  "refund": {
+    "shipping": {
+      "amount": "5.00",
+      "tax": "0.00",
+      "maximum_refundable": "5.00"
+    },
+    "refund_line_items": [
+      {
+        "quantity": 1,
+        "line_item_id": 518995019,
+        "price": "199.00",
+        "subtotal": "195.67",
+        "total_tax": "3.98",
+        "discounted_price": "199.00",
+        "discounted_total_price": "199.00",
+        "total_cart_discount_amount": "3.33"
+      }
+    ],
+    "transactions": [
+      {
+        "order_id": 450789469,
+        "amount": "41.94",
+        "kind": "suggested_refund",
+        "gateway": "bogus",
+        "parent_id": 801038806,
+        "maximum_refundable": "41.94"
+      }
+    ]
+  }
+}
