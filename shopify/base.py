@@ -19,12 +19,26 @@ class ShopifyConnection(pyactiveresource.connection.Connection):
 
     def _open(self, *args, **kwargs):
         self.response = None
+
         try:
             self.response = super(ShopifyConnection, self)._open(*args, **kwargs)
         except pyactiveresource.connection.ConnectionError as err:
             self.response = err.response
             raise
+
+        try:
+            from datadog import statsd
+            tags = ["status:{}".format(self.response.code),
+                    "method:{}".format(args[0]),
+                    "requested_url:{}".format(args[1])]
+
+            statsd.increment("shopify_python_api.ShopifyConnection._open", tags=tags)
+        except ImportError:
+            """statsd is optional"""
+            pass
+
         return self.response
+
 
 # Inherit from pyactiveresource's metaclass in order to use ShopifyConnection
 class ShopifyResourceMeta(ResourceMeta):
