@@ -137,6 +137,13 @@ class Session(object):
         def encoded_pairs(params):
             for k, v in six.iteritems(params):
                 if k != 'hmac':
+                    if k.endswith('[]'):
+                        #foo[]=1&foo[]=2 has to be transformed as foo=["1", "2"] note the whitespace after comma
+                        k = k.rstrip('[]')
+                        v = json.dumps(v)
+                    else:
+                        v = v[0]
+
                     # escape delimiters to avoid tampering
                     k = str(k).replace("%", "%25").replace("=", "%3D")
                     v = str(v).replace("%", "%25")
