@@ -1,0 +1,160 @@
+{
+  "checkout": {
+    "applied_discount": "0.00",
+    "clone_url": "",
+    "completed_at": null,
+    "created_at": "2012-10-12T07:05:27-04:00",
+    "credit_card": null,
+    "currency": "USD",
+    "presentment_currency": "USD",
+    "email": "bob.norman@hostmail.com",
+    "note": null,
+    "shipping_line": [
+      {
+        "title": "Free Shipping",
+        "price": "0.00",
+        "code": "Free Shipping",
+        "source": "shopify"
+      }
+    ],
+    "shipping_rates": [
+      {
+        "id": "canada_post-INT.TP.BOGUS-4.00",
+        "price": "4.00",
+        "title": "Small Packet International Air Bogus"
+      },
+      {
+        "id": "canada_post-INT.TP.BOGUS-8.00",
+        "price": "8.00",
+        "title": "Medium Packet International Air Bogus"
+      }
+    ],
+    "source_identifier": null,
+    "source_name": "web",
+    "source_url": null,
+    "subtotal_price": "398.00",
+    "shipping_policy_url": null,
+    "taxes_included": false,
+    "token": "2a1ace52255252df566af0faaedfbfa7",
+    "total_line_items_price": "398.00",
+    "total_price": "409.94",
+    "total_tax": "11.94",
+    "updated_at": "2012-10-12T07:05:27-04:00",
+    "line_items": [
+      {
+        "applied_discounts": [
+
+        ],
+        "compare_at_price": null,
+        "fulfillment_service": "manual",
+        "gift_card": false,
+        "grams": 200,
+        "id": 49148385,
+        "line_price": "199.00",
+        "price": "199.00",
+        "product_id": 632910392,
+        "properties": null,
+        "quantity": 1,
+        "requires_shipping": true,
+        "sku": "IPOD2008RED",
+        "tax_lines": [
+
+        ],
+        "taxable": true,
+        "title": "IPod Nano - 8GB",
+        "variant_id": 49148385,
+        "variant_title": "Red",
+        "vendor": "Apple"
+      },
+      {
+        "applied_discounts": [
+
+        ],
+        "compare_at_price": null,
+        "fulfillment_service": "manual",
+        "gift_card": false,
+        "grams": 200,
+        "id": 808950810,
+        "line_price": "199.00",
+        "price": "199.00",
+        "product_id": 632910392,
+        "properties": null,
+        "quantity": 1,
+        "requires_shipping": true,
+        "sku": "IPOD2008PINK",
+        "tax_lines": [
+
+        ],
+        "taxable": true,
+        "title": "IPod Nano - 8GB",
+        "variant_id": 808950810,
+        "variant_title": "Pink",
+        "vendor": "Apple"
+      }
+    ],
+    "name": "#450789469",
+    "note_attributes": [
+      {
+        "name": "custom engraving",
+        "value": "Happy Birthday"
+      },
+      {
+        "name": "colour",
+        "value": "green"
+      }
+    ],
+    "discount_code": [
+      {
+        "code": "TENOFF",
+        "amount": "10.00"
+      }
+    ],
+    "tax_lines": [
+      {
+        "price": "11.94",
+        "rate": 0.06,
+        "title": "State Tax"
+      }
+    ],
+    "billing_address": {
+      "address1": "Chestnut Street 92",
+      "address2": "",
+      "city": "Louisville",
+      "company": null,
+      "country": "United States",
+      "first_name": "Bob",
+      "last_name": "Norman",
+      "latitude": "45.41634",
+      "longitude": "-75.6868",
+      "phone": "555-625-1199",
+      "province": "Kentucky",
+      "zip": "40202",
+      "name": "Bob Norman",
+      "country_code": "US",
+      "province_code": "KY"
+    },
+    "shipping_address": {
+      "address1": "Chestnut Street 92",
+      "address2": "",
+      "city": "Louisville",
+      "company": null,
+      "country": "United States",
+      "first_name": "Bob",
+      "last_name": "Norman",
+      "latitude": "45.41634",
+      "longitude": "-75.6868",
+      "phone": "555-625-1199",
+      "province": "Kentucky",
+      "zip": "40202",
+      "name": "Bob Norman",
+      "country_code": "US",
+      "province_code": "KY"
+    },
+    "customer_id": null,
+    "customer_locale": "en-CA",
+    "device_id": "12",
+    "order": null,
+    "order_id": null,
+    "order_status_url": ""
+  }
+}
