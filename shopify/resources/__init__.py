@@ -62,5 +62,6 @@ from .resource_feedback import ResourceFeedback
 from .storefront_access_token import StorefrontAccessToken
 from .inventory_item import InventoryItem
 from .inventory_level import InventoryLevel
+from .access_scope import AccessScope
 
 from ..base import ShopifyResource
