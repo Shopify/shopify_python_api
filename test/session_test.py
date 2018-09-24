@@ -168,6 +168,18 @@ class SessionTest(TestCase):
         }
         self.assertFalse(shopify.Session.validate_params(params))
 
+    def test_param_validation_of_param_values_with_lists(self):
+        shopify.Session.secret='hush'
+        params = {
+            'shop': 'some-shop.myshopify.com',
+            'ids[]': [
+                2,
+                1,
+            ],
+            'hmac': u('b93b9f82996f6f8bf9f1b7bbddec284c8fabacdc4e12dc80550b4705f3003b1e'),
+        }
+        self.assertEqual(True, shopify.Session.validate_hmac(params))
+
     def test_return_token_if_hmac_is_valid(self):
         shopify.Session.secret='secret'
         params = {'code': 'any-code', 'timestamp': time.time()}

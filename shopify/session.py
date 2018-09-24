@@ -1,5 +1,6 @@
 import time
 import hmac
+import json
 from hashlib import sha256
 try:
     import simplejson as json
@@ -136,10 +137,17 @@ class Session(object):
         """
         def encoded_pairs(params):
             for k, v in six.iteritems(params):
-                if k != 'hmac':
-                    # escape delimiters to avoid tampering
-                    k = str(k).replace("%", "%25").replace("=", "%3D")
-                    v = str(v).replace("%", "%25")
-                    yield '{0}={1}'.format(k, v).replace("&", "%26")
+                if k == 'hmac':
+                    continue
+
+                if k.endswith('[]'):
+                    #foo[]=1&foo[]=2 has to be transformed as foo=["1", "2"] note the whitespace after comma
+                    k = k.rstrip('[]')
+                    v = json.dumps(map(str, v))
+
+                # escape delimiters to avoid tampering
+                k = str(k).replace("%", "%25").replace("=", "%3D")
+                v = str(v).replace("%", "%25")
+                yield '{0}={1}'.format(k, v).replace("&", "%26")
 
         return "&".join(sorted(encoded_pairs(params)))
