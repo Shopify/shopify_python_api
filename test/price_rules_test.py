@@ -12,7 +12,7 @@ class PriceRuleTest(TestCase):
         self.price_rule = shopify.PriceRule.find(1213131)
 
     def test_get_price_rule(self):
-        self.fake('price_rule/1213131', method='GET', status=200, body=self.load_fixture('price_rule'))
+        self.fake('price_rule/1213131', method='GET', code=200, body=self.load_fixture('price_rule'))
         price_rule = shopify.PriceRule.find(1213131)
         self.assertEqual(1213131, price_rule.id)
 
@@ -26,7 +26,7 @@ class PriceRuleTest(TestCase):
 
     def test_update_price_rule(self):
         self.price_rule.title = "Buy One Get One"
-        self.fake('price_rules/1213131', method='PUT', status=200, body=self.load_fixture('price_rule'), headers={'Content-type': 'application/json'})
+        self.fake('price_rules/1213131', method='PUT', code=200, body=self.load_fixture('price_rule'), headers={'Content-type': 'application/json'})
         self.price_rule.save()
         self.assertEqual('Buy One Get One', json.loads(self.http.request.data.decode("utf-8"))['price_rule']['title'])
 
@@ -56,7 +56,7 @@ class PriceRuleTest(TestCase):
         self.assertEqual("line_item", price_rule.target_type)
 
     def test_get_discount_codes(self):
-        self.fake('price_rules/1213131/discount_codes', method='GET', status=200, body=self.load_fixture('discount_codes'))
+        self.fake('price_rules/1213131/discount_codes', method='GET', code=200, body=self.load_fixture('discount_codes'))
         discount_codes = self.price_rule.discount_codes()
         self.assertEqual(1, len(discount_codes))
 

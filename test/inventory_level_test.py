@@ -63,5 +63,5 @@ class InventoryLevelTest(TestCase):
         })
         path = "inventory_levels.json?" + query_params
 
-        self.fake(path, extension=False, method='DELETE', status=204, body='{}')
+        self.fake(path, extension=False, method='DELETE', code=204, body='{}')
         inventory_level.destroy()

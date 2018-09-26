@@ -40,8 +40,8 @@ class MarketingEventTest(TestCase):
         self.assertEqual('DELETE', self.http.request.get_method())
 
     def test_update_marketing_event(self):
-        self.fake('marketing_events/1', method='GET', status=200, body=self.load_fixture('marketing_event'))
-        self.fake('marketing_events/1', method='PUT', status=200, body=self.load_fixture('marketing_event'), headers={'Content-type': 'application/json'})
+        self.fake('marketing_events/1', method='GET', code=200, body=self.load_fixture('marketing_event'))
+        self.fake('marketing_events/1', method='PUT', code=200, body=self.load_fixture('marketing_event'), headers={'Content-type': 'application/json'})
 
         marketing_event = shopify.MarketingEvent.find(1)
         marketing_event.currency = 'USD'
@@ -58,7 +58,7 @@ class MarketingEventTest(TestCase):
         self.fake(
           'marketing_events/1/engagements',
           method='POST',
-          status=201,
+          code=201,
           body=self.load_fixture('engagement'),
           headers={'Content-type': 'application/json'}
         )

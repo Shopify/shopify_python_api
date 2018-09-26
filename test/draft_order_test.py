@@ -10,34 +10,34 @@ class DraftOrderTest(TestCase):
         self.draft_order = shopify.DraftOrder.find(517119332)
 
     def test_get_draft_order(self):
-        self.fake('draft_orders/517119332', method='GET', status=200, body=self.load_fixture('draft_order'))
+        self.fake('draft_orders/517119332', method='GET', code=200, body=self.load_fixture('draft_order'))
         draft_order = shopify.DraftOrder.find(517119332)
         self.assertEqual(517119332, draft_order.id)
 
     def test_get_all_draft_orders(self):
-        self.fake('draft_orders', method='GET', status=200, body=self.load_fixture('draft_orders'))
+        self.fake('draft_orders', method='GET', code=200, body=self.load_fixture('draft_orders'))
         draft_orders = shopify.DraftOrder.find()
         self.assertEqual(1, len(draft_orders))
         self.assertEqual(517119332, draft_orders[0].id)
 
     def test_get_count_draft_orders(self):
-        self.fake('draft_orders/count', method='GET', status=200, body='{"count": 16}')
+        self.fake('draft_orders/count', method='GET', code=200, body='{"count": 16}')
         draft_orders_count = shopify.DraftOrder.count()
         self.assertEqual(16, draft_orders_count)
 
     def test_create_draft_order(self):
-        self.fake('draft_orders', method='POST', status=201, body=self.load_fixture('draft_order'), headers={'Content-type': 'application/json'})
+        self.fake('draft_orders', method='POST', code=201, body=self.load_fixture('draft_order'), headers={'Content-type': 'application/json'})
         draft_order = shopify.DraftOrder.create({"line_items": [{ "quantity": 1, "variant_id": 39072856 }]})
         self.assertEqual(json.loads('{"draft_order": {"line_items": [{"quantity": 1, "variant_id": 39072856}]}}'), json.loads(self.http.request.data.decode("utf-8")))
 
     def test_create_draft_order_202(self):
-        self.fake('draft_orders', method='POST', status=202, body=self.load_fixture('draft_order'), headers={'Content-type': 'application/json'})
+        self.fake('draft_orders', method='POST', code=202, body=self.load_fixture('draft_order'), headers={'Content-type': 'application/json'})
         draft_order = shopify.DraftOrder.create({"line_items": [{ "quantity": 1, "variant_id": 39072856 }]})
         self.assertEqual(39072856, draft_order.line_items[0].variant_id)
 
     def test_update_draft_order(self):
         self.draft_order.note = 'Test new note'
-        self.fake('draft_orders/517119332', method='PUT', status=200, body=self.load_fixture('draft_order'), headers={'Content-type': 'application/json'})
+        self.fake('draft_orders/517119332', method='PUT', code=200, body=self.load_fixture('draft_order'), headers={'Content-type': 'application/json'})
         self.draft_order.save()
         self.assertEqual('Test new note', json.loads(self.http.request.data.decode("utf-8"))['draft_order']['note'])
 
@@ -65,7 +65,7 @@ class DraftOrderTest(TestCase):
         self.assertEqual('DELETE', self.http.request.get_method())
 
     def test_add_metafields_to_draft_order(self):
-        self.fake('draft_orders/517119332/metafields', method='POST', status=201, body=self.load_fixture('metafield'), headers={'Content-type': 'application/json'})
+        self.fake('draft_orders/517119332/metafields', method='POST', code=201, body=self.load_fixture('metafield'), headers={'Content-type': 'application/json'})
         field = self.draft_order.add_metafield(shopify.Metafield({'namespace': 'contact', 'key': 'email', 'value': '123@example.com', 'value_type': 'string'}))
         self.assertEqual(json.loads('{"metafield":{"namespace":"contact","key":"email","value":"123@example.com","value_type":"string"}}'), json.loads(self.http.request.data.decode("utf-8")))
         self.assertFalse (field.is_new())
