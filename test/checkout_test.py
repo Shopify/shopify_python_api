@@ -14,7 +14,8 @@ class CheckoutTest(TestCase):
             "checkouts/%s" % self.expected_checkout_id,
             method='GET',
             code=code,
-            body=self.load_fixture('checkout')
+            body=self.load_fixture('checkout'),
+            headers={'X-Shopify-Checkout-Version': '2016-09-06'}
         )
         checkout = shopify.Checkout.find(self.expected_checkout_id)
 
@@ -26,7 +27,7 @@ class CheckoutTest(TestCase):
             method='POST',
             code=201,
             body=self.load_fixture('checkout'),
-            headers={'Content-type': 'application/json'}
+            headers={'Content-type': 'application/json', 'X-Shopify-Checkout-Version': '2016-09-06'}
         )
 
         checkout = shopify.Checkout.create({'email': 'test@mailinator.com'})
@@ -34,7 +35,12 @@ class CheckoutTest(TestCase):
         self.assertEqual(self.expected_checkout_id, checkout.id)
 
     def test_get_all_checkouts_indexed_by_token(self):
-        self.fake('checkouts', method='GET', body=self.load_fixture('checkouts'))
+        self.fake(
+            'checkouts',
+            method='GET',
+            body=self.load_fixture('checkouts'),
+            headers={'X-Shopify-Checkout-Version': '2016-09-06'}
+        )
 
         checkouts = shopify.Checkout.find()
 
@@ -49,7 +55,7 @@ class CheckoutTest(TestCase):
             method='POST',
             code=200,
             body=self.load_fixture('checkout'),
-            headers={'Content-type': 'application/json', 'Content-length': '0'}
+            headers={'Content-type': 'application/json', 'Content-length': '0', 'X-Shopify-Checkout-Version': '2016-09-06'}
         )
         checkout.complete()
 
@@ -70,7 +76,8 @@ class CheckoutTest(TestCase):
             "checkouts/%s/payments" % self.expected_checkout_id,
             method='GET',
             code=200,
-            body=self.load_fixture('payments')
+            body=self.load_fixture('payments'),
+            headers={'X-Shopify-Checkout-Version': '2016-09-06'}
         )
         payments = checkout.payments()
         self.assertEqual(10.00, payments[0].amount)
@@ -82,7 +89,8 @@ class CheckoutTest(TestCase):
             "checkouts/%s/shipping_rates" % self.expected_checkout_id,
             method='GET',
             code=200,
-            body=self.load_fixture('shipping_rates')
+            body=self.load_fixture('shipping_rates'),
+            headers={'X-Shopify-Checkout-Version': '2016-09-06'}
         )
         shipping_rates = checkout.shipping_rates()
         self.assertEqual("canada_post-INT.TP.BOGUS-4.00", shipping_rates[0].id)

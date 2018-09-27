@@ -5,7 +5,7 @@ from .shipping_rate import ShippingRate
 
 class Checkout(ShopifyResource):
     _primary_key = "token"
-    _headers = {'X-Shopify-Checkout-Version': '2016-09-06'}
+    extra_headers = {'X-Shopify-Checkout-Version': '2016-09-06'}
 
     def complete(self):
         self._load_attributes_from_response(self.post("complete"))

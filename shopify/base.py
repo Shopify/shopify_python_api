@@ -96,7 +96,16 @@ class ShopifyResourceMeta(ResourceMeta):
     def get_headers(cls):
         if not hasattr(cls._threadlocal, 'headers'):
             cls._threadlocal.headers = ShopifyResource._headers.copy()
-        return cls._threadlocal.headers
+
+        headers = cls._threadlocal.headers
+
+        # TODO: Getting close here, but `x-shopify-checkout-version` header is sent
+        # for all resources, not just shopify.Checkout
+        if hasattr(cls, 'extra_headers'):
+            headers = headers.copy()
+            headers.update(cls.extra_headers)
+
+        return headers
 
     def set_headers(cls, value):
         cls._threadlocal.headers = value
