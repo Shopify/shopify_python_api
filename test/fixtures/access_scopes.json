@@ -1,0 +1,13 @@
+{
+  "access_scopes": [
+    {
+      "handle": "read_products"
+    },
+    {
+      "handle": "write_orders"
+    },
+    {
+      "handle": "read_orders"
+    }
+  ]
+}
