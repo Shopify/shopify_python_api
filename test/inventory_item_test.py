@@ -1,7 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
-class InvetoryItemTest(TestCase):
+class InventoryItemTest(TestCase):
 
     def test_fetch_inventory_item(self):
         self.fake(
