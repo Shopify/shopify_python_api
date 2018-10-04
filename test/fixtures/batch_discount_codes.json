@@ -1,0 +1,19 @@
+{
+  "discount_codes": [
+    {
+      "id": null,
+      "code": "foo",
+      "errors": {}
+    },
+    {
+      "id": null,
+      "code": "",
+      "errors": {}
+    },
+    {
+      "id": null,
+      "code": "bar",
+      "errors": {}
+    }
+  ]
+}

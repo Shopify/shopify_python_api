@@ -1,0 +1,14 @@
+{
+  "discount_code_creation": {
+    "id": 989355119,
+    "price_rule_id": 1213131,
+    "started_at": null,
+    "completed_at": null,
+    "created_at": "2018-07-05T13:04:29-04:00",
+    "updated_at": "2018-07-05T13:04:29-04:00",
+    "status": "queued",
+    "codes_count": 3,
+    "imported_count": 0,
+    "failed_count": 0
+  }
+}
