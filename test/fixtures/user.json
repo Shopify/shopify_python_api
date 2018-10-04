@@ -1,0 +1,23 @@
+{
+  "user": {
+    "id": 799407056,
+    "first_name": "Steve",
+    "email": "steve@apple.com",
+    "url": "www.apple.com",
+    "im": null,
+    "screen_name": null,
+    "phone": null,
+    "last_name": "Jobs",
+    "account_owner": true,
+    "receive_announcements": 1,
+    "bio": null,
+    "permissions": [
+      "full"
+    ],
+    "locale": "en",
+    "user_type": "regular",
+    "phone_validated?": false,
+    "tfa_enabled?": false,
+    "admin_graphql_api_id": "gid://shopify/StaffMember/799407056"
+  }
+}
