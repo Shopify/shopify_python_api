@@ -24,8 +24,5 @@ class RecurringApplicationCharge(ShopifyResource):
         """
         return _get_first_by_status(cls.find(), "active")
 
-    def cancel(self):
-        self._load_attributes_from_response(self.destroy)
-
     def activate(self):
         self._load_attributes_from_response(self.post("activate"))

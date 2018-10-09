@@ -38,3 +38,10 @@ class RecurringApplicationChargeTest(TestCase):
         self.fake("recurring_application_charges/455696195/customize.json?recurring_application_charge%5Bcapped_amount%5D=200", extension=False, method='PUT', headers={'Content-length':'0', 'Content-type': 'application/json'}, body=self.load_fixture('recurring_application_charge_adjustment'))
         charge.customize(capped_amount= 200)
         self.assertTrue(charge.update_capped_amount_url)
+
+    def test_destroy_recurring_application_charge(self):
+        self.fake('recurring_application_charges')
+        charge = shopify.RecurringApplicationCharge.current()
+
+        self.fake('recurring_application_charges/455696195', method='DELETE', body='{}')
+        charge.destroy()
