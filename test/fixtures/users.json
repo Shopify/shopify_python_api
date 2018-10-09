@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": 799407056,
+      "first_name": "Steve",
+      "email": "steve@apple.com",
+      "url": "www.apple.com",
+      "im": null,
+      "screen_name": null,
+      "phone": null,
+      "last_name": "Jobs",
+      "account_owner": true,
+      "receive_announcements": 1,
+      "bio": null,
+      "permissions": [
+        "full"
+      ],
+      "locale": "en",
+      "user_type": "regular",
+      "phone_validated?": false,
+      "tfa_enabled?": false,
+      "admin_graphql_api_id": "gid://shopify/StaffMember/799407056"
+    },
+    {
+      "id": 930143300,
+      "first_name": "noaccesssteve",
+      "email": "noaccesssteve@jobs.com",
+      "url": "www.apple.com",
+      "im": null,
+      "screen_name": null,
+      "phone": null,
+      "last_name": "Jobs",
+      "account_owner": false,
+      "receive_announcements": 1,
+      "bio": null,
+      "permissions": [],
+      "locale": "en",
+      "user_type": "regular",
+      "phone_validated?": false,
+      "tfa_enabled?": false,
+      "admin_graphql_api_id": "gid://shopify/StaffMember/930143300"
+    }
+  ]
+}

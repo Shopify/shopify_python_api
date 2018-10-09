@@ -63,6 +63,7 @@ from .storefront_access_token import StorefrontAccessToken
 from .inventory_item import InventoryItem
 from .inventory_level import InventoryLevel
 from .access_scope import AccessScope
+from .user import User
 from .api_permission import ApiPermission
 
 from ..base import ShopifyResource
