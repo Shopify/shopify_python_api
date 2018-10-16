@@ -40,6 +40,7 @@ from .fulfillment import Fulfillment
 from .fulfillment_service import FulfillmentService
 from .carrier_service import CarrierService
 from .transaction import Transaction
+from .tender_transaction import TenderTransaction
 from .image import Image
 from .variant import Variant
 from .order import Order
