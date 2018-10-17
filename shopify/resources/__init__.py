@@ -21,6 +21,7 @@ from .recurring_application_charge import RecurringApplicationCharge
 from .usage_charge import UsageCharge
 from .asset import Asset
 from .theme import Theme
+from .currency import Currency
 from .customer_saved_search import CustomerSavedSearch
 from .customer_group import CustomerGroup
 from .customer_invite import CustomerInvite

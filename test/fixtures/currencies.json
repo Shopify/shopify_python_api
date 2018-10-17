@@ -1,0 +1,24 @@
+{
+  "currencies": [
+    {
+        "currency": "AUD",
+        "rate_updated_at": "2018-10-03T14:44:08-04:00",
+        "enabled": true
+    },
+    {
+        "currency": "EUR",
+        "rate_updated_at": "2018-10-03T14:44:08-04:00",
+        "enabled": true
+    },
+    {
+        "currency": "GBP",
+        "rate_updated_at": "2018-10-03T14:44:08-04:00",
+        "enabled": true
+    },
+    {
+        "currency": "HKD",
+        "rate_updated_at": "2018-10-03T14:44:08-04:00",
+        "enabled": false
+    }
+  ]
+}
