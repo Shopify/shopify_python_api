@@ -1,0 +1,52 @@
+{
+  "tender_transactions": [
+    {
+      "id": 1,
+      "order_id": 450789469,
+      "amount": "138.46",
+      "currency": "CAD",
+      "user_id": null,
+      "test": true,
+      "processed_at": "2018-08-09T15:43:39-04:00",
+      "updated_at": "2018-08-09T15:43:41-04:00",
+      "remote_reference": "1118366",
+      "payment_method": "credit_card",
+      "payment_details": {
+        "credit_card_number": "•••• •••• •••• 1",
+        "credit_card_company": "Bogus"
+      }
+    },
+    {
+      "id": 2,
+      "order_id": 450789469,
+      "amount": "128.16",
+      "currency": "CAD",
+      "user_id": null,
+      "test": true,
+      "processed_at": "2018-08-11T15:43:39-04:00",
+      "updated_at": "2018-08-09T15:43:41-04:00",
+      "remote_reference": "1118367",
+      "payment_method": "credit_card",
+      "payment_details": {
+        "credit_card_number": "•••• •••• •••• 2",
+        "credit_card_company": "Bogus"
+      }
+    },
+    {
+      "id": 3,
+      "order_id": 450789469,
+      "amount": "28.16",
+      "currency": "CAD",
+      "user_id": null,
+      "test": true,
+      "processed_at": "2018-08-12T15:43:39-04:00",
+      "updated_at": "2018-08-09T15:43:41-04:00",
+      "remote_reference": "1118368",
+      "payment_method": "credit_card",
+      "payment_details": {
+        "credit_card_number": "•••• •••• •••• 3",
+        "credit_card_company": "Bogus"
+      }
+    }
+  ]
+}
