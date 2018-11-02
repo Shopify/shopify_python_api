@@ -68,5 +68,8 @@ from .inventory_level import InventoryLevel
 from .access_scope import AccessScope
 from .user import User
 from .api_permission import ApiPermission
+from .publication import Publication
+from .collection_publication import CollectionPublication
+from .product_publication import ProductPublication
 
 from ..base import ShopifyResource
