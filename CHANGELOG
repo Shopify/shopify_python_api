@@ -1,3 +1,18 @@
+== Version 4.0.0
+* Added AccessScope resource
+* Added ApiPermission resource
+* Added User resource
+* Added Publication, CollectionPublication and ProductPublication resources
+* Added Currency resource
+* Added TenderTransaction resource
+* Added shopify.Limits class, for retrieving the current status of Shopify rate limiting.
+* Added support for Refund.calculate
+* Added support for Location.inventory_levels
+* Added support for PriceRule batch operations
+* Removed `cancel()` method for RecurringApplicationCharge resource (use `destroy()` going forward)
+* Fix for handling array query parameters (e.g. `foo[]=1&foo[]=2`) during HMAC calculation
+* Fixed Python 3 compatibility with the API console
+
 == Version 3.1.0
 * Adds InventoryItem resource
 * Adds InventoryLevel resource
