@@ -143,7 +143,7 @@ class Session(object):
                 if k.endswith('[]'):
                     #foo[]=1&foo[]=2 has to be transformed as foo=["1", "2"] note the whitespace after comma
                     k = k.rstrip('[]')
-                    v = json.dumps(map(str, v))
+                    v = json.dumps(list(map(str, v)))
 
                 # escape delimiters to avoid tampering
                 k = str(k).replace("%", "%25").replace("=", "%3D")
