@@ -5,7 +5,9 @@ cache: pip
 python: "3.6"
 language: python
 
-install: pip install tox tox-venv
+install:
+    - pip install tox tox-venv
+    - python setup.py install
 
 script: tox
 
