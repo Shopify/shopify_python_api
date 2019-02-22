@@ -2,17 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import find_packages, setup
-from os import path
 from os.path import join, dirname
-from io import open
 
 # Load release variables
 exec(open(join(dirname(__file__), 'shopify', 'release.py'), 'rb').read())
 lib_name = 'shopify'
-
-setup_path = path.dirname(path.abspath(__file__))
-with open(setup_path + "/requirements.txt") as f:
-    install_requires = f.read().splitlines()
 
 setup(
     name=product_name,
@@ -27,8 +21,11 @@ setup(
     scripts=['scripts/shopify_api.py'],
     license=license,
     include_package_data=True,
-    install_requires=install_requires,
-    # python_requires='>=3.5',
+    install_requires=[
+        'pyactiveresource>=2.1.2',
+        'PyYAML',
+        'six',
+    ],
     extras_require={
         'SSL': ['pyopenssl'],
     },

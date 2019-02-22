@@ -1,4 +1,0 @@
-pyactiveresource>=2.1.2
-PyYAML
-six
-mock>=1.0.1
