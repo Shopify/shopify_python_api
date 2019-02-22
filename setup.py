@@ -25,13 +25,13 @@ setup(
     license=license,
     include_package_data=True,
     install_requires=install_requires,
-    python_requires='>=3.5',
+    # python_requires='>=3.5',
     extras_require={
         'SSL': ['pyopenssl'],
     },
     test_suite='test',
     tests_require=[
-        'mock',
+        'mock>=1.0.1',
     ],
     platforms='Any',
     classifiers=[c for c in classifiers.split('\n') if c],
