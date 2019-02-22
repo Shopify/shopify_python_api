@@ -23,6 +23,10 @@ jobs:
       python: "2.7"
 
     - stage: test
+      env: TOXENV=py27
+      python: "2.7"
+
+    - stage: test
       env: TOXENV=py34
       python: "3.4"
 
