@@ -7,9 +7,6 @@ python:
   # PyPy versions
   - "pypy3.5"
 
-virtualenv:
-  system_site_packages: true
-
 # command to install dependencies
 install: "python setup.py install"
 
