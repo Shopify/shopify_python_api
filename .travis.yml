@@ -3,9 +3,6 @@ language: python
 python:
   - "3.5"
   - "3.6"
-  - "3.7-dev"
-  # PyPy versions
-  - "pypy3.5"
 
 # command to install dependencies
 install: "python setup.py install"
