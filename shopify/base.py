@@ -1,12 +1,17 @@
+# -*- coding: utf-8 -*-
+# See LICENSE file for full copyright and licensing details.
+
 import pyactiveresource.connection
-from pyactiveresource.activeresource import ActiveResource, ResourceMeta, formats
+from pyactiveresource.activeresource import (
+    ActiveResource, ResourceMeta, formats
+)
 import shopify.yamlobjects
 import shopify.mixins as mixins
 import shopify
 import threading
 import sys
-from six.moves import urllib
 import six
+from six.moves import urllib
 
 
 # Store the response from the last request in the connection object
@@ -15,16 +20,19 @@ class ShopifyConnection(pyactiveresource.connection.Connection):
 
     def __init__(self, site, user=None, password=None, timeout=None,
                  format=formats.JSONFormat):
-        super(ShopifyConnection, self).__init__(site, user, password, timeout, format)
+        super(ShopifyConnection, self).__init__(
+                            site, user, password, timeout, format)
 
     def _open(self, *args, **kwargs):
         self.response = None
         try:
-            self.response = super(ShopifyConnection, self)._open(*args, **kwargs)
+            self.response = super(ShopifyConnection, self)._open(
+                                                            *args, **kwargs)
         except pyactiveresource.connection.ConnectionError as err:
             self.response = err.response
             raise
         return self.response
+
 
 # Inherit from pyactiveresource's metaclass in order to use ShopifyConnection
 class ShopifyResourceMeta(ResourceMeta):
@@ -34,7 +42,7 @@ class ShopifyResourceMeta(ResourceMeta):
         """HTTP connection for the current thread"""
         local = cls._threadlocal
         if not getattr(local, 'connection', None):
-            # Make sure these variables are no longer affected by other threads.
+            # Make sure these variables are no longer affected by other threads
             local.user = cls.user
             local.password = cls.password
             local.site = cls.site
@@ -119,7 +127,9 @@ class ShopifyResourceMeta(ResourceMeta):
 class ShopifyResource(ActiveResource, mixins.Countable):
     _format = formats.JSONFormat
     _threadlocal = threading.local()
-    _headers = {'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])}
+    _headers = {
+        'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (
+            shopify.release.version, sys.version.split(' ', 1)[0])}
 
     def __init__(self, attributes=None, prefix_options=None):
         if attributes is not None and prefix_options is None:

@@ -12,3 +12,7 @@ tags
 .python-version
 .cache
 .tox/
+/venv
+/virtualenv
+__pycache__/
+*.py[cod]

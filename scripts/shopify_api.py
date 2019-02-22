@@ -10,15 +10,20 @@ import subprocess
 import functools
 import yaml
 import six
+
 from six.moves import input, map
 
+
 def start_interpreter(**variables):
-    console = type('shopify ' + shopify.version.VERSION, (code.InteractiveConsole, object), {})
+    console = type('shopify ' + shopify.__version__, (
+                                    code.InteractiveConsole, object), {})
     import readline
     console(variables).interact()
 
+
 class ConfigFileError(Exception):
     pass
+
 
 def usage(usage_string):
     """Decorator to add a usage string to a function"""
@@ -26,6 +31,7 @@ def usage(usage_string):
         func.usage = usage_string
         return func
     return decorate
+
 
 class TasksMeta(type):
     _prog = os.path.basename(sys.argv[0])
@@ -35,8 +41,10 @@ class TasksMeta(type):
 
         tasks = list(new_attrs.keys())
         tasks.append("help")
+
         def filter_func(item):
-            return not item.startswith("_") and hasattr(getattr(cls, item), "__call__")
+            return not item.startswith("_") and hasattr(
+                                                getattr(cls, item), "__call__")
         tasks = filter(filter_func, tasks)
         cls._tasks = sorted(tasks)
 
@@ -68,13 +76,17 @@ class TasksMeta(type):
                 usage_string = "  %s %s" % (cls._prog, task_func.usage)
                 desc = task_func.__doc__.splitlines()[0]
                 usage_list.append((usage_string, desc))
-            max_len = functools.reduce(lambda m, item: max(m, len(item[0])), usage_list, 0)
+
+            max_len = functools.reduce(lambda m, item: max(
+                                            m, len(item[0])), usage_list, 0)
+
             print("Tasks:")
             cols = int(os.environ.get("COLUMNS", 80))
             for line, desc in usage_list:
                 task_func = getattr(cls, task)
                 if desc:
-                    line = "%s%s  # %s" % (line, " " * (max_len - len(line)), desc)
+                    line = "%s%s  # %s" % (line, " " * (
+                                                    max_len - len(line)), desc)
                 if len(line) > cols:
                     line = line[:cols - 3] + "..."
                 print(line)
@@ -105,21 +117,28 @@ class Tasks(object):
         """create a config file for a connection named CONNECTION"""
         filename = cls._get_config_filename(connection)
         if os.path.exists(filename):
-            raise ConfigFileError("There is already a config file at " + filename)
+            raise ConfigFileError(
+                    "There is already a config file at " + filename)
         else:
             config = dict(protocol='https')
-            domain = input("Domain? (leave blank for %s.myshopify.com) " % (connection))
+            domain = input(
+                "Domain? (leave blank for %s.myshopify.com) " % (connection))
             if not domain.strip():
                 domain = "%s.myshopify.com" % (connection)
             config['domain'] = domain
+
             print("")
-            print("open https://%s/admin/apps/private in your browser to generate API credentials" % (domain))
+            print("open https://%s/admin/apps/private "
+                  "in your browser to generate API credentials" % (domain))
+
             config['api_key'] = input("API key? ")
             config['password'] = input("Password? ")
             if not os.path.isdir(cls._shop_config_dir):
                 os.makedirs(cls._shop_config_dir)
             with open(filename, 'w') as f:
-                f.write(yaml.dump(config, default_flow_style=False, explicit_start="---"))
+                f.write(yaml.dump(
+                    config, default_flow_style=False, explicit_start="---"))
+
         if len(list(cls._available_connections())) == 1:
             cls.default(connection)
 
@@ -145,7 +164,8 @@ class Tasks(object):
             if editor:
                 subprocess.call([editor, filename])
             else:
-                print("Please set an editor in the EDITOR environment variable")
+                print(
+                    "Please set an editor in the EDITOR environment variable")
         else:
             cls._no_config_file_error(filename)
 
@@ -200,12 +220,12 @@ class Tasks(object):
     @usage("version")
     def version(cls, connection=None):
         """output the shopify library version"""
-        print(shopify.version.VERSION)
+        print(shopify.__version__)
 
     @classmethod
     def _available_connections(cls):
         return map(lambda item: os.path.splitext(os.path.basename(item))[0],
-              glob.glob(os.path.join(cls._shop_config_dir, "*.yml")))
+                   glob.glob(os.path.join(cls._shop_config_dir, "*.yml")))
 
     @classmethod
     def _default_connection_target(cls):
@@ -213,7 +233,6 @@ class Tasks(object):
             return None
         target = os.readlink(cls._default_symlink)
         return os.path.join(cls._shop_config_dir, target)
-
 
     @classmethod
     def _default_connection(cls):
@@ -244,6 +263,7 @@ class Tasks(object):
     @classmethod
     def _no_config_file_error(cls, filename):
         raise ConfigFileError("There is no config file at " + filename)
+
 
 try:
     Tasks.run_task(*sys.argv[1:])
