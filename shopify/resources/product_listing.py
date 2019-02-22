@@ -1,5 +1,6 @@
 from ..base import ShopifyResource
 
+
 class ProductListing(ShopifyResource):
     _primary_key = "product_id"
 

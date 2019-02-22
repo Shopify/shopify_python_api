@@ -1,5 +1,6 @@
 import shopify
 
+
 class Limits(object):
     CREDIT_LIMIT_HEADER_PARAM = 'x-shopify-shop-api-call-limit'
 

@@ -11,8 +11,10 @@ from contextlib import contextmanager
 from six.moves import urllib
 import six
 
+
 class ValidationException(Exception):
     pass
+
 
 class Session(object):
     api_key = None
@@ -31,7 +33,8 @@ class Session(object):
     def temp(cls, domain, token):
         import shopify
         original_site = shopify.ShopifyResource.get_site()
-        original_token = shopify.ShopifyResource.get_headers().get('X-Shopify-Access-Token')
+        original_token =\
+            shopify.ShopifyResource.get_headers().get('X-Shopify-Access-Token')
         original_session = shopify.Session(original_site, original_token)
 
         session = Session(domain, token)
@@ -45,9 +48,15 @@ class Session(object):
         return
 
     def create_permission_url(self, scope, redirect_uri, state=None):
-        query_params = dict(client_id=self.api_key, scope=",".join(scope), redirect_uri=redirect_uri)
-        if state: query_params['state'] = state
-        return "%s/oauth/authorize?%s" % (self.site, urllib.parse.urlencode(query_params))
+        query_params = dict(
+            client_id=self.api_key,
+            scope=",".join(scope),
+            redirect_uri=redirect_uri
+        )
+        if state:
+            query_params['state'] = state
+        return "%s/oauth/authorize?%s" % (
+                        self.site, urllib.parse.urlencode(query_params))
 
     def request_token(self, params):
         if self.token:
@@ -59,12 +68,15 @@ class Session(object):
         code = params['code']
 
         url = "%s/oauth/access_token?" % self.site
-        query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
-        request = urllib.request.Request(url, urllib.parse.urlencode(query_params).encode('utf-8'))
+        query_params = dict(
+            client_id=self.api_key, client_secret=self.secret, code=code)
+        request = urllib.request.Request(
+            url, urllib.parse.urlencode(query_params).encode('utf-8'))
         response = urllib.request.urlopen(request)
 
         if response.code == 200:
-            self.token = json.loads(response.read().decode('utf-8'))['access_token']
+            self.token = json.loads(
+                response.read().decode('utf-8'))['access_token']
             return self.token
         else:
             raise Exception(response.msg)
@@ -113,7 +125,7 @@ class Session(object):
         hmac_calculated = cls.calculate_hmac(params).encode('utf-8')
         hmac_to_verify = params['hmac'].encode('utf-8')
 
-        # Try to use compare_digest() to reduce vulnerability to timing attacks.
+        # Try to use compare_digest() to reduce vulnerability to timing attacks
         # If it's not available, just fall back to regular string comparison.
         try:
             return hmac.compare_digest(hmac_calculated, hmac_to_verify)
@@ -123,17 +135,21 @@ class Session(object):
     @classmethod
     def calculate_hmac(cls, params):
         """
-        Calculate the HMAC of the given parameters in line with Shopify's rules for OAuth authentication.
+        Calculate the HMAC of the given parameters in line with Shopify's
+        rules for OAuth authentication.
+
         See http://docs.shopify.com/api/authentication/oauth#verification.
         """
         encoded_params = cls.__encoded_params_for_signature(params)
         # Generate the hex digest for the sorted parameters using the secret.
-        return hmac.new(cls.secret.encode(), encoded_params.encode(), sha256).hexdigest()
+        return hmac.new(
+            cls.secret.encode(), encoded_params.encode(), sha256).hexdigest()
 
     @classmethod
     def __encoded_params_for_signature(cls, params):
         """
-        Sort and combine query parameters into a single string, excluding those that should be removed and joining with '&'
+        Sort and combine query parameters into a single string,
+        excluding those that should be removed and joining with '&'
         """
         def encoded_pairs(params):
             for k, v in six.iteritems(params):
@@ -141,7 +157,8 @@ class Session(object):
                     continue
 
                 if k.endswith('[]'):
-                    #foo[]=1&foo[]=2 has to be transformed as foo=["1", "2"] note the whitespace after comma
+                    # INFO: foo[]=1&foo[]=2 has to be transformed as
+                    #       foo=["1", "2"] note the whitespace after comma
                     k = k.rstrip('[]')
                     v = json.dumps(list(map(str, v)))
 

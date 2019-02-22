@@ -2,5 +2,5 @@ from ..base import ShopifyResource
 
 
 class LineItem(ShopifyResource):
-  class Property(ShopifyResource):
-    pass
+    class Property(ShopifyResource):
+        pass

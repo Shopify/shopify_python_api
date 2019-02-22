@@ -13,7 +13,8 @@ class GiftCard(ShopifyResource):
         Search for gift cards matching supplied query
 
         Args:
-           order: Field and direction to order results by (default: disabled_at DESC)
+           order: Field and direction to order results by
+                  (default: disabled_at DESC)
            query: Text to search for gift cards
            page: Page to show (default: 1)
            limit: Amount of results (default: 50) (maximum: 250)

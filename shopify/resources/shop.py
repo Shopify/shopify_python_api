@@ -14,7 +14,10 @@ class Shop(ShopifyResource):
 
     def add_metafield(self, metafield):
         if self.is_new():
-            raise ValueError("You can only add metafields to a resource that has been saved")
+            raise ValueError(
+                    "You can only add metafields to a "
+                    "resource that has been saved"
+            )
         metafield.save()
         return metafield
 
