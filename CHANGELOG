@@ -6,6 +6,7 @@
 * Fixed Travis CI
 * Fixed some PEP8 Errors
 * Suppressed Limit Tests Errors (need fix it)
+* Added Python Requirements file
 
 == Version 4.0.0
 * Added AccessScope resource
