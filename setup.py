@@ -8,7 +8,7 @@ from os.path import join, dirname
 exec(open(join(dirname(__file__), 'shopify', 'release.py'), 'rb').read())
 lib_name = 'shopify'
 
-with open("requirements.txt", encoding="utf-8") as f:
+with open("requirements.txt") as f:
     install_requires = f.read().splitlines()
 
 setup(
