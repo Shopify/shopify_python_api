@@ -1,3 +1,12 @@
+== Version 4.1.0 Beta 1
+* Removed Python 2.7, 3.4 for end life support
+* Added Release and removed Version
+* Added VirtualEnv support
+* Updated Python Setup
+* Fixed Travis CI
+* Fixed some PEP8 Errors
+* Suppressed Limit Tests Errors (need fix it)
+
 == Version 4.0.0
 * Added AccessScope resource
 * Added ApiPermission resource

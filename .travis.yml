@@ -1,10 +1,9 @@
 language: python
 
 python:
-  - "2.7"
-  - "3.4"
   - "3.5"
   - "3.6"
+  - "3.7"
 
 # command to install dependencies
 install: "python setup.py install"
@@ -15,4 +14,3 @@ script: 'python setup.py test'
 notifications:
   flowdock:
     secure: "YD74L+41DEjv2Bq5fG8vvIsuMG5iu8CHctes3CSfQw0j5SaPcASsKe6twXBCLsGB5IwzgYk7RUEnOsqA6kLqfWChJ3kO4lBCYBKSaGSG84VjwUlMOVG4n0jt7SLiHRjQ6sBhwFhWE64yAZPbdDuYtrUtVbb9Ui+dLUyBab1o7Cw="
-
