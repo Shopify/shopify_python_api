@@ -1,17 +1,14 @@
-dist: xenial
-sudo: false
 language: python
-python: "3.6"
-cache: pip
 
-install: pip install tox tox-venv
+# command to install dependencies
+install: "python setup.py install"
 
-script: tox
+# command to run tests
+script: 'python setup.py test'
 
 stages:
     - name: static analysis
     - name: test
-    # - name: deploy to PyPI
 
 jobs:
   fast_finish: true
@@ -19,53 +16,25 @@ jobs:
     - python: "2.7.6"
   include:
     - stage: static analysis
-      env: TOXENV=flake8-27
       python: "2.7"
 
     - stage: static analysis
-      env: TOXENV=flake8-37
-      python: "3.7"
-
-    - stage: test
-      env: TOXENV=py27
-      dist: trusty
-      python: "2.7.6"
-
-    - stage: test
-      env: TOXENV=py27
-      python: "2.7"
-
-    - stage: test
-      env: TOXENV=py34
-      python: "3.4"
-
-    - stage: test
-      env: TOXENV=py35
       python: "3.5"
 
     - stage: test
-      env: TOXENV=py36
+      python: "2.7"
+
+    - stage: test
+      python: "3.4"
+
+    - stage: test
+      python: "3.5"
+
+    - stage: test
       python: "3.6"
 
     - stage: test
-      env: TOXENV=py37
       python: "3.7"
-
-    # - stage: deploy to PyPI
-    #   install: true
-    #   script: skip
-    #   deploy:
-    #     provider: pypi
-    #     user: InstaPy
-    #     password:
-    #       secure:
-    #       distributions: sdist bdist_wheel
-    #     on:
-    #       tags: true
-    #       repo:
-    #       branches:
-    #         only:
-    #           - master
 
 notifications:
   flowdock:
