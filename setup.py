@@ -32,6 +32,7 @@ setup(
     test_suite='test',
     tests_require=[
         'mock>=1.0.1',
+        'pytest'
     ],
     platforms='Any',
     classifiers=[c for c in classifiers.split('\n') if c],

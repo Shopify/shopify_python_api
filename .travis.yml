@@ -1,10 +1,12 @@
 language: python
 
 # command to install dependencies
-install: "python setup.py install"
+install:
+    - "python setup.py install"
 
 # command to run tests
-script: 'python setup.py test'
+script:
+    - python -m pytest -v --debug
 
 stages:
     - name: static analysis

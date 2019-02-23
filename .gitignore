@@ -16,3 +16,4 @@ tags
 /virtualenv
 __pycache__/
 *.py[cod]
+pytestdebug.log
