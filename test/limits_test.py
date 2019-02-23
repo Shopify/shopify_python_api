@@ -18,7 +18,7 @@ class LimitsTest(TestCase):
         # )
         #
         # patcher.start()
-        #
+
         self.fake('shop')
         shopify.Shop.current()
 
