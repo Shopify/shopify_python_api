@@ -1,9 +1,9 @@
 == Version 4.0.0 Beta 1
-* Changed Version with Release
-* Added VirtualEnv support
-* Updated Python Setup
+* Changed Version with Release for support of Release Level
+* Added VirtualEnv to Git Ignore
+* Updated Python Setup, some informations are in Release file
 * Updated Travis CI Build
-* Fixed some PEP8 Errors
+* Fixed all PEP8 Errors
 * Fixed API Call Limit
 
 == Version 4.0.0

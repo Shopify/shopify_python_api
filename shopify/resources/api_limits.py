@@ -1,5 +1,5 @@
-import shopify
 from ..base import ShopifyResource
+import shopify
 
 
 class ApiLimits(ShopifyResource):
@@ -12,6 +12,7 @@ class ApiLimits(ShopifyResource):
     """
     API_LIMIT_HEADER_PARAM = "X-Shopify-Shop-Api-Call-Limit"
     # TODO: Add 429 Too Many Requests
+    # TODO: Add Check of HTTP_X_SHOPIFY_SHOP_API_CALL_LIMIT
 
     @classmethod
     def status(cls):
