@@ -7,8 +7,8 @@ class ApiLimits(ShopifyResource):
     API Calls Limit
     https://help.shopify.com/en/api/getting-started/api-call-limit
 
-    HTTP_X_SHOPIFY_SHOP_API_CALL_LIMIT →1/40
-    X-Shopify-Shop-Api-Call-Limit →1/40
+    HTTP_X_SHOPIFY_SHOP_API_CALL_LIMIT 1/40
+    X-Shopify-Shop-Api-Call-Limit 1/40
     """
     API_LIMIT_HEADER_PARAM = "X-Shopify-Shop-Api-Call-Limit"
     # TODO: Add 429 Too Many Requests
