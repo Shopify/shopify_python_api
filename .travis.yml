@@ -6,7 +6,7 @@ install:
 
 # command to run tests
 script:
-    - python -m pytest -v --debug
+    - python -m pytest -v
 
 stages:
     - name: static analysis
@@ -14,8 +14,6 @@ stages:
 
 jobs:
   fast_finish: true
-  allow_failures:
-    - python: "3.7"
   include:
     - stage: static analysis
       python: "2.7"
@@ -34,9 +32,6 @@ jobs:
 
     - stage: test
       python: "3.6"
-
-    - stage: test
-      python: "3.7"
 
 notifications:
   flowdock:

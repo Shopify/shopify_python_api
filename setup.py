@@ -25,6 +25,7 @@ setup(
         'pyactiveresource>=2.1.2',
         'PyYAML',
         'six',
+        'pyopenssl',
     ],
     extras_require={
         'SSL': ['pyopenssl'],

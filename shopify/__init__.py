@@ -9,7 +9,6 @@
 from shopify import release  # noqa: E402
 from shopify.session import Session, ValidationException  # noqa: E402,F401
 from shopify.resources import *  # noqa: E402,F401,F403
-from shopify.limits import Limits  # noqa: E402,F401
 
 __version__ = release.version
 __author__ = release.author
