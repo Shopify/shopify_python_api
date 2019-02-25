@@ -14,7 +14,7 @@ RELEASE_LEVELS_DISPLAY = {ALPHA: ALPHA,
 # properly comparable using normal operarors, for example:
 #  (6,1,0,'beta',0) < (6,1,0,'candidate',1) < (6,1,0,'candidate',2)
 #  (6,1,0,'candidate',2) < (6,1,0,'final',0) < (6,1,2,'final',0)
-version_info = (4, 0, 0, BETA, 1, '')
+version_info = (4, 0, 0, BETA, 2, '')
 
 version = '.'.join(str(s) for s in version_info[:3]) + RELEASE_LEVELS_DISPLAY[
     version_info[3]] + str(version_info[4] or '') + version_info[5]

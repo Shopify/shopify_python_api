@@ -7,6 +7,7 @@
 from shopify import release
 from shopify.session import Session, ValidationException
 from shopify.resources import *
+from shopify.limits import Limits
 
 __version__ = release.version
 __author__ = release.author
