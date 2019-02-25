@@ -24,13 +24,13 @@ class Limits(object):
         _safe_header = getattr(response, "headers", '')
 
         if not _safe_header:
-            raise Exception("No valid shopify headers found")
+            raise Exception("No shopify headers found")
 
         if cls.CREDIT_LIMIT_HEADER_PARAM in response.headers:
             credits = response.headers[cls.CREDIT_LIMIT_HEADER_PARAM]
             return credits.split('/')
         else:
-            raise Exception("No valid shopify headers found")
+            raise Exception("No valid api call header found")
 
     @classmethod
     def credit_left(cls):

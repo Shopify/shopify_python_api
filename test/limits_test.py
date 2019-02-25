@@ -24,9 +24,17 @@ class LimitsTest(TestCase):
         super(LimitsTest, self).tearDown()
         shopify.Shop.connection.response.headers = self.original_headers
 
-    def test_raise_error_header(self):
+    def test_raise_error_no_header(self):
         with self.assertRaises(Exception):
             shopify.Limits.credit_left()
+
+    def test_raise_error_invalid_header(self):
+        with patch.dict(
+                    shopify.Shop.connection.response.headers,
+                    {'bad': 'value'},
+                    clear=True):
+            with self.assertRaises(Exception):
+                shopify.Limits.credit_left()
 
     def test_fetch_limits_total(self):
         with patch.dict(
