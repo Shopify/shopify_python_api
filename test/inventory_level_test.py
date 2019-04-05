@@ -1,6 +1,6 @@
 import shopify
 import json
-import urllib
+from six.moves.urllib.parse import urlencode
 from test.test_helper import TestCase
 
 class InventoryLevelTest(TestCase):
@@ -54,10 +54,10 @@ class InventoryLevelTest(TestCase):
         self.assertEqual(inventory_level.available, 6)
 
     def test_destroy_inventory_level(self):
-        inventory_level_response = json.loads(self.load_fixture('inventory_level'))
+        inventory_level_response = json.loads(self.load_fixture('inventory_level').decode())
         inventory_level = shopify.InventoryLevel(inventory_level_response['inventory_level'])
 
-        query_params = urllib.urlencode({
+        query_params = urlencode({
             'inventory_item_id': inventory_level.inventory_item_id,
             'location_id': inventory_level.location_id
         })
