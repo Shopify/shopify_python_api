@@ -4,7 +4,7 @@ from ..base import ShopifyResource
 
 
 class Refund(ShopifyResource):
-    _prefix_source = "/admin/orders/$order_id/"
+    _prefix_source = "/orders/$order_id/"
 
     @classmethod
     def calculate(cls, order_id, shipping=None, refund_line_items=None):

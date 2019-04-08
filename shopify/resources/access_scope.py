@@ -2,4 +2,6 @@ from ..base import ShopifyResource
 
 
 class AccessScope(ShopifyResource):
-    _prefix_source = "/admin/oauth/"
+    @classmethod
+    def override_prefix(cls):
+        return "/admin/oauth"
