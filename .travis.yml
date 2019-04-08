@@ -1,18 +1,27 @@
 language: python
 
-python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
-
 # command to install dependencies
-install: "python setup.py install"
+install:
+    - "python setup.py install"
 
 # command to run tests
-script: 'python setup.py test'
+script:
+    - python -m pytest -v
 
-notifications:
-  flowdock:
-    secure: "YD74L+41DEjv2Bq5fG8vvIsuMG5iu8CHctes3CSfQw0j5SaPcASsKe6twXBCLsGB5IwzgYk7RUEnOsqA6kLqfWChJ3kO4lBCYBKSaGSG84VjwUlMOVG4n0jt7SLiHRjQ6sBhwFhWE64yAZPbdDuYtrUtVbb9Ui+dLUyBab1o7Cw="
+stages:
+    - name: test
 
+jobs:
+  fast_finish: true
+  include:
+    - stage: test
+      python: "2.7"
+
+    - stage: test
+      python: "3.4"
+
+    - stage: test
+      python: "3.5"
+
+    - stage: test
+      python: "3.6"
