@@ -12,7 +12,7 @@ class TestCase(unittest.TestCase):
         ActiveResource.headers=None
 
         shopify.ShopifyResource.clear_session()
-        shopify.ShopifyResource.site = "https://this-is-my-test-show.myshopify.com/admin"
+        shopify.ShopifyResource.site = "https://this-is-my-test-show.myshopify.com/admin/api/unstable"
         shopify.ShopifyResource.password = None
         shopify.ShopifyResource.user = None
 
@@ -35,7 +35,7 @@ class TestCase(unittest.TestCase):
         else:
             extension = ".%s" % (kwargs.pop('extension', 'json'))
 
-        url = "https://this-is-my-test-show.myshopify.com/admin/%s%s" % (endpoint, extension)
+        url = "https://this-is-my-test-show.myshopify.com/admin/api/unstable/%s%s" % (endpoint, extension)
         try:
            url = kwargs['url']
         except KeyError:

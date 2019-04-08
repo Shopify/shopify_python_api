@@ -8,8 +8,14 @@ class BaseTest(TestCase):
 
     @classmethod
     def setUpClass(self):
-        self.session1 = shopify.Session('shop1.myshopify.com', 'token1')
-        self.session2 = shopify.Session('shop2.myshopify.com', 'token2')
+        shopify.ApiVersion.define_known_versions()
+        shopify.ApiVersion.define_version(shopify.Release('2019-04'))
+        self.session1 = shopify.Session('shop1.myshopify.com', 'unstable', 'token1')
+        self.session2 = shopify.Session('shop2.myshopify.com', '2019-04', 'token2')
+
+    @classmethod
+    def tearDownClass(self):
+        shopify.ApiVersion.clear_defined_versions()
 
     def setUp(self):
         super(BaseTest, self).setUp()
@@ -21,11 +27,19 @@ class BaseTest(TestCase):
         shopify.ShopifyResource.activate_session(self.session1)
 
         self.assertIsNone(ActiveResource.site)
-        self.assertEqual('https://shop1.myshopify.com/admin', shopify.ShopifyResource.site)
-        self.assertEqual('https://shop1.myshopify.com/admin', shopify.Shop.site)
+        self.assertEqual('https://shop1.myshopify.com/admin/api/unstable', shopify.ShopifyResource.site)
+        self.assertEqual('https://shop1.myshopify.com/admin/api/unstable', shopify.Shop.site)
         self.assertIsNone(ActiveResource.headers)
         self.assertEqual('token1', shopify.ShopifyResource.headers['X-Shopify-Access-Token'])
         self.assertEqual('token1', shopify.Shop.headers['X-Shopify-Access-Token'])
+
+    def test_activate_session_should_set_site_given_version(self):
+        shopify.ShopifyResource.activate_session(self.session2)
+
+        self.assertIsNone(ActiveResource.site)
+        self.assertEqual('https://shop2.myshopify.com/admin/api/2019-04', shopify.ShopifyResource.site)
+        self.assertEqual('https://shop2.myshopify.com/admin/api/2019-04', shopify.Shop.site)
+        self.assertIsNone(ActiveResource.headers)
 
     def test_clear_session_should_clear_site_and_headers_from_Base(self):
         shopify.ShopifyResource.activate_session(self.session1)
@@ -45,8 +59,8 @@ class BaseTest(TestCase):
         shopify.ShopifyResource.activate_session(self.session2)
 
         self.assertIsNone(ActiveResource.site)
-        self.assertEqual('https://shop2.myshopify.com/admin', shopify.ShopifyResource.site)
-        self.assertEqual('https://shop2.myshopify.com/admin', shopify.Shop.site)
+        self.assertEqual('https://shop2.myshopify.com/admin/api/2019-04', shopify.ShopifyResource.site)
+        self.assertEqual('https://shop2.myshopify.com/admin/api/2019-04', shopify.Shop.site)
 
         self.assertIsNone(ActiveResource.headers)
         self.assertEqual('token2', shopify.ShopifyResource.headers['X-Shopify-Access-Token'])

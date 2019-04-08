@@ -41,6 +41,8 @@ class ShopifyResourceMeta(ResourceMeta):
             local.timeout = cls.timeout
             local.headers = cls.headers
             local.format = cls.format
+            local.version = cls.version
+            local.url = cls.url
             if cls.site is None:
                 raise ValueError("No shopify session is active")
             local.connection = ShopifyConnection(
@@ -130,6 +132,32 @@ class ShopifyResourceMeta(ResourceMeta):
 
     prefix_source = property(get_prefix_source, set_prefix_source, None,
                              'prefix for lookups for this type of object.')
+    def get_version(cls):
+        return getattr(cls._threadlocal, 'version', ShopifyResource._version)
+
+    def set_version(cls, value):
+        ShopifyResource._version = cls._threadlocal.version = value
+
+    version = property(get_version, set_version, None,
+                      'Shopify Api Version')
+
+    def get_version(cls):
+        return getattr(cls._threadlocal, 'version', ShopifyResource._version)
+
+    def set_version(cls, value):
+        ShopifyResource._version = cls._threadlocal.version = value
+
+    version = property(get_version, set_version, None,
+                      'Shopify Api Version')
+
+    def get_url(cls):
+        return getattr(cls._threadlocal, 'url', ShopifyResource._url)
+
+    def set_url(cls, value):
+        ShopifyResource._url = cls._threadlocal.url = value
+
+    url = property(get_url, set_url, None,
+                      'Base URL including protocol and shopify domain')
 
 
 @six.add_metaclass(ShopifyResourceMeta)
@@ -137,6 +165,7 @@ class ShopifyResource(ActiveResource, mixins.Countable):
     _format = formats.JSONFormat
     _threadlocal = threading.local()
     _headers = {'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])}
+    _version = None
 
     def __init__(self, attributes=None, prefix_options=None):
         if attributes is not None and prefix_options is None:
@@ -153,13 +182,17 @@ class ShopifyResource(ActiveResource, mixins.Countable):
     @classmethod
     def activate_session(cls, session):
         cls.site = session.site
+        cls.url = session.url
         cls.user = None
         cls.password = None
+        cls.version = session.api_version.name
         cls.headers['X-Shopify-Access-Token'] = session.token
 
     @classmethod
     def clear_session(cls):
         cls.site = None
+        cls.url = None
         cls.user = None
         cls.password = None
+        cls.version = None
         cls.headers.pop('X-Shopify-Access-Token', None)

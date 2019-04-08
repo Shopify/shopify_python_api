@@ -9,6 +9,7 @@ except ImportError:
 import re
 from contextlib import contextmanager
 from six.moves import urllib
+from shopify.api_version import ApiVersion, Release, Unstable
 import six
 
 class ValidationException(Exception):
@@ -28,26 +29,28 @@ class Session(object):
 
     @classmethod
     @contextmanager
-    def temp(cls, domain, token):
+    def temp(cls, domain, version, token):
         import shopify
-        original_site = shopify.ShopifyResource.get_site()
+        original_domain = shopify.ShopifyResource.url
         original_token = shopify.ShopifyResource.get_headers().get('X-Shopify-Access-Token')
-        original_session = shopify.Session(original_site, original_token)
+        original_version = shopify.ShopifyResource.get_version() or version
+        original_session = shopify.Session(original_domain, original_version, original_token)
 
-        session = Session(domain, token)
+        session = Session(domain, version, token)
         shopify.ShopifyResource.activate_session(session)
         yield
         shopify.ShopifyResource.activate_session(original_session)
 
-    def __init__(self, shop_url, token=None, params=None):
+    def __init__(self, shop_url, version=None, token=None):
         self.url = self.__prepare_url(shop_url)
         self.token = token
+        self.version = ApiVersion.coerce_to_version(version)
         return
 
     def create_permission_url(self, scope, redirect_uri, state=None):
         query_params = dict(client_id=self.api_key, scope=",".join(scope), redirect_uri=redirect_uri)
         if state: query_params['state'] = state
-        return "%s/oauth/authorize?%s" % (self.site, urllib.parse.urlencode(query_params))
+        return "https://%s/admin/oauth/authorize?%s" % (self.url, urllib.parse.urlencode(query_params))
 
     def request_token(self, params):
         if self.token:
@@ -58,7 +61,7 @@ class Session(object):
 
         code = params['code']
 
-        url = "%s/oauth/access_token?" % self.site
+        url = "https://%s/admin/oauth/access_token?" % self.url
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
         request = urllib.request.Request(url, urllib.parse.urlencode(query_params).encode('utf-8'))
         response = urllib.request.urlopen(request)
@@ -70,8 +73,12 @@ class Session(object):
             raise Exception(response.msg)
 
     @property
+    def api_version(self):
+        return self.version
+
+    @property
     def site(self):
-        return "%s://%s/admin" % (self.protocol, self.url)
+        return self.version.api_path("%s://%s" % (self.protocol, self.url))
 
     @property
     def valid(self):
