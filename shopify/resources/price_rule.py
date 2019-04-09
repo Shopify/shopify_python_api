@@ -3,6 +3,7 @@ from ..base import ShopifyResource
 from .discount_code import DiscountCode
 from .discount_code_creation import DiscountCodeCreation
 
+
 class PriceRule(ShopifyResource):
     def add_discount_code(self, discount_code = DiscountCode()):
         resource = self.post("discount_codes", discount_code.encode())
