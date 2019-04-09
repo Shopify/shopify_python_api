@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class VariantTest(TestCase):
 
     def test_get_variants(self):
