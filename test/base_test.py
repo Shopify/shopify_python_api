@@ -4,6 +4,7 @@ from pyactiveresource.activeresource import ActiveResource
 from mock import patch
 import threading
 
+
 class BaseTest(TestCase):
 
     @classmethod
