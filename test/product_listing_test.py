@@ -29,7 +29,7 @@ class ProductListingTest(TestCase):
         self.assertEqual("Synergistic Silk Chair", product_listing.title)
 
     def test_get_product_listing_product_ids(self):
-        self.fake('product_listings/product_ids', method='GET', status = 200, body=self.load_fixture('product_listing_product_ids'))
+        self.fake('product_listings/product_ids', method='GET', status=200, body=self.load_fixture('product_listing_product_ids'))
 
         product_ids = shopify.ProductListing.product_ids()
 

@@ -22,7 +22,7 @@ class AssetTest(TestCase):
 
     def test_get_assets_namespaced(self):
         self.fake("themes/1/assets", method='GET', body=self.load_fixture('assets'))
-        v = shopify.Asset.find(theme_id = 1)
+        v = shopify.Asset.find(theme_id=1)
 
     def test_get_asset_namespaced(self):
         self.fake("themes/1/assets.json?asset%5Bkey%5D=templates%2Findex.liquid&theme_id=1", extension=False, method='GET', body=self.load_fixture('asset'))

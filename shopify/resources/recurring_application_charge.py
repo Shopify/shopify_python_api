@@ -14,7 +14,7 @@ class RecurringApplicationCharge(ShopifyResource):
         return UsageCharge.find(recurring_application_charge_id=self.id)
 
     def customize(self, **kwargs):
-        self._load_attributes_from_response(self.put("customize", recurring_application_charge= kwargs))
+        self._load_attributes_from_response(self.put("customize", recurring_application_charge=kwargs))
 
     @classmethod
     def current(cls):

@@ -5,15 +5,15 @@ class VariantTest(TestCase):
 
     def test_get_variants(self):
         self.fake("products/632910392/variants", method='GET', body=self.load_fixture('variants'))
-        v = shopify.Variant.find(product_id = 632910392)
+        v = shopify.Variant.find(product_id=632910392)
 
     def test_get_variant_namespaced(self):
         self.fake("products/632910392/variants/808950810", method='GET', body=self.load_fixture('variant'))
-        v = shopify.Variant.find(808950810, product_id = 632910392)
+        v = shopify.Variant.find(808950810, product_id=632910392)
 
     def test_update_variant_namespace(self):
         self.fake("products/632910392/variants/808950810", method='GET', body=self.load_fixture('variant'))
-        v = shopify.Variant.find(808950810, product_id = 632910392)
+        v = shopify.Variant.find(808950810, product_id=632910392)
 
         self.fake("products/632910392/variants/808950810", method='PUT', body=self.load_fixture('variant'), headers={'Content-type': 'application/json'})
         v.save()

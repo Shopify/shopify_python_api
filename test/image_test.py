@@ -52,7 +52,7 @@ class ImageTest(TestCase):
         fake_extension = 'json?metafield[owner_id]=850703190&metafield[owner_resource]=product_image'
         self.fake("metafields", method='GET', extension=fake_extension, body=self.load_fixture('image_metafields'))
 
-        image = shopify.Image(attributes = { 'id': 850703190, 'product_id': 632910392 })
+        image = shopify.Image(attributes={ 'id': 850703190, 'product_id': 632910392 })
         metafields = image.metafields()
 
         self.assertEqual(1, len(metafields))
