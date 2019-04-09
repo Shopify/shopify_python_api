@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class ProductListingTest(TestCase):
 
     def test_get_product_listings(self):
