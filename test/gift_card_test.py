@@ -2,6 +2,7 @@ from decimal import Decimal
 import shopify
 from test.test_helper import TestCase
 
+
 class GiftCardTest(TestCase):
 
     def test_gift_card_creation(self):
