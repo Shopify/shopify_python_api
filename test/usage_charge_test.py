@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class UsageChargeTest(TestCase):
     def test_create_usage_charge(self):
         self.fake("recurring_application_charges/654381177/usage_charges", method='POST', body=self.load_fixture('usage_charge'), headers={'Content-type': 'application/json'})
