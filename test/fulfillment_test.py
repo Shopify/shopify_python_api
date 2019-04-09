@@ -2,6 +2,7 @@ import shopify
 from test.test_helper import TestCase
 from pyactiveresource.activeresource import ActiveResource
 
+
 class FulFillmentTest(TestCase):
   
     def setUp(self):
