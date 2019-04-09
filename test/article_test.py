@@ -5,7 +5,7 @@ class ArticleTest(TestCase):
 
     def test_create_article(self):
         self.fake("blogs/1008414260/articles", method='POST', body=self.load_fixture('article'), headers={'Content-type': 'application/json'})
-        article = shopify.Article({'blog_id':1008414260})
+        article = shopify.Article({'blog_id': 1008414260})
         article.save()
         self.assertEqual("First Post", article.title)
 
