@@ -5,7 +5,7 @@ class OrderRiskTest(TestCase):
 
   def test_create_order_risk(self):
     self.fake("orders/450789469/risks", method='POST', body= self.load_fixture('order_risk'), headers={'Content-type': 'application/json'})
-    v = shopify.OrderRisk({'order_id':450789469})
+    v = shopify.OrderRisk({'order_id': 450789469})
     v.message = "This order was placed from a proxy IP"
     v.recommendation = "cancel"
     v.score = "1.0"
