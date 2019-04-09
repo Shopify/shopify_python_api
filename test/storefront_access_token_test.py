@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class StorefrontAccessTokenTest(TestCase):
     def test_create_storefront_access_token(self):
         self.fake('storefront_access_tokens', method='POST', body=self.load_fixture('storefront_access_token'), headers={ 'Content-type': 'application/json' })
