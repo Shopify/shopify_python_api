@@ -8,32 +8,38 @@ from six import u
 
 class SessionTest(TestCase):
 
+    @classmethod
+    def setUpClass(self):
+        shopify.ApiVersion.define_known_versions()
+        shopify.ApiVersion.define_version(shopify.Release('2019-04'))
+
+    @classmethod
+    def tearDownClass(self):
+        shopify.ApiVersion.clear_defined_versions()
+
     def test_not_be_valid_without_a_url(self):
-        session = shopify.Session("", "any-token")
+        session = shopify.Session("", 'unstable', 'any-token')
         self.assertFalse(session.valid)
 
     def test_not_be_valid_without_token(self):
-        session = shopify.Session("testshop.myshopify.com")
+        session = shopify.Session("testshop.myshopify.com", 'unstable')
         self.assertFalse(session.valid)
 
     def test_be_valid_with_any_token_and_any_url(self):
-        session = shopify.Session("testshop.myshopify.com", "any-token")
+        session = shopify.Session("testshop.myshopify.com", 'unstable', "any-token")
         self.assertTrue(session.valid)
 
     def test_ignore_everything_but_the_subdomain_in_the_shop(self):
-        session = shopify.Session("http://user:pass@testshop.notshopify.net/path", "any-token")
-        self.assertEqual("https://testshop.myshopify.com/admin", session.site)
+        session = shopify.Session("http://user:pass@testshop.notshopify.net/path", 'unstable', "any-token")
+        self.assertEqual("https://testshop.myshopify.com/admin/api/unstable", session.site)
 
     def test_append_the_myshopify_domain_if_not_given(self):
-        session = shopify.Session("testshop", "any-token")
-        self.assertEqual("https://testshop.myshopify.com/admin", session.site)
-
-    def test_not_raise_error_without_params(self):
-        session = shopify.Session("testshop.myshopify.com", "any-token")
+        session = shopify.Session("testshop", 'unstable', "any-token")
+        self.assertEqual("https://testshop.myshopify.com/admin/api/unstable", session.site)
 
     def test_raise_error_if_params_passed_but_signature_omitted(self):
         with self.assertRaises(shopify.ValidationException):
-            session = shopify.Session("testshop.myshopify.com")
+            session = shopify.Session("testshop.myshopify.com", 'unstable')
             token = session.request_token({'code':'any_code', 'foo': 'bar', 'timestamp':'1234'})
 
     def test_setup_api_key_and_secret_for_all_sessions(self):
@@ -46,27 +52,27 @@ class SessionTest(TestCase):
 
     def test_temp_reset_shopify_ShopifyResource_site_to_original_value(self):
         shopify.Session.setup(api_key="key", secret="secret")
-        session1 = shopify.Session('fakeshop.myshopify.com', 'token1')
+        session1 = shopify.Session('fakeshop.myshopify.com', '2019-04', 'token1')
         shopify.ShopifyResource.activate_session(session1)
 
         assigned_site = ""
-        with shopify.Session.temp("testshop.myshopify.com", "any-token"):
+        with shopify.Session.temp("testshop.myshopify.com", 'unstable', "any-token"):
             assigned_site = shopify.ShopifyResource.site
 
-        self.assertEqual('https://testshop.myshopify.com/admin', assigned_site)
-        self.assertEqual('https://fakeshop.myshopify.com/admin', shopify.ShopifyResource.site)
+        self.assertEqual('https://testshop.myshopify.com/admin/api/unstable', assigned_site)
+        self.assertEqual('https://fakeshop.myshopify.com/admin/api/2019-04', shopify.ShopifyResource.site)
 
     def test_myshopify_domain_supports_non_standard_ports(self):
         try:
             shopify.Session.setup(api_key="key", secret="secret", myshopify_domain="localhost", port=3000)
 
-            session = shopify.Session('fakeshop.localhost:3000', 'token1')
+            session = shopify.Session('fakeshop.localhost:3000', 'unstable', 'token1')
             shopify.ShopifyResource.activate_session(session)
-            self.assertEqual('https://fakeshop.localhost:3000/admin', shopify.ShopifyResource.site)
+            self.assertEqual('https://fakeshop.localhost:3000/admin/api/unstable', shopify.ShopifyResource.site)
 
-            session = shopify.Session('fakeshop', 'token1')
+            session = shopify.Session('fakeshop', 'unstable', 'token1')
             shopify.ShopifyResource.activate_session(session)
-            self.assertEqual('https://fakeshop.localhost:3000/admin', shopify.ShopifyResource.site)
+            self.assertEqual('https://fakeshop.localhost:3000/admin/api/unstable', shopify.ShopifyResource.site)
         finally:
             shopify.Session.setup(myshopify_domain="myshopify.com", port=None)
 
@@ -74,50 +80,50 @@ class SessionTest(TestCase):
         shopify.ShopifyResource.clear_session()
 
         assigned_site = ""
-        with shopify.Session.temp("testshop.myshopify.com", "any-token"):
+        with shopify.Session.temp("testshop.myshopify.com", 'unstable', 'any-token'):
             assigned_site = shopify.ShopifyResource.site
 
-        self.assertEqual('https://testshop.myshopify.com/admin', assigned_site)
-        self.assertEqual('https://None/admin', shopify.ShopifyResource.site)
+        self.assertEqual('https://testshop.myshopify.com/admin/api/unstable', assigned_site)
+        self.assertEqual('https://None/admin/api/unstable', shopify.ShopifyResource.site)
 
     def test_create_permission_url_returns_correct_url_with_single_scope_and_redirect_uri(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
-        session = shopify.Session('http://localhost.myshopify.com')
+        session = shopify.Session('http://localhost.myshopify.com', 'unstable')
         scope = ["write_products"]
         permission_url = session.create_permission_url(scope, "my_redirect_uri.com")
         self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=write_products", self.normalize_url(permission_url))
 
     def test_create_permission_url_returns_correct_url_with_dual_scope_and_redirect_uri(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
-        session = shopify.Session('http://localhost.myshopify.com')
+        session = shopify.Session('http://localhost.myshopify.com', 'unstable')
         scope = ["write_products","write_customers"]
         permission_url = session.create_permission_url(scope, "my_redirect_uri.com")
         self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=write_products%2Cwrite_customers", self.normalize_url(permission_url))
 
     def test_create_permission_url_returns_correct_url_with_no_scope_and_redirect_uri(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
-        session = shopify.Session('http://localhost.myshopify.com')
+        session = shopify.Session('http://localhost.myshopify.com', 'unstable')
         scope = []
         permission_url = session.create_permission_url(scope, "my_redirect_uri.com")
         self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=", self.normalize_url(permission_url))
 
     def test_create_permission_url_returns_correct_url_with_no_scope_and_redirect_uri_and_state(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
-        session = shopify.Session('http://localhost.myshopify.com')
+        session = shopify.Session('http://localhost.myshopify.com', 'unstable')
         scope = []
         permission_url = session.create_permission_url(scope, "my_redirect_uri.com", state="mystate")
         self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=&state=mystate", self.normalize_url(permission_url))
 
     def test_create_permission_url_returns_correct_url_with_single_scope_and_redirect_uri_and_state(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
-        session = shopify.Session('http://localhost.myshopify.com')
+        session = shopify.Session('http://localhost.myshopify.com', 'unstable')
         scope = ["write_customers"]
         permission_url = session.create_permission_url(scope, "my_redirect_uri.com", state="mystate")
         self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=write_customers&state=mystate", self.normalize_url(permission_url))
 
     def test_raise_exception_if_code_invalid_in_request_token(self):
         shopify.Session.setup(api_key="My test key", secret="My test secret")
-        session = shopify.Session('http://localhost.myshopify.com')
+        session = shopify.Session('http://localhost.myshopify.com', 'unstable')
         self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', code=404, body='{"error" : "invalid_request"}', has_user_agent=False)
 
         with self.assertRaises(shopify.ValidationException):
@@ -126,8 +132,8 @@ class SessionTest(TestCase):
         self.assertFalse(session.valid)
 
     def test_return_site_for_session(self):
-        session = shopify.Session("testshop.myshopify.com", "any-token")
-        self.assertEqual("https://testshop.myshopify.com/admin", session.site)
+        session = shopify.Session("testshop.myshopify.com", 'unstable', 'any-token')
+        self.assertEqual("https://testshop.myshopify.com/admin/api/unstable", session.site)
 
     def test_hmac_calculation(self):
         # Test using the secret and parameter examples given in the Shopify API documentation.
@@ -187,7 +193,7 @@ class SessionTest(TestCase):
         params['hmac'] = hmac
 
         self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', body='{"access_token" : "token"}', has_user_agent=False)
-        session = shopify.Session('http://localhost.myshopify.com')
+        session = shopify.Session('http://localhost.myshopify.com', 'unstable')
         token = session.request_token(params)
         self.assertEqual("token", token)
 
@@ -197,7 +203,7 @@ class SessionTest(TestCase):
         params['hmac'] = 'a94a110d86d2452e92a4a64275b128e9273be3037f2c339eb3e2af4cfb8a3828'
 
         with self.assertRaises(shopify.ValidationException):
-            session = shopify.Session('http://localhost.myshopify.com')
+            session = shopify.Session('http://localhost.myshopify.com', 'unstable')
             session = session.request_token(params)
 
     def test_raise_error_if_hmac_does_not_match_expected(self):
@@ -209,7 +215,7 @@ class SessionTest(TestCase):
         params['code'] = 'code'
 
         with self.assertRaises(shopify.ValidationException):
-            session = shopify.Session('http://localhost.myshopify.com')
+            session = shopify.Session('http://localhost.myshopify.com', 'unstable')
             session = session.request_token(params)
 
     def test_raise_error_if_timestamp_is_too_old(self):
@@ -220,7 +226,7 @@ class SessionTest(TestCase):
         params['hmac'] = hmac
 
         with self.assertRaises(shopify.ValidationException):
-            session = shopify.Session('http://localhost.myshopify.com')
+            session = shopify.Session('http://localhost.myshopify.com', 'unstable')
             session = session.request_token(params)
 
     def normalize_url(self, url):
