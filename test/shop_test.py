@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class ShopTest(TestCase):
     def setUp(self):
         super(ShopTest, self).setUp()
