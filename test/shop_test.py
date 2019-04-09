@@ -8,7 +8,7 @@ class ShopTest(TestCase):
         self.shop = shopify.Shop.current()
 
     def test_current_should_return_current_shop(self):
-        self.assertTrue(isinstance(self.shop,shopify.Shop))
+        self.assertTrue(isinstance(self.shop, shopify.Shop))
         self.assertEqual("Apple Computers", self.shop.name)
         self.assertEqual("apple.myshopify.com", self.shop.myshopify_domain)
         self.assertEqual(690933842, self.shop.id)
