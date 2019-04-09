@@ -2,6 +2,7 @@ import shopify
 import json
 from test.test_helper import TestCase
 
+
 class LocationTest(TestCase):
     def test_fetch_locations(self):
         self.fake("locations", method='GET', body=self.load_fixture('locations'))
