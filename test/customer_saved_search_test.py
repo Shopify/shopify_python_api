@@ -2,7 +2,7 @@ import shopify
 from test.test_helper import TestCase
 
 class CustomerSavedSearchTest(TestCase):
-    
+
     def setUp(self):
         super(CustomerSavedSearchTest, self).setUp()
         self.load_customer_saved_search()
