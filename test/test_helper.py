@@ -9,7 +9,7 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         ActiveResource.site = None
-        ActiveResource.headers=None
+        ActiveResource.headers = None
 
         shopify.ShopifyResource.clear_session()
         shopify.ShopifyResource.site = "https://this-is-my-test-show.myshopify.com/admin/api/unstable"
