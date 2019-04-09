@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class RecurringApplicationChargeTest(TestCase):
     def test_activate_charge(self):
         # Just check that calling activate doesn't raise an exception.
