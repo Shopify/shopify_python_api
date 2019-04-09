@@ -1,6 +1,7 @@
 from ..base import ShopifyResource
 from .discount_code import DiscountCode
 
+
 class DiscountCodeCreation(ShopifyResource):
     _prefix_source = "/price_rules/$price_rule_id/"
 
