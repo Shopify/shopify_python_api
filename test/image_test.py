@@ -2,6 +2,7 @@ import shopify
 from test.test_helper import TestCase
 import base64
 
+
 class ImageTest(TestCase):
 
     def test_create_image(self):
