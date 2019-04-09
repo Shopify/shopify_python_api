@@ -40,7 +40,7 @@ class SessionTest(TestCase):
     def test_raise_error_if_params_passed_but_signature_omitted(self):
         with self.assertRaises(shopify.ValidationException):
             session = shopify.Session("testshop.myshopify.com", 'unstable')
-            token = session.request_token({'code':'any_code', 'foo': 'bar', 'timestamp':'1234'})
+            token = session.request_token({'code': 'any_code', 'foo': 'bar', 'timestamp': '1234'})
 
     def test_setup_api_key_and_secret_for_all_sessions(self):
         shopify.Session.setup(api_key="My test key", secret="My test secret")
@@ -96,7 +96,7 @@ class SessionTest(TestCase):
     def test_create_permission_url_returns_correct_url_with_dual_scope_and_redirect_uri(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session('http://localhost.myshopify.com', 'unstable')
-        scope = ["write_products","write_customers"]
+        scope = ["write_products", "write_customers"]
         permission_url = session.create_permission_url(scope, "my_redirect_uri.com")
         self.assertEqual("https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=write_products%2Cwrite_customers", self.normalize_url(permission_url))
 
@@ -127,7 +127,7 @@ class SessionTest(TestCase):
         self.fake(None, url='https://localhost.myshopify.com/admin/oauth/access_token', method='POST', code=404, body='{"error" : "invalid_request"}', has_user_agent=False)
 
         with self.assertRaises(shopify.ValidationException):
-            session.request_token({'code':'any-code', 'timestamp':'1234'})
+            session.request_token({'code': 'any-code', 'timestamp': '1234'})
 
         self.assertFalse(session.valid)
 
