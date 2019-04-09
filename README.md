@@ -13,6 +13,40 @@ The data itself is sent as XML over HTTP to communicate with Shopify,
 which provides a web service that follows the REST principles as
 much as possible.
 
+## !! Breaking change notice for version 5.0.0 !!
+
+### Changes to ShopifyAPI::Session
+Session creation requires a `version` to be set, see [Api Versioning at Shopify](https://help.shopify.com/en/api/versioning).
+
+To upgrade your use of ShopifyAPI you will need to make the following changes.
+
+```python
+shopify.Session(domain, token)
+```
+is now
+```python
+shopify.Session(domain, version, token)
+```
+
+The `version` argument takes a string for any known version and correctly coerce it to a `shopify.ApiVersion`.  You can find the currently defined versions [here](https://github.com/Shopify/shopify_python_api/blob/master/shopify/api_version.py#L27).
+
+For example if you want to use the `2019-04` version you would create a session like this:
+```python
+session = shopify.Session(domain, '2019-04', token)
+```
+if you want to use the `unstable` version you would create a session like this:
+```python
+session = shopify.Session(domain, 'unstable', token)
+```
+
+### URLs that have not changed
+
+- OAuth URLs for `authorize`, getting the `access_token` from a code, and using a `refresh_token` have _not_ changed.
+  - get: `/admin/oauth/authorize`
+  - post: `/admin/oauth/access_token`
+  - get: `/admin/oauth/access_scopes`
+- URLs for the merchant’s web admin have _not_ changed. For example: to send the merchant to the product page the url is still `/admin/product/<id>`
+
 ## Usage
 
 ### Requirements
