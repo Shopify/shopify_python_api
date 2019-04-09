@@ -8,4 +8,3 @@ class ShippingZoneTest(TestCase):
         self.assertEqual(1,len(shipping_zones))
         self.assertEqual(shipping_zones[0].name,"Some zone")	
         self.assertEqual(3,len(shipping_zones[0].countries))
-	

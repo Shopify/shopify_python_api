@@ -42,4 +42,3 @@ class ReleaseTest(TestCase):
         version1 = shopify.Release('2019-01')
         version2 = shopify.Release('2019-01')
         self.assertEqual(version1, version2)
-
