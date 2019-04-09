@@ -1,5 +1,6 @@
 from ..base import ShopifyResource
 
+
 class Event(ShopifyResource):
     _prefix_source = "/$resource/$resource_id/"
 
