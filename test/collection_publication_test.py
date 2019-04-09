@@ -7,7 +7,7 @@ class CollectionPublicationTest(TestCase):
         self.fake(
             'publications/55650051/collection_publications',
             method='GET',
-            body= self.load_fixture('collection_publications')
+            body=self.load_fixture('collection_publications')
         )
         collection_publications = shopify.CollectionPublication.find(publication_id=55650051)
 
