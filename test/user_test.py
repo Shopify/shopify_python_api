@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class UserTest(TestCase):
 
     def test_get_all_users(self):
