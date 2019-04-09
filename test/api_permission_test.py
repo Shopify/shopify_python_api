@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class ApiPermissionTest(TestCase):
 
     def test_delete_api_permission(self):
