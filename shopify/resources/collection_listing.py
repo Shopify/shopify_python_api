@@ -1,5 +1,6 @@
 from ..base import ShopifyResource
 
+
 class CollectionListing(ShopifyResource):
     _primary_key = "collection_id"
 
