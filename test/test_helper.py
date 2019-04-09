@@ -5,6 +5,7 @@ from pyactiveresource.activeresource import ActiveResource
 from pyactiveresource.testing import http_fake
 import shopify
 
+
 class TestCase(unittest.TestCase):
 
     def setUp(self):
