@@ -3,6 +3,7 @@ import base64
 import shopify
 from test.test_helper import TestCase
 
+
 class AssetTest(TestCase):
 
     def test_get_assets(self):
