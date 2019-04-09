@@ -29,13 +29,14 @@ class TestCase(unittest.TestCase):
         body = kwargs.pop('body', None) or self.load_fixture(endpoint)
         format = kwargs.pop('format','json')
         method = kwargs.pop('method','GET')
+        prefix = kwargs.pop('prefix', '/admin/api/unstable')
 
         if ('extension' in kwargs and not kwargs['extension']):
             extension = ""
         else:
             extension = ".%s" % (kwargs.pop('extension', 'json'))
 
-        url = "https://this-is-my-test-show.myshopify.com/admin/api/unstable/%s%s" % (endpoint, extension)
+        url = "https://this-is-my-test-show.myshopify.com%s/%s%s" % (prefix, endpoint, extension)
         try:
            url = kwargs['url']
         except KeyError:
