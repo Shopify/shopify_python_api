@@ -12,8 +12,10 @@ from six.moves import urllib
 from shopify.api_version import ApiVersion, Release, Unstable
 import six
 
+
 class ValidationException(Exception):
     pass
+
 
 class Session(object):
     api_key = None
