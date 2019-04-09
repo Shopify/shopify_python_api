@@ -1,5 +1,4 @@
 import shopify
-import json
 from test.test_helper import TestCase
 
 class LocationTest(TestCase):
