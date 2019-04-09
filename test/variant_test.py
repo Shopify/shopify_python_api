@@ -20,7 +20,7 @@ class VariantTest(TestCase):
 
     def test_create_variant(self):
         self.fake("products/632910392/variants", method='POST', body=self.load_fixture('variant'), headers={'Content-type': 'application/json'})
-        v = shopify.Variant({'product_id':632910392})
+        v = shopify.Variant({'product_id': 632910392})
         v.save()
 
     def test_create_variant_then_add_parent_id(self):
