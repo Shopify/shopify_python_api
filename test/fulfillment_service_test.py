@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class FulfillmentServiceTest(TestCase):
     def test_create_new_fulfillment_service(self):
         self.fake("fulfillment_services", method='POST', body=self.load_fixture('fulfillment_service'), headers={'Content-type': 'application/json'})
