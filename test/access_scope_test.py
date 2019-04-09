@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class AccessScopeTest(TestCase):
 
   def test_find_should_return_all_access_scopes(self):
