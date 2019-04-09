@@ -3,6 +3,7 @@ import json
 from six.moves.urllib.parse import urlencode
 from test.test_helper import TestCase
 
+
 class InventoryLevelTest(TestCase):
 
     def test_fetch_inventory_level(self):
