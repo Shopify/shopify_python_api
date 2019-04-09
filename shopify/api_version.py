@@ -4,8 +4,10 @@ import re
 class InvalidVersionError(Exception):
     pass
 
+
 class VersionNotFoundError(Exception):
     pass
+
 
 class ApiVersion(object):
     versions = {}
