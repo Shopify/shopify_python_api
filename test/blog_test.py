@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class BlogTest(TestCase):
     
     def test_blog_creation(self):
