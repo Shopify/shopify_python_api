@@ -1,5 +1,6 @@
 import shopify.resources
 
+
 class Countable(object):
 
     @classmethod
