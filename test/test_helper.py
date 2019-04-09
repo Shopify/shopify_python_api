@@ -27,8 +27,8 @@ class TestCase(unittest.TestCase):
 
     def fake(self, endpoint, **kwargs):
         body = kwargs.pop('body', None) or self.load_fixture(endpoint)
-        format = kwargs.pop('format','json')
-        method = kwargs.pop('method','GET')
+        format = kwargs.pop('format', 'json')
+        method = kwargs.pop('method', 'GET')
         prefix = kwargs.pop('prefix', '/admin/api/unstable')
 
         if ('extension' in kwargs and not kwargs['extension']):
