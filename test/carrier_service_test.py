@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class CarrierServiceTest(TestCase):
     def test_create_new_carrier_service(self):
         self.fake("carrier_services", method='POST', body=self.load_fixture('carrier_service'), headers={'Content-type': 'application/json'})
