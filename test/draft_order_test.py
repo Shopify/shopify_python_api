@@ -83,7 +83,7 @@ class DraftOrderTest(TestCase):
     def test_complete_draft_order_with_no_params(self):
         completed_fixture = self.load_fixture('draft_order_completed')
         completed_draft = json.loads(completed_fixture.decode("utf-8"))['draft_order']
-        headers={'Content-type': 'application/json', 'Content-length': '0'}
+        headers = {'Content-type': 'application/json', 'Content-length': '0'}
         self.fake('draft_orders/517119332/complete', method='PUT', body=completed_fixture, headers=headers)
         self.draft_order.complete()
         self.assertEqual(completed_draft['status'], self.draft_order.status)
