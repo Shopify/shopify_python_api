@@ -12,13 +12,16 @@ import yaml
 import six
 from six.moves import input, map
 
+
 def start_interpreter(**variables):
     console = type('shopify ' + shopify.version.VERSION, (code.InteractiveConsole, object), {})
     import readline
     console(variables).interact()
 
+
 class ConfigFileError(Exception):
     pass
+
 
 def usage(usage_string):
     """Decorator to add a usage string to a function"""
@@ -26,6 +29,7 @@ def usage(usage_string):
         func.usage = usage_string
         return func
     return decorate
+
 
 class TasksMeta(type):
     _prog = os.path.basename(sys.argv[0])
