@@ -2,6 +2,7 @@ import shopify
 import json
 from test.test_helper import TestCase
 
+
 class ProductPublicationTest(TestCase):
     def test_find_all_product_publications(self):
         self.fake(
