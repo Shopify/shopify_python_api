@@ -6,6 +6,7 @@ import time
 from six.moves import urllib
 from six import u
 
+
 class SessionTest(TestCase):
 
     @classmethod
