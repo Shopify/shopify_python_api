@@ -6,7 +6,7 @@ class ImageTest(TestCase):
 
     def test_create_image(self):
         self.fake("products/632910392/images", method='POST', body=self.load_fixture('image'), headers={'Content-type': 'application/json'})
-        image = shopify.Image({'product_id':632910392})
+        image = shopify.Image({'product_id': 632910392})
         image.position = 1
         image.attachment = "R0lGODlhbgCMAPf/APbr48VySrxTO7IgKt2qmKQdJeK8lsFjROG5p/nz7Zg3MNmnd7Q1MLNVS9GId71hSJMZIuzTu4UtKbeEeakhKMl8U8WYjfr18YQaIbAf=="
         image.save()
@@ -16,7 +16,7 @@ class ImageTest(TestCase):
 
     def test_attach_image(self):
         self.fake("products/632910392/images", method='POST', body=self.load_fixture('image'), headers={'Content-type': 'application/json'})
-        image = shopify.Image({'product_id':632910392})
+        image = shopify.Image({'product_id': 632910392})
         image.position = 1
         binary_in = base64.b64decode("R0lGODlhbgCMAPf/APbr48VySrxTO7IgKt2qmKQdJeK8lsFjROG5p/nz7Zg3MNmnd7Q1MLNVS9GId71hSJMZIuzTu4UtKbeEeakhKMl8U8WYjfr18YQaIbAf==")
         image.attach_image(data=binary_in, filename='ipod-nano.png')
