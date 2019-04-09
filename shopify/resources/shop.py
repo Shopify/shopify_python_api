@@ -7,7 +7,7 @@ class Shop(ShopifyResource):
 
     @classmethod
     def current(cls):
-        return cls.find_one("/admin/shop." + cls.format.extension)
+        return cls.find_one(cls.site + "/shop." + cls.format.extension)
 
     def metafields(self):
         return Metafield.find()

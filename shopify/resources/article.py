@@ -4,15 +4,15 @@ from .comment import Comment
 
 
 class Article(ShopifyResource, mixins.Metafields, mixins.Events):
-    _prefix_source = "/admin/blogs/$blog_id/"
+    _prefix_source = "/blogs/$blog_id/"
 
     @classmethod
     def _prefix(cls, options={}):
         blog_id = options.get("blog_id")
         if blog_id:
-            return "/admin/blogs/%s" % (blog_id)
+            return "%s/blogs/%s" % (cls.site, blog_id)
         else:
-            return "/admin"
+            return cls.site
 
     def comments(self):
         return Comment.find(article_id=self.id)

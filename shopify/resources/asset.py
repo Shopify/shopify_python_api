@@ -4,15 +4,15 @@ import base64
 
 class Asset(ShopifyResource):
     _primary_key = "key"
-    _prefix_source = "/admin/themes/$theme_id/"
+    _prefix_source = "/themes/$theme_id/"
 
     @classmethod
     def _prefix(cls, options={}):
         theme_id = options.get("theme_id")
         if theme_id:
-            return "/admin/themes/%s" % theme_id
+            return "%s/themes/%s" % (cls.site, theme_id)
         else:
-            return "/admin"
+            return cls.site
 
     @classmethod
     def _element_path(cls, id, prefix_options={}, query_options=None):
@@ -34,7 +34,7 @@ class Asset(ShopifyResource):
         params = {"asset[key]": key}
         params.update(kwargs)
         theme_id = params.get("theme_id")
-        path_prefix = "/admin/themes/%s" % (theme_id) if theme_id else "/admin"
+        path_prefix = "%s/themes/%s" % (cls.site, theme_id) if theme_id else cls.site
 
         resource = cls.find_one("%s/assets.%s" % (path_prefix, cls.format.extension), **params)
 

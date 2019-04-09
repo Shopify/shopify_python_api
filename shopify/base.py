@@ -114,6 +114,23 @@ class ShopifyResourceMeta(ResourceMeta):
     format = property(get_format, set_format, None,
                       'Encoding used for request and responses')
 
+    def get_prefix_source(cls):
+        """Return the prefix source, by default derived from site."""
+        try:
+            return cls.override_prefix()
+        except AttributeError:
+            if hasattr(cls, '_prefix_source'):
+                return cls.site + cls._prefix_source
+            else:
+                return cls.site
+
+    def set_prefix_source(cls, value):
+        """Set the prefix source, which will be rendered into the prefix."""
+        cls._prefix_source = value
+
+    prefix_source = property(get_prefix_source, set_prefix_source, None,
+                             'prefix for lookups for this type of object.')
+
 
 @six.add_metaclass(ShopifyResourceMeta)
 class ShopifyResource(ActiveResource, mixins.Countable):
