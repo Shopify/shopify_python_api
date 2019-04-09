@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class OrderRiskTest(TestCase):
 
   def test_create_order_risk(self):
