@@ -2,6 +2,7 @@ import json
 import shopify
 from test.test_helper import TestCase
 
+
 class ResourceFeedbackTest(TestCase):
     def test_get_resource_feedback(self):
         body = json.dumps({ 'resource_feedback': [ { 'resource_type': 'Shop' } ] })
