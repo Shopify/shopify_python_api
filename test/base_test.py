@@ -97,3 +97,14 @@ class BaseTest(TestCase):
         t2 = threading.Thread(target=lambda: self.assertFalse('X-Custom' in shopify.ShopifyResource.headers))
         t2.start()
         t2.join()
+
+    def test_setting_site_without_token(self):
+        self.fake(
+            'shop',
+            url='https://user:pass@this-is-my-test-show.myshopify.com/admin/api/unstable/shop.json',
+            method='GET',
+            body=self.load_fixture('shop'),
+            headers={'Authorization': u'Basic dXNlcjpwYXNz'}
+        )
+        shopify.ShopifyResource.set_site('https://user:pass@this-is-my-test-show.myshopify.com/admin/api/unstable')
+        res = shopify.Shop.current()
