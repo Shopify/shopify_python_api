@@ -1,3 +1,9 @@
+== Version 5.0.1
+* Fixing missing class variable causing exception when creating a session without a token
+
+== Version 5.0.0
+* Added support for Shopify API Versioning
+
 == Version 4.0.0
 * Added AccessScope resource
 * Added ApiPermission resource
