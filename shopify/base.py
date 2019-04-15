@@ -166,6 +166,7 @@ class ShopifyResource(ActiveResource, mixins.Countable):
     _threadlocal = threading.local()
     _headers = {'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])}
     _version = None
+    _url = None
 
     def __init__(self, attributes=None, prefix_options=None):
         if attributes is not None and prefix_options is None:
