@@ -99,6 +99,7 @@ these steps:
      shopify.ShopifyResource.set_password(PASSWORD)
      ```
 
+
      That's it you're done, skip to step 6 and start using the API!
      For a partner App you will need to supply two parameters to the
      Session class before you instantiate it:
