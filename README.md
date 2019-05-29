@@ -93,8 +93,10 @@ these steps:
     follows:
 
      ```python
-     shop_url = "https://%s:%s@SHOP_NAME.myshopify.com/admin" % (API_KEY, PASSWORD)
+     shop_url = "https://%s.myshopify.com/admin" % (SHOP_NAME)
      shopify.ShopifyResource.set_site(shop_url)
+     shopify.ShopifyResource.set_user(API_KEY)
+     shopify.ShopifyResource.set_password(PASSWORD)
      ```
 
      That's it you're done, skip to step 6 and start using the API!
