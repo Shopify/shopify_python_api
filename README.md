@@ -300,7 +300,7 @@ open up an interactive console to use the API with a shop.
 
 ### GraphQL
 
-This library also supports Shopify's new [GraphQL API](https://help.shopify.com/en/api/graphql-admin-api) via a dependency on the [python-graphql-client](https://github.com/prisma/python-graphql-client) library. The authentication process (steps 1-5 under Getting Started) is identical. Once your session is activated, simply construct a new graphql client and use `execute` to execute the query.
+This library also supports Shopify's new [GraphQL API](https://help.shopify.com/en/api/graphql-admin-api). The authentication process (steps 1-5 under Getting Started) is identical. Once your session is activated, simply construct a new graphql client and use `execute` to execute the query.
 
 ```
 client = shopify.GraphQL()
