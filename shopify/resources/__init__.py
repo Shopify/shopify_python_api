@@ -71,5 +71,6 @@ from .api_permission import ApiPermission
 from .publication import Publication
 from .collection_publication import CollectionPublication
 from .product_publication import ProductPublication
+from .graphql import GraphQL
 
 from ..base import ShopifyResource
