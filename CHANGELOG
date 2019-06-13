@@ -1,5 +1,5 @@
 == Version 5.1.0
-* Added support for GraphQL queries
+* Added support for GraphQL queries with a GraphQL resource
 
 == Version 5.0.1
 * Fixing missing class variable causing exception when creating a session without a token
