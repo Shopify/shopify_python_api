@@ -84,7 +84,7 @@ class SessionTest(TestCase):
             assigned_site = shopify.ShopifyResource.site
 
         self.assertEqual('https://testshop.myshopify.com/admin/api/unstable', assigned_site)
-        self.assertEqual('https://None/admin/api/unstable', shopify.ShopifyResource.site)
+        self.assertEqual('https://none/admin/api/unstable', shopify.ShopifyResource.site)
 
     def test_create_permission_url_returns_correct_url_with_single_scope_and_redirect_uri(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")

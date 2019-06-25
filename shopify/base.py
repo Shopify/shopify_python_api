@@ -77,6 +77,11 @@ class ShopifyResourceMeta(ResourceMeta):
         ShopifyResource._site = cls._threadlocal.site = value
         if value is not None:
             parts = urllib.parse.urlparse(value)
+            host = parts.hostname
+            if parts.port:
+                host += ":" + str(parts.port)
+            new_site = urllib.parse.urlunparse((parts.scheme, host, parts.path, '', '', ''))
+            ShopifyResource._site = cls._threadlocal.site = new_site
             if parts.username:
                 cls.user = urllib.parse.unquote(parts.username)
             if parts.password:

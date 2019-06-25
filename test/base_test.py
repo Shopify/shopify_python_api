@@ -98,13 +98,18 @@ class BaseTest(TestCase):
         t2.start()
         t2.join()
 
-    def test_setting_site_without_token(self):
+    def test_setting_with_user_and_pass_strips_them(self):
+        shopify.ShopifyResource.clear_session()
         self.fake(
             'shop',
-            url='https://user:pass@this-is-my-test-show.myshopify.com/admin/api/unstable/shop.json',
+            url='https://this-is-my-test-show.myshopify.com/admin/shop.json',
             method='GET',
             body=self.load_fixture('shop'),
             headers={'Authorization': u'Basic dXNlcjpwYXNz'}
         )
-        shopify.ShopifyResource.set_site('https://user:pass@this-is-my-test-show.myshopify.com/admin/api/unstable')
+        API_KEY = 'user'
+        PASSWORD = 'pass'
+        shop_url = "https://%s:%s@this-is-my-test-show.myshopify.com/admin" % (API_KEY, PASSWORD)
+        shopify.ShopifyResource.set_site(shop_url)
         res = shopify.Shop.current()
+        self.assertEqual('Apple Computers', res.name)

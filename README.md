@@ -85,15 +85,17 @@ service. pyactiveresource has to be configured with a fully authorized
 URL of a particular store first. To obtain that URL you can follow
 these steps:
 
-1.  First create a new application in either the partners admin or
-    your store admin. For a private App you'll need the API_KEY and
-    the PASSWORD otherwise you'll need the API_KEY and SHARED_SECRET.
+1.  First create a new application in either the partners admin or your store
+    admin. You will need an API_VERSION equal to a valid version string of a
+    [Shopify API Version](https://help.shopify.com/en/api/versioning). For a
+    private App you'll need the API_KEY and the PASSWORD otherwise you'll need
+    the API_KEY and SHARED_SECRET.
 
 2.  For a private App you just need to set the base site url as
     follows:
 
      ```python
-     shop_url = "https://%s:%s@SHOP_NAME.myshopify.com/admin" % (API_KEY, PASSWORD)
+     shop_url = "https://%s:%s@SHOP_NAME.myshopify.com/admin/api/%s" % (API_KEY, PASSWORD, API_VERSION)
      shopify.ShopifyResource.set_site(shop_url)
      ```
 
