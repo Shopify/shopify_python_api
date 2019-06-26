@@ -1,0 +1,9 @@
+dependencies:
+  pre:
+    - pip install twine
+
+deploy:
+  override:
+    - assert-egg-version-tag setup.py
+    - python setup.py register sdist
+    - twine upload dist/*

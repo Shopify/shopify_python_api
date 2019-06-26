@@ -1,3 +1,6 @@
+== Version 5.1.1
+* Fix initializing API with basic auth URL.
+
 == Version 5.1.0
 * Added support for GraphQL queries with a GraphQL resource
 
