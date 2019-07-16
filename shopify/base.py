@@ -166,7 +166,7 @@ class ShopifyResourceMeta(ResourceMeta):
 
 
 @six.add_metaclass(ShopifyResourceMeta)
-class ShopifyResource(ActiveResource, mixins.Countable):
+class ShopifyResource(ActiveResource, mixins.Countable, mixins.Pagination):
     _format = formats.JSONFormat
     _threadlocal = threading.local()
     _headers = {'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])}

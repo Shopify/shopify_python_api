@@ -1,4 +1,7 @@
 import shopify.resources
+import shopify
+import pdb
+from shopify.pagination_link_headers import PaginationLinkHeaders
 
 class Countable(object):
 
@@ -34,3 +37,10 @@ class Events(object):
 
     def events(self):
         return shopify.resources.Event.find(resource=self.__class__.plural, resource_id=self.id)
+
+class Pagination(object):
+
+    def pagination_link_headers(self):
+      self.pagination_link_headers = PaginationLinkHeaders()
+      self._next_page_info = self.pagination_link_headers.link_headers
+
