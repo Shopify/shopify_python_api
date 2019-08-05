@@ -72,5 +72,6 @@ from .publication import Publication
 from .collection_publication import CollectionPublication
 from .product_publication import ProductPublication
 from .graphql import GraphQL
+from .application_credit import ApplicationCredit
 
 from ..base import ShopifyResource
