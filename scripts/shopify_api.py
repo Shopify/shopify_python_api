@@ -90,6 +90,7 @@ class TasksMeta(type):
 class Tasks(object):
     _shop_config_dir = os.path.join(os.environ["HOME"], ".shopify", "shops")
     _default_symlink = os.path.join(_shop_config_dir, "default")
+    _default_api_version = "2019-04"
 
     @classmethod
     @usage("list")
@@ -116,6 +117,7 @@ class Tasks(object):
             print("open https://%s/admin/apps/private in your browser to generate API credentials" % (domain))
             config['api_key'] = input("API key? ")
             config['password'] = input("Password? ")
+            config['api_version'] = input("API version? (leave blank for %s) " % (cls._default_api_version))
             if not os.path.isdir(cls._shop_config_dir):
                 os.makedirs(cls._shop_config_dir)
             with open(filename, 'w') as f:
@@ -231,7 +233,7 @@ class Tasks(object):
 
     @classmethod
     def _session_from_config(cls, config):
-        session = shopify.Session(config.get("domain"))
+        session = shopify.Session(config.get("domain"), config.get("api_version", cls._default_api_version))
         session.protocol = config.get("protocol", "https")
         session.api_key = config.get("api_key")
         session.token = config.get("password")
