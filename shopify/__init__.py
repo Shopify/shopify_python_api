@@ -3,3 +3,4 @@ from shopify.session import Session, ValidationException
 from shopify.resources import *
 from shopify.limits import Limits
 from shopify.api_version import *
+from shopify.collection import PaginatedIterator
