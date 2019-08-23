@@ -68,6 +68,7 @@ class PaginatedCollection(Collection):
         query_params = self._get_query_params(pagination["previous"])
         query_params.update(extra_params)
         self._previous = Resource.find(id_=None, from_=None, **query_params)
+        self._previous._next = self
         return self._previous
 
     def next(self, **extra_params):
@@ -91,6 +92,7 @@ class PaginatedCollection(Collection):
         query_params = self._get_query_params(pagination["next"])
         query_params.update(extra_params)
         self._next = Resource.find(id_=None, from_=None, **query_params)
+        self._next._previous = self
         return self._next
 
     def __iter__(self):
