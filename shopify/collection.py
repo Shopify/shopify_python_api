@@ -47,10 +47,11 @@ class PaginatedCollection(Collection):
             k: v[0] for k, v in query_dict.items()
         }
 
-    def previous(self, **extra_params):
+    def previous(self, no_cache=False, **extra_params):
         """Returns the previous page of items.
 
         Args:
+            no_cache: If true the page will not be cached.
             extra_params: Any extra parameters passed to find().
         Returns:
             A PaginatedCollection object with the new data set.
@@ -67,14 +68,18 @@ class PaginatedCollection(Collection):
         Resource = self.metadata["resource_class"]
         query_params = self._get_query_params(pagination["previous"])
         query_params.update(extra_params)
-        self._previous = Resource.find(id_=None, from_=None, **query_params)
-        self._previous._next = self
-        return self._previous
 
-    def next(self, **extra_params):
+        previous = Resource.find(id_=None, from_=None, **query_params)
+        if not no_cache:
+            self._previous = previous
+            self._previous._next = self
+        return previous
+
+    def next(self, no_cache=False, **extra_params):
         """Returns the next page of items.
 
         Args:
+            no_cache: If true the page will not be cached.
             extra_params: Any extra parameters passed to find().
         Returns:
             A PaginatedCollection object with the new data set.
@@ -91,9 +96,13 @@ class PaginatedCollection(Collection):
         Resource = self.metadata["resource_class"]
         query_params = self._get_query_params(pagination["next"])
         query_params.update(extra_params)
-        self._next = Resource.find(id_=None, from_=None, **query_params)
-        self._next._previous = self
-        return self._next
+
+        next = Resource.find(id_=None, from_=None, **query_params)
+        if not no_cache:
+            self._next = next
+            self._next._previous = self
+
+        return next
 
     def __iter__(self):
         """Iterates through all items, also fetching other pages."""
