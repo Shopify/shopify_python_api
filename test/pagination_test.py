@@ -74,3 +74,14 @@ class CollectionTest(TestCase):
 
         with self.assertRaises(IndexError, msg="previous() did not raise with no previous page"):
             p.previous()
+
+    def test_paginated_collection_iterator(self):
+        c = shopify.Product.find()
+
+        i = iter(c)
+        self.assertEqual(next(i).id, 1)
+        self.assertEqual(next(i).id, 2)
+        self.assertEqual(next(i).id, 3)
+        self.assertEqual(next(i).id, 4)
+        with self.assertRaises(StopIteration):
+            next(i)

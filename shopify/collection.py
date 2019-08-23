@@ -23,6 +23,10 @@ class PaginatedCollection(Collection):
             super(PaginatedCollection, self).__init__(metadata=metadata or {},
                                                       *args, **kwargs)
 
+        self._next = None
+        self._previous = None
+        self._current_iter = None
+
     def _check_pagination_metadata(self):
         if not ("pagination" in self.metadata
                 and "resource_class" in self.metadata):
@@ -51,6 +55,9 @@ class PaginatedCollection(Collection):
         Returns:
             A PaginatedCollection object with the new data set.
         """
+        if self._previous:
+            return self._previous
+
         self._check_pagination_metadata()
 
         pagination = self.metadata["pagination"]
@@ -60,7 +67,8 @@ class PaginatedCollection(Collection):
         Resource = self.metadata["resource_class"]
         query_params = self._get_query_params(pagination["previous"])
         query_params.update(extra_params)
-        return Resource.find(id_=None, from_=None, **query_params)
+        self._previous = Resource.find(id_=None, from_=None, **query_params)
+        return self._previous
 
     def next(self, **extra_params):
         """Returns the next page of items.
@@ -70,6 +78,9 @@ class PaginatedCollection(Collection):
         Returns:
             A PaginatedCollection object with the new data set.
         """
+        if self._next:
+            return self._next
+
         self._check_pagination_metadata()
 
         pagination = self.metadata["pagination"]
@@ -79,4 +90,26 @@ class PaginatedCollection(Collection):
         Resource = self.metadata["resource_class"]
         query_params = self._get_query_params(pagination["next"])
         query_params.update(extra_params)
-        return Resource.find(id_=None, from_=None, **query_params)
+        self._next = Resource.find(id_=None, from_=None, **query_params)
+        return self._next
+
+    def __iter__(self):
+        """Iterates through all items, also fetching other pages."""
+        yield from super(PaginatedCollection, self).__iter__()
+
+        try:
+            if not self._current_iter:
+                self._current_iter = self
+            self._current_iter = self.next()
+            yield from self._current_iter
+        except IndexError:
+            return
+
+    def __len__(self):
+        """If fetched count all the pages."""
+
+        if self._next:
+            count = len(self._next)
+        else:
+            count = 0
+        return count + super(PaginatedCollection, self).__len__()
