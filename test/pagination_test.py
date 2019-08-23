@@ -2,10 +2,10 @@ import shopify
 import json
 from test.test_helper import TestCase
 
-class CollectionTest(TestCase):
+class PaginationTest(TestCase):
 
     def setUp(self):
-        super(CollectionTest, self).setUp()
+        super(PaginationTest, self).setUp()
 
         fixture = json.loads(self.load_fixture('products'))
 
