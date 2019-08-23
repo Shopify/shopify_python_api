@@ -111,7 +111,8 @@ class PaginatedCollection(Collection):
 
     def __iter__(self):
         """Iterates through all items, also fetching other pages."""
-        yield from super(PaginatedCollection, self).__iter__()
+        for item in super(PaginatedCollection, self).__iter__():
+            yield item
 
         if self._no_iter_next:
             return
@@ -120,7 +121,9 @@ class PaginatedCollection(Collection):
             if not self._current_iter:
                 self._current_iter = self
             self._current_iter = self.next()
-            yield from self._current_iter
+
+            for item in self._current_iter:
+                yield item
         except IndexError:
             return
 
