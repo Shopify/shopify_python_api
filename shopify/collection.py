@@ -148,12 +148,13 @@ class PaginatedIterator(object):
     # every page and the page items are iterated
     """
 
-    def __init__(self, collection):
+    def __init__(self, collection, **extra_params):
         if not isinstance(collection, PaginatedCollection):
             raise TypeError("PaginatedIterator expects a PaginatedCollection "
                             "instance")
         self.collection = collection
         self.collection._no_iter_next = True
+        self.extra_params = extra_params
 
     def __iter__(self):
         """Iterate over pages, returning one page at a time."""
@@ -163,6 +164,7 @@ class PaginatedIterator(object):
             yield current_page
 
             try:
-                current_page = current_page.next(no_cache=True)
+                current_page = current_page.next(no_cache=True,
+                                                 **self.extra_params)
             except IndexError:
                 return
