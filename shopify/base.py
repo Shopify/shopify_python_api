@@ -9,6 +9,7 @@ from six.moves import urllib
 import six
 
 from shopify.collection import PaginatedCollection
+from pyactiveresource.collection import Collection
 
 # Store the response from the last request in the connection object
 class ShopifyConnection(pyactiveresource.connection.Connection):
@@ -213,7 +214,8 @@ class ShopifyResource(ActiveResource, mixins.Countable):
 
         # pyactiveresource currently sends all headers from the response with
         # the collection.
-        if "headers" in collection.metadata:
+        if isinstance(collection, Collection) and \
+           "headers" in collection.metadata:
             headers = collection.metadata["headers"]
             if "Link" in headers:
                 pagination = cls._parse_pagination(headers["Link"])
