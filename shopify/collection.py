@@ -27,6 +27,8 @@ class PaginatedCollection(Collection):
         self._previous = None
         self._current_iter = None
 
+        self._no_iter_next = kwargs.pop("no_iter_next", False)
+
     def _check_pagination_metadata(self):
         if not ("pagination" in self.metadata
                 and "resource_class" in self.metadata):
@@ -73,6 +75,8 @@ class PaginatedCollection(Collection):
         if not no_cache:
             self._previous = previous
             self._previous._next = self
+
+        previous._no_iter_next = self._no_iter_next
         return previous
 
     def next(self, no_cache=False, **extra_params):
@@ -102,11 +106,15 @@ class PaginatedCollection(Collection):
             self._next = next
             self._next._previous = self
 
+        next._no_iter_next = self._no_iter_next
         return next
 
     def __iter__(self):
         """Iterates through all items, also fetching other pages."""
         yield from super(PaginatedCollection, self).__iter__()
+
+        if self._no_iter_next:
+            return
 
         try:
             if not self._current_iter:
@@ -124,3 +132,37 @@ class PaginatedCollection(Collection):
         else:
             count = 0
         return count + super(PaginatedCollection, self).__len__()
+
+
+class PaginatedIterator(object):
+    """
+    This class implements an iterator over paginated collections which aims to
+    be more memory-efficient by not keeping more than one page in memory at a
+    time.
+
+    >>> from shopify import Product, PaginatedIterator
+    >>> for page in PaginatedIterator(Product.find()):
+    ...     for item in page:
+    ...         do_something(item)
+    ...
+    # every page and the page items are iterated
+    """
+
+    def __init__(self, collection):
+        if not isinstance(collection, PaginatedCollection):
+            raise TypeError("PaginatedIterator expects a PaginatedCollection "
+                            "instance")
+        self.collection = collection
+        self.collection._no_iter_next = True
+
+    def __iter__(self):
+        """Iterate over pages, returning one page at a time."""
+        current_page = self.collection
+
+        while True:
+            yield current_page
+
+            try:
+                current_page = current_page.next(no_cache=True)
+            except IndexError:
+                return
