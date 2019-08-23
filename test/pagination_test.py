@@ -66,7 +66,7 @@ class CollectionTest(TestCase):
 
         self.assertIsInstance(p, shopify.collection.PaginatedCollection,
                               "previous() result is not PaginatedCollection")
-        self.assertEqual(len(p), 2,
+        self.assertEqual(len(p), 4, # cached
                          "previous() collection has incorrect length")
         self.assertIn("pagination", p.metadata)
         self.assertIn("next", p.metadata["pagination"],
@@ -83,5 +83,36 @@ class CollectionTest(TestCase):
         self.assertEqual(next(i).id, 2)
         self.assertEqual(next(i).id, 3)
         self.assertEqual(next(i).id, 4)
+        with self.assertRaises(StopIteration):
+            next(i)
+
+    def test_paginated_collection_no_cache(self):
+        c = shopify.Product.find()
+
+        n = c.next(no_cache=True)
+        self.assertIsNone(c._next, "no_cache=True still caches")
+        self.assertIsNone(n._previous, "no_cache=True still caches")
+
+        p = n.previous(no_cache=True)
+        self.assertIsNone(p._next, "no_cache=True still caches")
+        self.assertIsNone(n._previous, "no_cache=True still caches")
+
+    def test_paginated_iterator(self):
+        c = shopify.Product.find()
+
+        i = iter(shopify.PaginatedIterator(c))
+
+        first_page = iter(next(i))
+        self.assertEqual(next(first_page).id, 1)
+        self.assertEqual(next(first_page).id, 2)
+        with self.assertRaises(StopIteration):
+            next(first_page)
+
+        second_page = iter(next(i))
+        self.assertEqual(next(second_page).id, 3)
+        self.assertEqual(next(second_page).id, 4)
+        with self.assertRaises(StopIteration):
+            next(second_page)
+
         with self.assertRaises(StopIteration):
             next(i)
