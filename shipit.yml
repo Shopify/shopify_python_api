@@ -1,7 +1,3 @@
-dependencies:
-  pre:
-    - pip install twine
-
 deploy:
   override:
     - assert-egg-version-tag setup.py
