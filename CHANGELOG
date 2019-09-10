@@ -1,3 +1,6 @@
+== Version 5.1.2
+* Add version 2020-01 to known ApiVersions. This version will not be usable until October 2019.
+
 == Version 5.1.1
 * Fix initializing API with basic auth URL.
 
