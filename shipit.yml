@@ -1,5 +1,5 @@
 deploy:
   override:
     - assert-egg-version-tag setup.py
-    - python setup.py register sdist
-    - twine upload dist/*
+    - python setup.py sdist
+    - twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
