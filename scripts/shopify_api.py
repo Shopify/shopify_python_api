@@ -13,6 +13,8 @@ import six
 from six.moves import input, map
 
 def start_interpreter(**variables):
+    # add the current working directory to the sys paths
+    sys.path.append(os.getcwd())
     console = type('shopify ' + shopify.version.VERSION, (code.InteractiveConsole, object), {})
     import readline
     console(variables).interact()
