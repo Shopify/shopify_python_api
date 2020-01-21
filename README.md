@@ -367,6 +367,21 @@ pip install detox
 detox
 ```
 
+## Relative Cursor Pagination
+Cursor based pagination support has been added in 6.0.0.
+
+```
+import shopify
+
+page1 = shopify.Product.find()
+if page1.has_next_page():
+  page2 = page1.next_page()
+
+# to persist across requests you can use next_page_url and previous_page_url
+next_url = page1.next_page_url
+page2 = shopify.Product.find(from_=next_url)
+```
+
 ## Limitations
 
 Currently there is no support for:

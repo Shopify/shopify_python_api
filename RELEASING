@@ -15,13 +15,4 @@ Releasing shopify_python_api
 6. Push the changes to github
     git push --tags origin master
 
-7. Configure your credentials for pypi in $HOME/.pypirc. Do not specify a repository URL.
-    (see https://docs.python.org/2/distutils/packageindex.html#the-pypirc-file for further instructions)
-
-8. Create the source package using sdist
-    python setup.py sdist
-
-8. Upload the source package to pypi using twine – you need to be a package owner in pypi to do this
-    twine upload dist/ShopifyAPI-x.y.z.tar.gz
-
-If you need access to pypi (in general, this is only for Shopify staff members) ping @jamiemtdwyer.
+7. Shipit!
