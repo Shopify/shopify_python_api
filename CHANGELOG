@@ -1,3 +1,6 @@
+== Version 6.0.0
+* Add Cursor pagination support
+
 == Version 5.1.2
 * Add version 2020-01 to known ApiVersions. This version will not be usable until October 2019.
 
