@@ -39,17 +39,17 @@ class PaginatedCollection(Collection):
         self._current_iter = None
         self._no_iter_next = kwargs.pop("no_iter_next", False)
 
-    def has_previous(self):
+    def has_previous_page(self):
         """Returns true if the current page has any previous pages before it.
         """
         return bool(self.previous_page_url)
 
-    def has_next(self):
+    def has_next_page(self):
         """Returns true if the current page has any pages beyond the current position.
         """
         return bool(self.next_page_url)
 
-    def previous(self, no_cache=False):
+    def previous_page(self, no_cache=False):
         """Returns the previous page of items.
 
         Args:
@@ -59,11 +59,11 @@ class PaginatedCollection(Collection):
         """
         if self._previous:
             return self._previous
-        elif not self.has_previous():
+        elif not self.has_previous_page():
             raise IndexError("No previous page")
         return self.__fetch_page(self.previous_page_url, no_cache)
 
-    def next(self, no_cache=False):
+    def next_page(self, no_cache=False):
         """Returns the next page of items.
 
         Args:
@@ -73,7 +73,7 @@ class PaginatedCollection(Collection):
         """
         if self._next:
             return self._next
-        elif not self.has_next():
+        elif not self.has_next_page():
             raise IndexError("No next page")
         return self.__fetch_page(self.next_page_url, no_cache)
 
@@ -96,7 +96,7 @@ class PaginatedCollection(Collection):
         try:
             if not self._current_iter:
                 self._current_iter = self
-            self._current_iter = self.next()
+            self._current_iter = self.next_page()
 
             for item in self._current_iter:
                 yield item
@@ -138,6 +138,6 @@ class PaginatedIterator(object):
         while True:
             yield current_page
             try:
-                current_page = current_page.next(no_cache=True)
+                current_page = current_page.next_page(no_cache=True)
             except IndexError:
                 return
