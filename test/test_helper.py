@@ -55,4 +55,5 @@ class TestCase(unittest.TestCase):
         code = kwargs.pop('code', 200)
 
         self.http.respond_to(
-          method, url, headers, body=body, code=code)
+            method, url, headers, body=body, code=code,
+            response_headers=kwargs.pop('response_headers', None))

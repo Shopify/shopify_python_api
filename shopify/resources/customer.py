@@ -17,9 +17,9 @@ class Customer(ShopifyResource, mixins.Metafields):
            limit: Amount of results (default: 50) (maximum: 250)
            fields: comma-seperated list of fields to include in the response
         Returns:
-           An array of customers.
+           A Collection of customers.
         """
-        return cls._build_list(cls.get("search", **kwargs))
+        return cls._build_collection(cls.get("search", **kwargs))
 
     def send_invite(self, customer_invite = CustomerInvite()):
         resource = self.post("send_invite", customer_invite.encode())

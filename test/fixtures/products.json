@@ -1,0 +1,206 @@
+[
+  {
+    "product_type": "Cult Products",
+    "handle": "ipod-nano",
+    "created_at": "2011-10-20T14:05:13-04:00",
+    "body_html": "<p>It's the small iPod with one very big idea: Video. Now the world's most popular music player, available in 4GB and 8GB models, lets you enjoy TV shows, movies, video podcasts, and more. The larger, brighter display means amazing picture quality. In six eye-catching colors, iPod nano is stunning all around. And with models starting at just $149, little speaks volumes.</p>",
+    "title": "IPod Nano - 8GB",
+    "template_suffix": null,
+    "updated_at": "2011-10-20T14:05:13-04:00",
+    "id": 1,
+    "tags": "Emotive, Flash Memory, MP3, Music",
+    "images": [
+      {
+        "position": 1,
+        "created_at": "2011-10-20T14:05:13-04:00",
+        "product_id": 1,
+        "updated_at": "2011-10-20T14:05:13-04:00",
+        "src": "http://static.shopify.com/s/files/1/6909/3384/products/ipod-nano.png?0",
+        "id": 850703190
+      }
+    ],
+    "variants": [
+      {
+        "position": 1,
+        "price": "199.00",
+        "product_id": 1,
+        "created_at": "2011-10-20T14:05:13-04:00",
+        "requires_shipping": true,
+        "title": "Pink",
+        "inventory_quantity": 10,
+        "compare_at_price": null,
+        "inventory_policy": "continue",
+        "updated_at": "2011-10-20T14:05:13-04:00",
+        "inventory_management": "shopify",
+        "id": 808950810,
+        "taxable": true,
+        "grams": 200,
+        "sku": "IPOD2008PINK",
+        "option1": "Pink",
+        "fulfillment_service": "manual",
+        "option2": null,
+        "option3": null
+      }
+    ],
+    "vendor": "Apple",
+    "published_at": "2007-12-31T19:00:00-05:00",
+    "options": [
+      {
+        "name": "Title"
+      }
+    ]
+  },
+  {
+    "product_type": "Cult Products",
+    "handle": "ipod-nano",
+    "created_at": "2011-10-20T14:05:13-04:00",
+    "body_html": "<p>It's the small iPod with one very big idea: Video. Now the world's most popular music player, available in 4GB and 8GB models, lets you enjoy TV shows, movies, video podcasts, and more. The larger, brighter display means amazing picture quality. In six eye-catching colors, iPod nano is stunning all around. And with models starting at just $149, little speaks volumes.</p>",
+    "title": "IPod Nano - 8GB",
+    "template_suffix": null,
+    "updated_at": "2011-10-20T14:05:13-04:00",
+    "id": 2,
+    "tags": "Emotive, Flash Memory, MP3, Music",
+    "images": [
+      {
+        "position": 1,
+        "created_at": "2011-10-20T14:05:13-04:00",
+        "product_id": 2,
+        "updated_at": "2011-10-20T14:05:13-04:00",
+        "src": "http://static.shopify.com/s/files/1/6909/3384/products/ipod-nano.png?0",
+        "id": 850703190
+      }
+    ],
+    "variants": [
+      {
+        "position": 1,
+        "price": "199.00",
+        "product_id": 2,
+        "created_at": "2011-10-20T14:05:13-04:00",
+        "requires_shipping": true,
+        "title": "Pink",
+        "inventory_quantity": 10,
+        "compare_at_price": null,
+        "inventory_policy": "continue",
+        "updated_at": "2011-10-20T14:05:13-04:00",
+        "inventory_management": "shopify",
+        "id": 808950810,
+        "taxable": true,
+        "grams": 200,
+        "sku": "IPOD2008PINK",
+        "option1": "Pink",
+        "fulfillment_service": "manual",
+        "option2": null,
+        "option3": null
+      }
+    ],
+    "vendor": "Apple",
+    "published_at": "2007-12-31T19:00:00-05:00",
+    "options": [
+      {
+        "name": "Title"
+      }
+    ]
+  },
+  {
+    "product_type": "Cult Products",
+    "handle": "ipod-nano",
+    "created_at": "2011-10-20T14:05:13-04:00",
+    "body_html": "<p>It's the small iPod with one very big idea: Video. Now the world's most popular music player, available in 4GB and 8GB models, lets you enjoy TV shows, movies, video podcasts, and more. The larger, brighter display means amazing picture quality. In six eye-catching colors, iPod nano is stunning all around. And with models starting at just $149, little speaks volumes.</p>",
+    "title": "IPod Nano - 8GB",
+    "template_suffix": null,
+    "updated_at": "2011-10-20T14:05:13-04:00",
+    "id": 3,
+    "tags": "Emotive, Flash Memory, MP3, Music",
+    "images": [
+      {
+        "position": 1,
+        "created_at": "2011-10-20T14:05:13-04:00",
+        "product_id": 2,
+        "updated_at": "2011-10-20T14:05:13-04:00",
+        "src": "http://static.shopify.com/s/files/1/6909/3384/products/ipod-nano.png?0",
+        "id": 850703190
+      }
+    ],
+    "variants": [
+      {
+        "position": 1,
+        "price": "199.00",
+        "product_id": 2,
+        "created_at": "2011-10-20T14:05:13-04:00",
+        "requires_shipping": true,
+        "title": "Pink",
+        "inventory_quantity": 10,
+        "compare_at_price": null,
+        "inventory_policy": "continue",
+        "updated_at": "2011-10-20T14:05:13-04:00",
+        "inventory_management": "shopify",
+        "id": 808950810,
+        "taxable": true,
+        "grams": 200,
+        "sku": "IPOD2008PINK",
+        "option1": "Pink",
+        "fulfillment_service": "manual",
+        "option2": null,
+        "option3": null
+      }
+    ],
+    "vendor": "Apple",
+    "published_at": "2007-12-31T19:00:00-05:00",
+    "options": [
+      {
+        "name": "Title"
+      }
+    ]
+  },
+  {
+    "product_type": "Cult Products",
+    "handle": "ipod-nano",
+    "created_at": "2011-10-20T14:05:13-04:00",
+    "body_html": "<p>It's the small iPod with one very big idea: Video. Now the world's most popular music player, available in 4GB and 8GB models, lets you enjoy TV shows, movies, video podcasts, and more. The larger, brighter display means amazing picture quality. In six eye-catching colors, iPod nano is stunning all around. And with models starting at just $149, little speaks volumes.</p>",
+    "title": "IPod Nano - 8GB",
+    "template_suffix": null,
+    "updated_at": "2011-10-20T14:05:13-04:00",
+    "id": 4,
+    "tags": "Emotive, Flash Memory, MP3, Music",
+    "images": [
+      {
+        "position": 1,
+        "created_at": "2011-10-20T14:05:13-04:00",
+        "product_id": 4,
+        "updated_at": "2011-10-20T14:05:13-04:00",
+        "src": "http://static.shopify.com/s/files/1/6909/3384/products/ipod-nano.png?0",
+        "id": 850703190
+      }
+    ],
+    "variants": [
+      {
+        "position": 1,
+        "price": "199.00",
+        "product_id": 4,
+        "created_at": "2011-10-20T14:05:13-04:00",
+        "requires_shipping": true,
+        "title": "Pink",
+        "inventory_quantity": 10,
+        "compare_at_price": null,
+        "inventory_policy": "continue",
+        "updated_at": "2011-10-20T14:05:13-04:00",
+        "inventory_management": "shopify",
+        "id": 808950810,
+        "taxable": true,
+        "grams": 200,
+        "sku": "IPOD2008PINK",
+        "option1": "Pink",
+        "fulfillment_service": "manual",
+        "option2": null,
+        "option3": null
+      }
+    ],
+    "vendor": "Apple",
+    "published_at": "2007-12-31T19:00:00-05:00",
+    "options": [
+      {
+        "name": "Title"
+      }
+    ]
+  }
+]
