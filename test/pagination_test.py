@@ -7,8 +7,8 @@ class PaginationTest(TestCase):
     def setUp(self):
         super(PaginationTest, self).setUp()
         prefix = self.http.site + "/admin/api/unstable"
+        fixture = json.loads(self.load_fixture('products').decode())
 
-        self.fixture = json.loads(self.load_fixture('products'))
         self.next_page_url = prefix + "/products.json?limit=2&page_info=FOOBAR"
         self.prev_page_url = prefix + "/products.json?limit=2&page_info=BAZQUUX"
 
@@ -17,15 +17,15 @@ class PaginationTest(TestCase):
 
         self.fake("products",
                   url=prefix + "/products.json?limit=2",
-                  body=json.dumps({ "products": self.fixture[:2] }),
+                  body=json.dumps({ "products": fixture[:2] }),
                   response_headers=next_headers)
         self.fake("products",
                   url=prefix + "/products.json?limit=2&page_info=FOOBAR",
-                  body=json.dumps({ "products": self.fixture[2:4] }),
+                  body=json.dumps({ "products": fixture[2:4] }),
                   response_headers=prev_headers)
         self.fake("products",
                   url=prefix + "/products.json?limit=2&page_info=BAZQUUX",
-                  body=json.dumps({ "products": self.fixture[:2] }),
+                  body=json.dumps({ "products": fixture[:2] }),
                   response_headers=next_headers)
 
     def test_paginated_collection(self):
