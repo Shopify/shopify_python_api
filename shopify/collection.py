@@ -41,11 +41,9 @@ class PaginatedCollection(Collection):
         self._no_iter_next = kwargs.pop("no_iter_next", False)
 
     def __parse_pagination(self):
-        headers = self.metadata["headers"]
-        if "Link" not in headers:
+        if "headers" not in self.metadata or "Link" not in self.metadata["headers"]:
             return {}
-        data = headers["Link"]
-        values = data.split(", ")
+        values = self.metadata["headers"]["Link"].split(", ")
         result = {}
         for value in values:
             link, rel = value.split("; ")
