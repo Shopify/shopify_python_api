@@ -26,11 +26,12 @@ class PaginatedCollection(Collection):
                 metadata = obj.metadata
             super(PaginatedCollection, self).__init__(obj, metadata=metadata)
         else:
-            super(PaginatedCollection, self).__init__(metadata=metadata or {},
-                                                      *args, **kwargs)
-        if not ("pagination" in self.metadata and "resource_class" in self.metadata):
-            raise AttributeError("Cursor-based pagination requires \"pagination\" and \"resource_class\" attributes in the metadata.")
+            super(PaginatedCollection, self).__init__(metadata=metadata or {}, *args, **kwargs)
 
+        if not ("resource_class" in self.metadata):
+            raise AttributeError("Cursor-based pagination requires a \"resource_class\" attribute in the metadata.")
+
+        self.metadata["pagination"] = self.__parse_pagination()
         self.next_page_url = self.metadata["pagination"].get('next', None)
         self.previous_page_url = self.metadata["pagination"].get('previous', None)
 
@@ -38,6 +39,16 @@ class PaginatedCollection(Collection):
         self._previous = None
         self._current_iter = None
         self._no_iter_next = kwargs.pop("no_iter_next", False)
+
+    def __parse_pagination(self):
+        if "headers" not in self.metadata or "Link" not in self.metadata["headers"]:
+            return {}
+        values = self.metadata["headers"]["Link"].split(", ")
+        result = {}
+        for value in values:
+            link, rel = value.split("; ")
+            result[rel.split('"')[1]] = link[1:-1]
+        return result
 
     def has_previous_page(self):
         """Returns true if the current page has any previous pages before it.

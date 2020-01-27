@@ -208,43 +208,7 @@ class ShopifyResource(ActiveResource, mixins.Countable):
     @classmethod
     def find(cls, id_=None, from_=None, **kwargs):
         """Checks the resulting collection for pagination metadata."""
-
-        collection = super(ShopifyResource, cls).find(id_=id_, from_=from_,
-                                                      **kwargs)
-
-        # pyactiveresource currently sends all headers from the response with
-        # the collection.
-        if isinstance(collection, Collection) and \
-           "headers" in collection.metadata:
-            headers = collection.metadata["headers"]
-            if "Link" in headers:
-                pagination = cls._parse_pagination(headers["Link"])
-                return PaginatedCollection(collection, metadata={
-                    "pagination": pagination,
-                    "resource_class": cls
-                })
-
+        collection = super(ShopifyResource, cls).find(id_=id_, from_=from_, **kwargs)
+        if isinstance(collection, Collection) and "headers" in collection.metadata:
+            return PaginatedCollection(collection, metadata={"resource_class": cls})
         return collection
-
-    @classmethod
-    def _parse_pagination(cls, data):
-        """Parses a Link header into a dict for cursor-based pagination.
-
-        Args:
-            data: The Link header value as a string.
-        Returns:
-            A dict with rel names as keys and URLs as values.
-        """
-
-        # Example Link header:
-        # <https://xxx.shopify.com/admin/...>; rel="previous",
-        # <https://xxx.shopify.com/admin/...>; rel="next"
-
-        values = data.split(", ")
-
-        result = {}
-        for value in values:
-            link, rel = value.split("; ")
-            result[rel.split('"')[1]] = link[1:-1]
-
-        return result
