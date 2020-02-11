@@ -82,8 +82,6 @@ class PaginationTest(TestCase):
         i = iter(c)
         self.assertEqual(next(i).id, 1)
         self.assertEqual(next(i).id, 2)
-        self.assertEqual(next(i).id, 3)
-        self.assertEqual(next(i).id, 4)
         with self.assertRaises(StopIteration):
             next(i)
 

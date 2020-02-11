@@ -210,5 +210,5 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         """Checks the resulting collection for pagination metadata."""
         collection = super(ShopifyResource, cls).find(id_=id_, from_=from_, **kwargs)
         if isinstance(collection, Collection) and "headers" in collection.metadata:
-            return PaginatedCollection(collection, metadata={"resource_class": cls})
+            return PaginatedCollection(collection, metadata={"resource_class": cls}, **kwargs)
         return collection
