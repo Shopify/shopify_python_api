@@ -38,7 +38,7 @@ class PaginatedCollection(Collection):
         self._next = None
         self._previous = None
         self._current_iter = None
-        self._no_iter_next = kwargs.pop("no_iter_next", False)
+        self._no_iter_next = kwargs.pop("no_iter_next", True)
 
     def __parse_pagination(self):
         if "headers" not in self.metadata:
