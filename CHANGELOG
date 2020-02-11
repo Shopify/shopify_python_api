@@ -1,3 +1,10 @@
+== Version 7.0.0
+* Made no_iter_next default to True on collection so that by default it only
+fetches a single page
+* Passes kwargs to paginated collections so that attributes can be set with
+find()
+* Allow case insensitive check for the link header for cursor pagination.
+
 == Version 6.0.1
 * Made the collection access more consistent so that there is no confusion
 between a collection and a paginated collection
