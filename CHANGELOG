@@ -1,3 +1,6 @@
+== Version 7.0.1
+- bug fix for string interpolation
+
 == Version 7.0.0
 * Made no_iter_next default to True on collection so that by default it only
 fetches a single page
