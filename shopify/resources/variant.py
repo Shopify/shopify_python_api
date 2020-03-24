@@ -16,4 +16,13 @@ class Variant(ShopifyResource, mixins.Metafields):
     def save(self):
         if 'product_id' not in self._prefix_options:
             self._prefix_options['product_id'] = self.product_id
+
+        # github issue 347
+        # todo: how to get the api version without split & strip
+        api_version = ShopifyResource._site.split('/')[-1].strip('-')
+        start_api_version = '201910'
+        if api_version >= start_api_version:
+            del self.attributes['inventory_quantity']
+            del self.attributes['old_inventory_quantity']
+
         return super(ShopifyResource, self).save()
