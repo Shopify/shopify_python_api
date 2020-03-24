@@ -38,7 +38,9 @@ class Product(ShopifyResource, mixins.Metafields, mixins.Events):
         start_api_version = '201910'
         if api_version >= start_api_version:
             for variant in self.variants:
-                del variant.attributes['inventory_quantity']
-                del variant.attributes['old_inventory_quantity']
+                if variant.attributes.get('inventory_quantity'):
+                    del variant.attributes['inventory_quantity']
+                if variant.attributes.get('old_inventory_quantity'):
+                    del variant.attributes['old_inventory_quantity']
 
         return super(ShopifyResource, self).save()
