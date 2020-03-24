@@ -22,9 +22,9 @@ class Variant(ShopifyResource, mixins.Metafields):
         api_version = ShopifyResource._site.split('/')[-1].strip('-')
         start_api_version = '201910'
         if api_version >= start_api_version:
-            if self.attributes.get('inventory_quantity'):
+            if 'inventory_quantity' in self.attributes:
                 del self.attributes['inventory_quantity']
-            if self.attributes.get('old_inventory_quantity'):
+            if 'old_inventory_quantity' in self.attributes:
                 del self.attributes['old_inventory_quantity']
 
         return super(ShopifyResource, self).save()
