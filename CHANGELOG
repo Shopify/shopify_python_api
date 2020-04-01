@@ -1,3 +1,6 @@
+== Version 7.0.2
+- bug fix for variant updates after the 2019-10 api version
+
 == Version 7.0.1
 - bug fix for string interpolation
 
