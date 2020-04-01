@@ -32,11 +32,10 @@ class Product(ShopifyResource, mixins.Metafields, mixins.Events):
         return variant.save()
 
     def save(self):
-        # github issue 347
-        # todo: how to get the api version without split & strip
-        api_version = ShopifyResource._site.split('/')[-1].strip('-')
         start_api_version = '201910'
-        if api_version >= start_api_version:
+        api_version = ShopifyResource.version
+        if api_version and (
+                api_version.strip('-') >= start_api_version) and api_version != 'unstable':
             for variant in self.variants:
                 if 'inventory_quantity' in variant.attributes:
                     del variant.attributes['inventory_quantity']

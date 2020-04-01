@@ -17,11 +17,10 @@ class Variant(ShopifyResource, mixins.Metafields):
         if 'product_id' not in self._prefix_options:
             self._prefix_options['product_id'] = self.product_id
 
-        # github issue 347
-        # todo: how to get the api version without split & strip
-        api_version = ShopifyResource._site.split('/')[-1].strip('-')
         start_api_version = '201910'
-        if api_version >= start_api_version:
+        api_version = ShopifyResource.version
+        if api_version and (
+                api_version.strip('-') >= start_api_version) and api_version != 'unstable':
             if 'inventory_quantity' in self.attributes:
                 del self.attributes['inventory_quantity']
             if 'old_inventory_quantity' in self.attributes:
