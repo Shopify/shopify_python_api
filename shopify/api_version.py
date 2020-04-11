@@ -52,7 +52,7 @@ class ApiVersion(object):
 
 
 class Release(ApiVersion):
-    FORMAT = re.compile('^\d{4}-\d{2}$')
+    FORMAT = re.compile(r'^\d{4}-\d{2}$')
     API_PREFIX = '/admin/api'
 
     def __init__(self, version_number):
