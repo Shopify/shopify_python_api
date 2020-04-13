@@ -1,3 +1,7 @@
+== Version 7.0.3
+- bug fix for temporary sessions
+- deprecation fix for regexs
+
 == Version 7.0.2
 - bug fix for variant updates after the 2019-10 api version
 
