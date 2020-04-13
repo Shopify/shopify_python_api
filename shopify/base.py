@@ -147,7 +147,7 @@ class ShopifyResourceMeta(ResourceMeta):
     def get_version(cls):
         if hasattr(cls._threadlocal, 'version') or ShopifyResource._version:
             return getattr(cls._threadlocal, 'version', ShopifyResource._version)
-        else:
+        elif ShopifyResource._site is not None:
             return ShopifyResource._site.split('/')[-1]
 
     def set_version(cls, value):
