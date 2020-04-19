@@ -15,7 +15,7 @@ class Customer(ShopifyResource, mixins.Metafields):
            query: Text to search for customers
            page: Page to show (default: 1)
            limit: Amount of results (default: 50) (maximum: 250)
-           fields: comma-seperated list of fields to include in the response
+           fields: comma-separated list of fields to include in the response
         Returns:
            A Collection of customers.
         """
