@@ -232,6 +232,35 @@ these steps:
      shopify.ShopifyResource.clear_session()
      ```
 
+### Billing
+_Note: Your application must be public to test the billing process. To test on a development store use the `'test': true` flag_
+
+1.  Create charge after session has been activated
+    ```python
+    application_charge = shopify.ApplicationCharge.create(
+      {
+            'name': 'My public app',
+            'price': 123,
+            'test': True,
+            'return_url': 'https://domain.com/approve'
+        }
+    )
+    # Redirect user to confirmation_url so they can approve the charge
+    ```
+
+2.  After approving the charge, the user is redirected to `return_url` with `charge_id` 
+    `GET` parameter
+    ```python
+    charge = shopify.ApplicationCharge.find(charge_id)
+    shopify.ApplicationCharge.activate(charge)
+    ```
+
+3.  Check that `activated_charge` status is `active`
+    ```python
+    activated_charge = shopify.ApplicationCharge.find(charge_id)
+    has_been_billed = activated_charge.status == 'active'
+    ```
+
 ### Advanced Usage
 It is recommended to have at least a basic grasp on the principles of [ActiveResource](https://apidock.com/rails/ActiveResource/Base). The [pyactiveresource](https://github.com/Shopify/pyactiveresource) library, which this package relies heavily upon is a port of rails/ActiveResource to Python.
 
