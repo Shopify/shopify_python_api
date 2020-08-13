@@ -1,3 +1,6 @@
+== Version 8.0.2
+- Patch for product updating with variants
+
 == Version 8.0.1
 - release api version 2020-07
 - deprecate api version 2019-07
