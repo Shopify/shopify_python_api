@@ -335,15 +335,15 @@ This library also supports Shopify's new [GraphQL API](https://help.shopify.com/
 
 ```
 client = shopify.GraphQL()
-  query = '''
-    {
-      shop {
-        name
-        id
-      }
+query = '''
+  {
+    shop {
+      name
+      id
     }
-  '''
-  result = client.execute(query)
+  }
+'''
+result = client.execute(query)
 ```
 
 
