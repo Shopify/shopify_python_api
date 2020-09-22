@@ -21,7 +21,7 @@ class GiftCard(ShopifyResource):
         Returns:
            An array of gift cards.
         """
-        return cls._build_list(cls.get("search", **kwargs))
+        return cls._build_collection(cls.get("search", **kwargs))
 
     def add_adjustment(self, adjustment):
         """
