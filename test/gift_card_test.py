@@ -33,3 +33,9 @@ class GiftCardTest(TestCase):
         }))
         self.assertIsInstance(adjustment, shopify.GiftCardAdjustment)
         self.assertEqual(Decimal(adjustment.amount), Decimal("100"))
+
+    def test_search(self):
+        self.fake("gift_cards/search.json?query=balance%3A10", extension=False, body=self.load_fixture('gift_cards_search'))
+
+        results = shopify.GiftCard.search(query='balance:10')
+        self.assertEqual(results[0].balance, "10.00")
