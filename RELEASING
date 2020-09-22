@@ -1,18 +1,20 @@
 Releasing shopify_python_api
 
-1. Check the Semantic Versioning page for info on how to version the new release: http://semver.org
+1. Verify that the examples in the README are still valid against the latest stable API release.
 
-2. Update version in shopify/version.py
+2. Check the Semantic Versioning page for info on how to version the new release: http://semver.org
 
-3. Update CHANGELOG entry for the release.
+3. Update version in shopify/version.py
 
-4. Commit the changes
+4. Update CHANGELOG entry for the release.
+
+5. Commit the changes
     git commit -m "Release vX.Y.Z"
 
-5. Tag the release with the version
+6. Tag the release with the version
     git tag -m "Release X.Y.Z" vX.Y.Z
 
-6. Push the changes to github
+7. Push the changes to github
     git push --tags origin master
 
-7. Shipit!
+8. Shipit!
