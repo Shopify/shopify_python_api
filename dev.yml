@@ -1,0 +1,12 @@
+---
+name: shopify-python-api
+
+type: python
+
+up:
+  - python: 3.8.0
+  - pip:
+      - requirements.txt
+
+commands:
+  test: python setup.py test
