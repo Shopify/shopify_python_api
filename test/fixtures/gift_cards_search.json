@@ -1,0 +1,20 @@
+{
+  "gift_cards":[{
+    "api_client_id": null,
+    "balance": "10.00",
+    "created_at": "2020-05-11T10:16:40+10:00",
+    "currency": "USD",
+    "customer_id": null,
+    "disabled_at": null,
+    "expires_on": null,
+    "id": 4208209,
+    "initial_value": "25.00",
+    "line_item_id": null,
+    "note": "balance10",
+    "template_suffix": null,
+    "updated_at": "2020-05-11T15:13:15+10:00",
+    "user_id": 123456,
+    "last_characters":"c294",
+    "order_id":null
+  }]
+}
