@@ -1,3 +1,6 @@
+== Version 8.0.3
+- Patch for replacing call to _build_list() with _build_collection() in gift_card.py
+
 == Version 8.0.2
 - Patch for product updating with variants
 
