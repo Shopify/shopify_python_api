@@ -23,28 +23,29 @@ pip install --upgrade ShopifyAPI
 
 1. First create a new application in the [Partners Dashboard](https://partners.shopify.com/apps/new), and retreive your API Key and API Secret Key.
 1. We then need to supply these keys to the Shopify Session Class so that it knows how to authenticate.
-     ```python
-     shopify.Session.setup(api_key=API_KEY, secret=API_SECRET)
-     ```
+
+   ```python
+   shopify.Session.setup(api_key=API_KEY, secret=API_SECRET)
+   ```
 1.  In order to access a shop's data, apps need an access token from that specific shop. We need to authenticate with that shop using OAuth, which we can start in the following way:
 
-```
-shop_url = "SHOP_NAME.myshopify.com"
-api_version = '2020-10'
-state = binascii.b2a_hex(os.urandom(15)).decode("utf-8")
-redirect_uri = "http://myapp.com/auth/shopify/callback"
-scopes = ['read_products', 'read_orders']
+    ```python
+    shop_url = "SHOP_NAME.myshopify.com"
+    api_version = '2020-10'
+    state = binascii.b2a_hex(os.urandom(15)).decode("utf-8")
+    redirect_uri = "http://myapp.com/auth/shopify/callback"
+    scopes = ['read_products', 'read_orders']
 
-newSession = shopify.Session(shop_url, api_version)
-auth_url = newSession.create_permission_url(scopes, redirect_uri, state)
-# redirect to auth_url
-```
+    newSession = shopify.Session(shop_url, api_version)
+    auth_url = newSession.create_permission_url(scopes, redirect_uri, state)
+    # redirect to auth_url
+    ```
 
 1. Once the merchant accepts, the shop redirects the owner to the `redirect_uri` of your application with a parameter named 'code'. This is a temporary token that the app can exchange for a permanent access token. You should compare the state you provided above with the one you recieved back to ensure the request is correct. Now we can exchange the code for an access_token when you get the request from shopify in your callback handler:
 
     ```python
     session = shopify.Session(shop_url, api_version)
-    access_token = session.request_token(request_params)
+    access_token = session.request_token(request_params) # request_token will validate hmac and timing attacks
     # you should save the access token now for future use.
     ```
 
@@ -53,7 +54,7 @@ auth_url = newSession.create_permission_url(scopes, redirect_uri, state)
     ```python
     session = shopify.Session(shop_url, api_version, access_token)
     shopify.ShopifyResource.activate_session(session)
-    
+
     shop = shopify.Shop.current() # Get the current shop
     product = shopify.Product.find(179761209) # Get a specific product
 
@@ -73,7 +74,7 @@ auth_url = newSession.create_permission_url(scopes, redirect_uri, state)
      ```python
      shopify.ShopifyResource.clear_session()
      ```
-    
+
 #### Private Apps
 Private apps are a bit quicker to use because OAuth is not needed. You can create the private app in the Shopify Merchant Admin. You can use the Private App password as your `access_token`:
 
