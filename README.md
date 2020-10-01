@@ -69,7 +69,7 @@ pip install --upgrade ShopifyAPI
         product = shopify.Product.find()
      ```
 
-1.  It is best practice to clear your session when you're done:
+1.  It is best practice to clear your session when you're done. A temporary session does this automatically:
 
      ```python
      shopify.ShopifyResource.clear_session()
@@ -82,6 +82,8 @@ Private apps are a bit quicker to use because OAuth is not needed. You can creat
 ```python
 session = shopify.Session(shop_url, api_version, private_app_password)
 shopify.ShopifyResource.activate_session(session)
+# ...
+shopify.ShopifyResource.clear_session()
 ```
 
 ##### With temporary session
@@ -92,7 +94,7 @@ with shopify.Session.temp(shop_url, api_version, private_app_password):
 ```
 
 ### Billing
-_Note: Your application must be public to test the billing process. To test on a development store use the `'test': true` flag_
+_Note: Your application must be public to test the billing process. To test on a development store use the `'test': True` flag_
 
 1.  Create charge after session has been activated
     ```python
@@ -116,7 +118,7 @@ _Note: Your application must be public to test the billing process. To test on a
     ```
 
 ### Advanced Usage
-It is recommended to have at least a basic grasp on the principles of the [pyactiveresource](https://github.com/Shopify/pyactiveresource) library, which this package relies heavily upon is a port of rails/ActiveResource to Python.
+It is recommended to have at least a basic grasp on the principles of the [pyactiveresource](https://github.com/Shopify/pyactiveresource) library, which is a port of rails/ActiveResource to Python and upon which this package relies heavily.
 
 Instances of `pyactiveresource` resources map to RESTful resources in the Shopify API.
 
@@ -139,15 +141,14 @@ product.destroy()
 
 ### Prefix options
 
-Some resources such as `Fulfillment` are prefixed by a parent resource in the Shopify API (e.g. `orders/450789469/fulfillments/255858046`) In order to interact with these resources, you must specify the identifier of the parent resource in your request.
+Some resources such as `Fulfillment` are prefixed by a parent resource in the Shopify API (e.g. `orders/450789469/fulfillments/255858046`). In order to interact with these resources, you must specify the identifier of the parent resource in your request.
 
 ```python
 shopify.Fulfillment.find(255858046, order_id=450789469)
 ```
 
 ### Console
-This package also includes the `shopify_api.py` script to make it easy to
-open up an interactive console to use the API with a shop.
+This package also includes the `shopify_api.py` script to make it easy to open an interactive console to use the API with a shop.
 1.  Obtain a private API key and password to use with your shop (step 2 in "Getting Started")
 1.  Save your default credentials: `shopify_api.py add yourshopname`
 1.  Start the console for the connection: `shopify_api.py console`
