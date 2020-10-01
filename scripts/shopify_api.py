@@ -92,7 +92,7 @@ class TasksMeta(type):
 class Tasks(object):
     _shop_config_dir = os.path.join(os.environ["HOME"], ".shopify", "shops")
     _default_symlink = os.path.join(_shop_config_dir, "default")
-    _default_api_version = "2019-04"
+    _default_api_version = "unstable"
 
     @classmethod
     @usage("list")
@@ -120,6 +120,9 @@ class Tasks(object):
             config['api_key'] = input("API key? ")
             config['password'] = input("Password? ")
             config['api_version'] = input("API version? (leave blank for %s) " % (cls._default_api_version))
+            if not config['api_version'].strip():
+                config['api_version'] = cls._default_api_version
+
             if not os.path.isdir(cls._shop_config_dir):
                 os.makedirs(cls._shop_config_dir)
             with open(filename, 'w') as f:
