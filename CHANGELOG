@@ -1,3 +1,7 @@
+== Version 8.0.4
+- Release API version 2020-10
+- Deprecate API version 2019-10
+
 == Version 8.0.3
 - Patch for replacing call to _build_list() with _build_collection() in gift_card.py
 
