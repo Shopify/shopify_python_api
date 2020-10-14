@@ -19,3 +19,7 @@ Fixes #0000 <!-- link to issue if one exists -->
 <!--
   Summary of the changes committed.
 -->
+
+### Checklist
+
+- [ ] I have updated the CHANGELOG (if applicable)
