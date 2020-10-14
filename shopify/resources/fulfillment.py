@@ -15,4 +15,12 @@ class Fulfillment(ShopifyResource):
 
 
 class FulfillmentOrders(ShopifyResource):
-    _prefix_source = "/orders/$order_id/"
+    @classmethod
+    def find(cls, id_=None, from_=None, **kwargs):
+        if id_:
+            cls._prefix_source = ''
+            resource = cls._find_single(id_, **kwargs)
+        else:
+            cls._prefix_source = "/orders/$order_id/"
+            resource = cls._find_every(**kwargs)
+        return resource
