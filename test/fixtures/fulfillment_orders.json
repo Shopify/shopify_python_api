@@ -1,0 +1,41 @@
+{
+    "fulfillment_order": {
+        "id": 2558888935587,
+        "shop_id": 49144037539,
+        "order_id": 2772506476707,
+        "assigned_location_id": 55896015011,
+        "fulfillment_service_handle": "manual",
+        "request_status": "unsubmitted",
+        "status": "open",
+        "supported_actions": [
+            "create_fulfillment"
+        ],
+        "destination": {
+            "address1": "Chestnut Street 92",
+            "address2": "",
+            "city": "Louisville",
+            "company": null,
+            "country": "United States",
+            "email": "",
+            "first_name": null,
+            "id": 207119551,
+            "last_name": null,
+            "phone": "555-625-1199",
+            "province": "Kentucky",
+            "zip": "40202"
+        },
+        "line_items": [
+            {
+                "id": 7118028439715,
+                "shop_id": 49144037539,
+                "fulfillment_order_id": 2558888935587,
+                "quantity": 1,
+                "line_item_id": 6037638185123,
+                "inventory_item_id": 38440146567331,
+                "fulfillable_quantity": 1,
+                "variant_id": 36317227843747
+            }
+        ],
+        "merchant_requests": []
+    }
+}
