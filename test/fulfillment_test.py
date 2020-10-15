@@ -44,13 +44,14 @@ class FulFillmentTest(TestCase):
 class FulfillmentOrdersTest(TestCase):
     def setUp(self):
         super(FulfillmentOrdersTest, self).setUp()
-        self.fake("fulfillment_orders/2558888935587", method='GET', body=self.load_fixture('fulfillment_orders'))
-        self.fake("orders/2772506476707/fulfillment_orders", method='GET', body=self.load_fixture('fulfillment_orders'))
 
     def test_get_fulfillment_orders(self):
+        self.fake("fulfillment_orders/2558888935587", method='GET', body=self.load_fixture('fulfillment_orders'))
         fulfillment_orders = shopify.FulfillmentOrders.find(2558888935587)
         self.assertEqual(2558888935587, fulfillment_orders.id)
 
     def test_get_order_fulfillment_orders(self):
+        self.fake("orders/2772506476707/fulfillment_orders", method='GET', body=self.load_fixture('fulfillment_orders'))
         fulfillment_orders = shopify.FulfillmentOrders.find(order_id=2772506476707)
         self.assertEqual(2772506476707, fulfillment_orders[0].get('order_id'))
+
