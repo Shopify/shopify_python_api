@@ -23,3 +23,4 @@ Fixes #0000 <!-- link to issue if one exists -->
 ### Checklist
 
 - [ ] I have updated the CHANGELOG (if applicable)
+- [ ] I have followed the [Shopify Python](https://github.com/Shopify/shopify_python) guide
