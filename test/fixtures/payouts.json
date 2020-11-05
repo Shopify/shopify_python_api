@@ -1,0 +1,118 @@
+{
+  "payouts": [
+    {
+      "id": 854088011,
+      "status": "scheduled",
+      "date": "2019-11-01",
+      "currency": "USD",
+      "amount": "43.12",
+      "summary": {
+        "adjustments_fee_amount": "0.12",
+        "adjustments_gross_amount": "2.13",
+        "charges_fee_amount": "1.32",
+        "charges_gross_amount": "45.52",
+        "refunds_fee_amount": "-0.23",
+        "refunds_gross_amount": "-3.54",
+        "reserved_funds_fee_amount": "0.00",
+        "reserved_funds_gross_amount": "0.00",
+        "retried_payouts_fee_amount": "0.00",
+        "retried_payouts_gross_amount": "0.00"
+      }
+    },
+    {
+      "id": 512467833,
+      "status": "failed",
+      "date": "2019-11-01",
+      "currency": "USD",
+      "amount": "43.12",
+      "summary": {
+        "adjustments_fee_amount": "0.12",
+        "adjustments_gross_amount": "2.13",
+        "charges_fee_amount": "1.32",
+        "charges_gross_amount": "45.52",
+        "refunds_fee_amount": "-0.23",
+        "refunds_gross_amount": "-3.54",
+        "reserved_funds_fee_amount": "0.00",
+        "reserved_funds_gross_amount": "0.00",
+        "retried_payouts_fee_amount": "0.00",
+        "retried_payouts_gross_amount": "0.00"
+      }
+    },
+    {
+      "id": 39438702,
+      "status": "in_transit",
+      "date": "2019-11-01",
+      "currency": "USD",
+      "amount": "43.12",
+      "summary": {
+        "adjustments_fee_amount": "0.12",
+        "adjustments_gross_amount": "2.13",
+        "charges_fee_amount": "1.32",
+        "charges_gross_amount": "45.52",
+        "refunds_fee_amount": "-0.23",
+        "refunds_gross_amount": "-3.54",
+        "reserved_funds_fee_amount": "0.00",
+        "reserved_funds_gross_amount": "0.00",
+        "retried_payouts_fee_amount": "0.00",
+        "retried_payouts_gross_amount": "0.00"
+      }
+    },
+    {
+      "id": 710174591,
+      "status": "paid",
+      "date": "2019-12-12",
+      "currency": "USD",
+      "amount": "41.90",
+      "summary": {
+        "adjustments_fee_amount": "0.12",
+        "adjustments_gross_amount": "2.13",
+        "charges_fee_amount": "1.32",
+        "charges_gross_amount": "44.52",
+        "refunds_fee_amount": "-0.23",
+        "refunds_gross_amount": "-3.54",
+        "reserved_funds_fee_amount": "0.00",
+        "reserved_funds_gross_amount": "0.00",
+        "retried_payouts_fee_amount": "0.00",
+        "retried_payouts_gross_amount": "0.00"
+      }
+    },
+    {
+      "id": 974708905,
+      "status": "paid",
+      "date": "2019-11-13",
+      "currency": "CAD",
+      "amount": "51.69",
+      "summary": {
+        "adjustments_fee_amount": "0.12",
+        "adjustments_gross_amount": "2.13",
+        "charges_fee_amount": "6.46",
+        "charges_gross_amount": "58.15",
+        "refunds_fee_amount": "-0.23",
+        "refunds_gross_amount": "-3.54",
+        "reserved_funds_fee_amount": "0.00",
+        "reserved_funds_gross_amount": "0.00",
+        "retried_payouts_fee_amount": "0.00",
+        "retried_payouts_gross_amount": "0.00"
+      }
+    },
+    {
+      "id": 623721858,
+      "status": "paid",
+      "date": "2019-11-12",
+      "currency": "USD",
+      "amount": "41.90",
+      "summary": {
+        "adjustments_fee_amount": "0.12",
+        "adjustments_gross_amount": "2.13",
+        "charges_fee_amount": "1.32",
+        "charges_gross_amount": "44.52",
+        "refunds_fee_amount": "-0.23",
+        "refunds_gross_amount": "-3.54",
+        "reserved_funds_fee_amount": "0.00",
+        "reserved_funds_gross_amount": "0.00",
+        "retried_payouts_fee_amount": "0.00",
+        "retried_payouts_gross_amount": "0.00"
+      }
+    }
+  ]
+}
