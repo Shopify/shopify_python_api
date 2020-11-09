@@ -9,5 +9,3 @@ class BalanceTest(TestCase):
         self.fake('balance', method='GET', prefix=self.prefix, body=self.load_fixture('balance'))
         balance = shopify.Balance.find()
         self.assertGreater(len(balance), 0)
-        self.assertEqual('USD', balance['currency'])
-        self.assertEqual('53.99', balance['amount'])
