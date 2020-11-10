@@ -45,6 +45,10 @@ from .tender_transaction import TenderTransaction
 from .image import Image
 from .variant import Variant
 from .order import Order
+from .balance import Balance
+from .disputes import Disputes
+from .payouts import Payouts
+from .transactions import Transactions
 from .order_risk import OrderRisk
 from .policy import Policy
 from .smart_collection import SmartCollection
