@@ -17,7 +17,7 @@ class Fulfillment(ShopifyResource):
     def update_tracking(self, tracking_info, notify_customer):
         fulfill = FulfillmentV2()
         fulfill.id = self.id
-        fulfill.update_tracking(tracking_info, notify_customer)
+        self._load_attributes_from_response(fulfill.update_tracking(tracking_info, notify_customer))
 
 
 class FulfillmentOrders(ShopifyResource):
@@ -34,4 +34,4 @@ class FulfillmentV2(ShopifyResource):
                 "notify_customer": notify_customer
             }
         }
-        self._load_attributes_from_response(self.post("update_tracking", json.dumps(body).encode()))
+        return self.post("update_tracking", json.dumps(body).encode())
