@@ -1,6 +1,6 @@
 # Shopify API
 
-[![Build Status](https://travis-ci.org/Shopify/shopify_python_api.svg?branch=master)](https://travis-ci.org/Shopify/shopify_python_api)
+[![Build Status](https://github.com/Shopify/shopify_python_api/actions?query=workflow%3ACI+branch%3A+master](https://github.com/Shopify/shopify_python_api/actions)
 [![PyPI version](https://badge.fury.io/py/ShopifyAPI.svg)](https://badge.fury.io/py/ShopifyAPI)
 
 The [Shopify Admin API](https://shopify.dev/docs/admin-api) Python Library
