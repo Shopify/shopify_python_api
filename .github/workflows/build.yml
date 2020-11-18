@@ -1,0 +1,25 @@
+name: CI
+
+on: 
+  push:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Python ${{ matrix.version }}
+    strategy: 
+      matrix:
+        version: [2.7, 3.4, 3.5, 3.6]
+
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.version }}
+      - name: Install Dependencies
+        run: python setup.py install
+      - name: Run Tests
+        run: python -m pytest -v
+
