@@ -5,4 +5,6 @@ Please open an issue here if you encounter a specific bug with this API client l
 
 General questions about the Shopify API and usage of this package (not necessarily a bug) should be posted on the [Shopify forums](https://ecommerce.shopify.com/c/shopify-apis-and-technology).
 
+For compatibility across Python 2 and Python 3, look into [Six](https://six.readthedocs.io/).
+
 When in doubt, post on the forum first. You'll likely have your questions answered more quickly if you post there; more people monitor the forum than Github.
