@@ -33,7 +33,7 @@ class ApiVersion(object):
                     if release == 'unstable':
                         cls.define_version(Unstable())
                     else:
-                        cls.define_version(Release(release)
+                        cls.define_version(Release(release))
 
     @classmethod
     def clear_defined_versions(cls):
