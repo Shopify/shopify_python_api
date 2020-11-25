@@ -30,10 +30,10 @@ class ApiVersion(object):
         for api in j['apis']:    
             if api['handle'] == 'admin':
                 for release in api['versions']:
-                    if release == 'unstable':
+                    if release['handle'] == 'unstable':
                         cls.define_version(Unstable())
                     else:
-                        cls.define_version(Release(release))
+                        cls.define_version(Release(release['handle']))
 
     @classmethod
     def clear_defined_versions(cls):
