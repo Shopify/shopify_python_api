@@ -1,4 +1,5 @@
 import re
+from six.moves.urllib import request
 
 
 class InvalidVersionError(Exception):
