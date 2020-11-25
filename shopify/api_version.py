@@ -1,4 +1,5 @@
 import re
+import json
 from six.moves.urllib import request
 
 
@@ -27,7 +28,7 @@ class ApiVersion(object):
     def define_known_versions(cls):
         req = request.urlopen("https://app.shopify.com/services/apis.json")
         data = json.loads(req.read().decode("utf-8"))
-        for api in j['apis']:    
+        for api in data['apis']:    
             if api['handle'] == 'admin':
                 for release in api['versions']:
                     if release['handle'] == 'unstable':
