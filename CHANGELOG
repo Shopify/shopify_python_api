@@ -1,3 +1,6 @@
+== Version 8.1.0
+- [Feature] Add support for Shopify Payments resources (#428)
+
 == Version 8.0.4
 - Release API version 2020-10
 - Deprecate API version 2019-10
