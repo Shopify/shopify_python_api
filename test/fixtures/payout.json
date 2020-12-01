@@ -1,0 +1,21 @@
+{
+  "payout": {
+    "id": 623721858,
+    "status": "paid",
+    "date": "2019-11-12",
+    "currency": "USD",
+    "amount": "41.90",
+    "summary": {
+      "adjustments_fee_amount": "0.12",
+      "adjustments_gross_amount": "2.13",
+      "charges_fee_amount": "1.32",
+      "charges_gross_amount": "44.52",
+      "refunds_fee_amount": "-0.23",
+      "refunds_gross_amount": "-3.54",
+      "reserved_funds_fee_amount": "0.00",
+      "reserved_funds_gross_amount": "0.00",
+      "retried_payouts_fee_amount": "0.00",
+      "retried_payouts_gross_amount": "0.00"
+    }
+  }
+}
