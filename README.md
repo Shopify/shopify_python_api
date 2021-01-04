@@ -114,7 +114,7 @@ _Note: Your application must be public to test the billing process. To test on a
     charge = shopify.ApplicationCharge.find(charge_id)
     shopify.ApplicationCharge.activate(charge)
     ```
-1.  Check that `activated_charge` status is `active` (This action is no longer necessary if the charge is created with [API version 2021-01 or later](https://shopify.dev/changelog/auto-activation-of-charges-and-subscriptions))
+1.  Check that `activated_charge` status is `active` (_Note: This action is no longer necessary if the charge is created with [API version 2021-01 or later](https://shopify.dev/changelog/auto-activation-of-charges-and-subscriptions)_)
     ```python
     activated_charge = shopify.ApplicationCharge.find(charge_id)
     has_been_billed = activated_charge.status == 'active'
