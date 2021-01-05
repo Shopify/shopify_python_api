@@ -1,3 +1,7 @@
+== Version 8.2.0
+- [Feature] Add support for Dynamic API Versioning. When the library is initialized, it will now make a request to 
+Shopify to fetch a list of the available API versions. ([#441](https://github.com/Shopify/shopify_python_api/pull/441))
+
 == Version 8.1.0
 - [Feature] Add support for Shopify Payments resources (#428)
 
