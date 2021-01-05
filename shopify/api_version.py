@@ -1,5 +1,6 @@
 import re
-
+import json
+from six.moves.urllib import request
 
 class InvalidVersionError(Exception):
     pass
@@ -24,11 +25,15 @@ class ApiVersion(object):
 
     @classmethod
     def define_known_versions(cls):
-        cls.define_version(Unstable())
-        cls.define_version(Release('2020-01'))
-        cls.define_version(Release('2020-04'))
-        cls.define_version(Release('2020-07'))
-        cls.define_version(Release('2020-10'))
+        req = request.urlopen("https://app.shopify.com/services/apis.json")
+        data = json.loads(req.read().decode("utf-8"))
+        for api in data['apis']:
+            if api['handle'] == 'admin':
+                for release in api['versions']:
+                    if release['handle'] == 'unstable':
+                        cls.define_version(Unstable())
+                    else:
+                        cls.define_version(Release(release['handle']))
 
     @classmethod
     def clear_defined_versions(cls):
