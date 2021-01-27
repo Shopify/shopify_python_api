@@ -1,19 +1,18 @@
 from ..base import ShopifyResource
 
 class FulfillmentEvent(ShopifyResource):
-    _prefix_source = "/orders/$order_id/fulfillments/$fulfillment_id"
-    _singular = "event"
-    _plural = "events"
+    _prefix_source = "/orders/$order_id/fulfillments/$fulfillment_id/"
+    _singular = 'event'
+    _plural = 'events'
 
     @classmethod
     def _prefix(cls, options={}):
         order_id = options.get("order_id")
         fulfillment_id = options.get('fulfillment_id')
-        if order_id:
-            return "%s/orders/%s/fulfillments/%s" % (
-                cls.site, order_id, fulfillment_id)
-        else:
-            return cls.site
+        event_id = options.get("event_id")
+
+        return "%s/orders/%s/fulfillments/%s" % (
+            cls.site, order_id, fulfillment_id)
 
     def save(self):
       status = self.attributes['status']
