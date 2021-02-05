@@ -10,9 +10,6 @@ The [Shopify Admin API](https://shopify.dev/docs/admin-api) Python Library
 ### Requirements
 You should be signed up as a partner on the [Shopify Partners Dashboard](https://partners.shopify.com) so that you can create and manage shopify applications.
 
-#### Python version
-This library requires Python 3.8 or lower.
-
 ### Installation
 
 To easily install or upgrade to the latest release, use [pip](http://www.pip-installer.org/).
