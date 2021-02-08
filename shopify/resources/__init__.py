@@ -17,6 +17,7 @@ from .rule import Rule
 from .tax_line import TaxLine
 from .script_tag import ScriptTag
 from .application_charge import ApplicationCharge
+from .application_credit import ApplicationCredit
 from .recurring_application_charge import RecurringApplicationCharge
 from .usage_charge import UsageCharge
 from .asset import Asset
