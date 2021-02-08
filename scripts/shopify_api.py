@@ -51,9 +51,9 @@ class TasksMeta(type):
 
         # Allow unambigious abbreviations of tasks
         if task not in cls._tasks:
-            matches = list(filter(lambda item: item.startswith(task), cls._tasks))
-            if len(matches) == 1:
-                task = matches[0]
+            matches = filter(lambda item: item.startswith(task), cls._tasks)
+            if len(list(matches)) == 1:
+                task = list(matches)[0]
             else:
                 sys.stderr.write('Could not find task "%s".\n' % (task))
 
