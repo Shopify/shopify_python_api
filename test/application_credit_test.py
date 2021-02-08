@@ -1,7 +1,6 @@
 import shopify
 import json
 from test.test_helper import TestCase
-from pyactiveresource.activeresource import ActiveResource
 
 class ApplicationCreditTest(TestCase):
     def test_get_application_credit(self):
