@@ -1,5 +1,0 @@
-[run]
-include = 
-    shopify/
-omit = 
-    test/
