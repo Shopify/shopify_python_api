@@ -1,7 +1,7 @@
 name: CI
 
 env:
-  repo_token: ${{ github.REPO_TOKEN }}
+  repo_token: ${{ secrets.REPO_TOKEN }}
 on: 
   push:
 
