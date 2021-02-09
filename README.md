@@ -2,6 +2,7 @@
 
 [![Build Status](https://github.com/Shopify/shopify_python_api/workflows/CI/badge.svg)](https://github.com/Shopify/shopify_python_api/actions)
 [![PyPI version](https://badge.fury.io/py/ShopifyAPI.svg)](https://badge.fury.io/py/ShopifyAPI)
+[![Coverage Status](https://coveralls.io/repos/github/Shopify/shopify_python_api/badge.svg)](https://coveralls.io/github/Shopify/shopify_python_api)
 
 The [Shopify Admin API](https://shopify.dev/docs/admin-api) Python Library
 
