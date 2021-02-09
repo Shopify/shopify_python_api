@@ -26,7 +26,7 @@ jobs:
           python setup.py install 
       - name: Run Tests
         run: python -m pytest -v
-        - name: Run Pytest-Cov
-        run: pytest --cov
+      - name: Run Pytest-Cov
+      run: pytest --cov
       - name: Run Coveralls
         run: coveralls
