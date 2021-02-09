@@ -1,8 +1,9 @@
 name: CI
 
+env:
+  repo_token: ${{ github.REPO_TOKEN }}
 on: 
   push:
-
 
 jobs:
   build:
@@ -22,7 +23,9 @@ jobs:
         run: | 
           python -m pip install --upgrade pip
           pip install pytest mock
+          pip install coveralls
           python setup.py install 
       - name: Run Tests
         run: python -m pytest -v
-
+      - name: Run Coveralls
+        run: coveralls
