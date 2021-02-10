@@ -22,12 +22,11 @@ jobs:
           pytest --cov=./ --cov-report=xml
           python setup.py install
       - name: Run Tests
-        run: |
-          python -m pytest -v
+        run: python -m pytest -v
       - name: upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           name: codecov-umbrella
-          fail_ci_if_error: true
+          # fail_ci_if_error: true
           verbose: true
