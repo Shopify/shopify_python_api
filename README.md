@@ -8,7 +8,7 @@ The [Shopify Admin API](https://shopify.dev/docs/admin-api) Python Library
 ## Usage
 
 ### Requirements
-You should be signed up as a partner on the [Shopify Partners Dashboard](https://partners.shopify.com) so that you can create and manage shopify applications.
+You should be signed up as a partner on the [Shopify Partners Dashboard](https://www.shopify.com/partners) so that you can create and manage shopify applications.
 
 ### Installation
 
@@ -21,7 +21,7 @@ pip install --upgrade ShopifyAPI
 ### Getting Started
 #### Public and Custom Apps
 
-1. First create a new application in the [Partners Dashboard](https://partners.shopify.com/apps/new), and retreive your API Key and API Secret Key.
+1. First create a new application in the [Partners Dashboard](https://www.shopify.com/partners), and retrieve your API Key and API Secret Key.
 1. We then need to supply these keys to the Shopify Session Class so that it knows how to authenticate.
 
    ```python

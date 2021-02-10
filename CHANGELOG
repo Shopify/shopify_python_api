@@ -1,5 +1,7 @@
 - Added support for Fulfillment.update_tracking ([#432](https://github.com/Shopify/shopify_python_api/pull/432))
 - Add FulfillmentEvent resource ([#454](https://github.com/Shopify/shopify_python_api/pull/454))
+- Fix for being unable to get the len() of a filter ([#456](https://github.com/Shopify/shopify_python_api/pull/456))
+- Add ApplicationCredit resource ([#457](https://github.com/Shopify/shopify_python_api/pull/457))
 
 == Version 8.2.0
 - [Feature] Add support for Dynamic API Versioning. When the library is initialized, it will now make a request to 
