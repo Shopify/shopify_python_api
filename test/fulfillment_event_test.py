@@ -1,6 +1,5 @@
 import shopify
 from test.test_helper import TestCase
-from pyactiveresource.activeresource import ActiveResource
 
 class FulFillmentEventTest(TestCase):
     def test_get_fulfillment_event(self):
@@ -21,4 +20,3 @@ class FulFillmentEventTest(TestCase):
             fulfillment_event = shopify.FulfillmentEvent.find(12584341209251, order_id='2776493818019', fulfillment_id='2608403447971')
             fulfillment_event.status = incorrect_status
             fulfillment_event.save()
-
