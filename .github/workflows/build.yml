@@ -1,5 +1,8 @@
 name: CI
 
+env:
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 on: 
   push:
 
@@ -21,8 +24,11 @@ jobs:
       - name: Install Dependencies
         run: | 
           python -m pip install --upgrade pip
-          pip install pytest mock
+          pip install pytest mock coverage
           python setup.py install 
       - name: Run Tests
-        run: python -m pytest -v
-
+        run: |
+          python -m pytest -v
+          coverage run setup.py test
+      - name: Upload to codecov.io
+        run: bash <(curl -s https://codecov.io/bash)
