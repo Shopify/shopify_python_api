@@ -24,11 +24,10 @@ jobs:
       - name: Install Dependencies
         run: | 
           python -m pip install --upgrade pip
-          pip install pytest mock coverage
+          pip install pytest mock codecov
           python setup.py install 
       - name: Run Tests
         run: |
-          python -m pytest -v
-          coverage run setup.py test
+          coverage run -m pytest -v
       - name: Upload to codecov.io
         run: bash <(curl -s https://codecov.io/bash)
