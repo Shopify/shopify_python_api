@@ -3,6 +3,7 @@
 [![Build Status](https://github.com/Shopify/shopify_python_api/workflows/CI/badge.svg)](https://github.com/Shopify/shopify_python_api/actions)
 [![PyPI version](https://badge.fury.io/py/ShopifyAPI.svg)](https://badge.fury.io/py/ShopifyAPI)
 [![codecov](https://codecov.io/gh/Shopify/shopify_python_api/branch/master/graph/badge.svg?token=pNTx0TARUx)](https://codecov.io/gh/Shopify/shopify_python_api)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Shopify/shopify_python_api/blob/master/LICENSE)
 
 The [Shopify Admin API](https://shopify.dev/docs/admin-api) Python Library
 
