@@ -3,7 +3,6 @@ from .gift_card_adjustment import GiftCardAdjustment
 
 
 class GiftCard(ShopifyResource):
-
     def disable(self):
         self._load_attributes_from_response(self.post("disable"))
 

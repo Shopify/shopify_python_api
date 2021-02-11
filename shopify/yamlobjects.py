@@ -8,11 +8,13 @@ try:
     import yaml
 
     class YAMLHashWithIndifferentAccess(yaml.YAMLObject):
-        yaml_tag = '!map:ActiveSupport::HashWithIndifferentAccess'
+        yaml_tag = "!map:ActiveSupport::HashWithIndifferentAccess"
         yaml_loader = yaml.SafeLoader
 
         @classmethod
         def from_yaml(cls, loader, node):
             return loader.construct_mapping(node, cls)
+
+
 except ImportError:
     pass

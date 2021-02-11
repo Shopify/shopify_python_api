@@ -1,10 +1,15 @@
 import shopify
 from test.test_helper import TestCase
 
-class ProductListingTest(TestCase):
 
+class ProductListingTest(TestCase):
     def test_get_product_listings(self):
-        self.fake('product_listings', method='GET', code=200, body=self.load_fixture('product_listings'))
+        self.fake(
+            "product_listings",
+            method="GET",
+            code=200,
+            body=self.load_fixture("product_listings"),
+        )
 
         product_listings = shopify.ProductListing.find()
         self.assertEqual(2, len(product_listings))
@@ -14,13 +19,23 @@ class ProductListingTest(TestCase):
         self.assertEqual("Rustic Copper Bottle", product_listings[1].title)
 
     def test_get_product_listing(self):
-        self.fake('product_listings/2', method='GET', code=200, body=self.load_fixture('product_listing'))
+        self.fake(
+            "product_listings/2",
+            method="GET",
+            code=200,
+            body=self.load_fixture("product_listing"),
+        )
 
         product_listing = shopify.ProductListing.find(2)
         self.assertEqual("Synergistic Silk Chair", product_listing.title)
 
     def test_reload_product_listing(self):
-        self.fake('product_listings/2', method='GET', code=200, body=self.load_fixture('product_listing'))
+        self.fake(
+            "product_listings/2",
+            method="GET",
+            code=200,
+            body=self.load_fixture("product_listing"),
+        )
 
         product_listing = shopify.ProductListing()
         product_listing.product_id = 2
@@ -29,7 +44,12 @@ class ProductListingTest(TestCase):
         self.assertEqual("Synergistic Silk Chair", product_listing.title)
 
     def test_get_product_listing_product_ids(self):
-        self.fake('product_listings/product_ids', method='GET', status = 200, body=self.load_fixture('product_listing_product_ids'))
+        self.fake(
+            "product_listings/product_ids",
+            method="GET",
+            status=200,
+            body=self.load_fixture("product_listing_product_ids"),
+        )
 
         product_ids = shopify.ProductListing.product_ids()
 
