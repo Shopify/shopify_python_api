@@ -26,7 +26,7 @@ class ApiVersionTest(TestCase):
         self.assertEqual(v2, shopify.ApiVersion.coerce_to_version("2019-01"))
 
     def test_coerce_to_version_raises_with_string_that_does_not_match_known_version(
-        self
+        self,
     ):
         with self.assertRaises(shopify.VersionNotFoundError):
             shopify.ApiVersion.coerce_to_version("crazy-name")
