@@ -9,4 +9,3 @@ class EventTest(TestCase):
     def test_prefix_doesnt_need_resource(self):
         prefix = shopify.Event._prefix()
         self.assertEqual("https://this-is-my-test-show.myshopify.com/admin/api/unstable", prefix)
-
