@@ -28,5 +28,3 @@ class DiscountCodeTest(TestCase):
       self.fake('price_rules/1213131/discount_codes/34', method='DELETE', body='destroyed')
       self.discount_code.destroy()
       self.assertEqual('DELETE', self.http.request.get_method())
-
-
