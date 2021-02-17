@@ -196,6 +196,13 @@ next_url = page1.next_page_url
 page2 = shopify.Product.find(from_=next_url)
 ```
 
+## Set up pre-commit locally [OPTIONAL]
+[Pre-commit](https://pre-commit.com/) is set up as a GitHub action that runs on pull requests and pushes to the `master` branch. If you want to run pre-commit locally, install it and set up the git hook scripts
+```shell
+pip install -r requirements.txt
+pre-commit install
+```
+
 ## Limitations
 
 Currently there is no support for:
