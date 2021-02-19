@@ -214,4 +214,4 @@ Currently there is no support for:
 * [Partners Dashboard](https://partners.shopify.com)
 * [developers.shopify.com](https://developers.shopify.com)
 * [Shopify.dev](https://shopify.dev)
-* [Ask questions on the Shopify forums](http://ecommerce.shopify.com/c/shopify-apis-and-technology) 
+* [Ask questions on the Shopify forums](http://ecommerce.shopify.com/c/shopify-apis-and-technology)

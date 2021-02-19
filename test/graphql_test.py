@@ -11,12 +11,12 @@ class GraphQLTest(TestCase):
         shopify.ShopifyResource.activate_session(shopify_session)
         client = shopify.GraphQL()
         self.fake(
-            'graphql', 
-            method='POST', 
-            code=201, 
+            'graphql',
+            method='POST',
+            code=201,
             headers={
                 'X-Shopify-Access-Token': 'token',
-                'Accept': 'application/json', 
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
                 })
         query = '''

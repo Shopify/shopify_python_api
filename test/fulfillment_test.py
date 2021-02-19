@@ -29,7 +29,7 @@ class FulFillmentTest(TestCase):
         self.assertEqual('pending', fulfillment.status)
         fulfillment.complete()
         self.assertEqual('success', fulfillment.status)
-    
+
     def test_able_to_cancel_fulfillment(self):
         fulfillment = shopify.Fulfillment.find(255858046, order_id=450789469)
 

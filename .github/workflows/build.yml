@@ -4,11 +4,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Python ${{ matrix.version }}
-    strategy: 
+    strategy:
       matrix:
         version: [2.7, 3.6, 3.8, 3.9]
 
-    steps: 
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: ${{ matrix.version }}
       - name: Install Dependencies
-        run: | 
+        run: |
           python -m pip install --upgrade pip
           pip install pytest mock pytest-cov
           python setup.py install
