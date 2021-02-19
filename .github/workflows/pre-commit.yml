@@ -9,8 +9,9 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-    - uses: pre-commit/action@v2.0.0
-      with:
-        extra_args: end-of-file-fixer --all-files
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup
+      uses: actions/setup-python@v2
+    - name: Pre-commit
+      uses: pre-commit/action@v2.0.0
