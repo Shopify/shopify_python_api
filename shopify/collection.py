@@ -2,6 +2,7 @@ from pyactiveresource.collection import Collection
 from six.moves.urllib.parse import urlparse, parse_qs
 import cgi
 
+
 class PaginatedCollection(Collection):
     """
     A subclass of Collection which allows cycling through pages of
@@ -141,6 +142,7 @@ class PaginatedIterator(object):
     ...
     # every page and the page items are iterated
     """
+
     def __init__(self, collection):
         if not isinstance(collection, PaginatedCollection):
             raise TypeError("PaginatedIterator expects a PaginatedCollection instance")

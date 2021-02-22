@@ -1,5 +1,6 @@
 from ..base import ShopifyResource
 
+
 class UsageCharge(ShopifyResource):
     _prefix_source = "/recurring_application_charge/$recurring_application_charge_id/"
 

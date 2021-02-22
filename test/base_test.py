@@ -4,6 +4,7 @@ from pyactiveresource.activeresource import ActiveResource
 from mock import patch
 import threading
 
+
 class BaseTest(TestCase):
 
     @classmethod
@@ -69,7 +70,7 @@ class BaseTest(TestCase):
     def test_delete_should_send_custom_headers_with_request(self):
         shopify.ShopifyResource.activate_session(self.session1)
 
-        org_headers=shopify.ShopifyResource.headers
+        org_headers = shopify.ShopifyResource.headers
         shopify.ShopifyResource.set_headers({'X-Custom': 'abc'})
 
         with patch('shopify.ShopifyResource.connection.delete') as mock:

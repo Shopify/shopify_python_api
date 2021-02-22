@@ -12,6 +12,7 @@ import yaml
 import six
 from six.moves import input, map
 
+
 def start_interpreter(**variables):
     # add the current working directory to the sys paths
     sys.path.append(os.getcwd())
@@ -19,8 +20,10 @@ def start_interpreter(**variables):
     import readline
     console(variables).interact()
 
+
 class ConfigFileError(Exception):
     pass
+
 
 def usage(usage_string):
     """Decorator to add a usage string to a function"""
@@ -28,6 +31,7 @@ def usage(usage_string):
         func.usage = usage_string
         return func
     return decorate
+
 
 class TasksMeta(type):
     _prog = os.path.basename(sys.argv[0])
@@ -37,6 +41,7 @@ class TasksMeta(type):
 
         tasks = list(new_attrs.keys())
         tasks.append("help")
+
         def filter_func(item):
             return not item.startswith("_") and hasattr(getattr(cls, item), "__call__")
         tasks = filter(filter_func, tasks)
@@ -222,7 +227,6 @@ class Tasks(object):
         target = os.readlink(cls._default_symlink)
         return os.path.join(cls._shop_config_dir, target)
 
-
     @classmethod
     def _default_connection(cls):
         target = cls._default_connection_target()
@@ -252,6 +256,7 @@ class Tasks(object):
     @classmethod
     def _no_config_file_error(cls, filename):
         raise ConfigFileError("There is no config file at " + filename)
+
 
 try:
     Tasks.run_task(*sys.argv[1:])

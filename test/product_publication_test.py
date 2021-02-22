@@ -2,12 +2,13 @@ import shopify
 import json
 from test.test_helper import TestCase
 
+
 class ProductPublicationTest(TestCase):
     def test_find_all_product_publications(self):
         self.fake(
             'publications/55650051/product_publications',
             method='GET',
-            body= self.load_fixture('product_publications')
+            body=self.load_fixture('product_publications')
         )
         product_publications = shopify.ProductPublication.find(publication_id=55650051)
 

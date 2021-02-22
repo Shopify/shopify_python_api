@@ -5,11 +5,12 @@ from pyactiveresource.activeresource import ActiveResource
 from pyactiveresource.testing import http_fake
 import shopify
 
+
 class TestCase(unittest.TestCase):
 
     def setUp(self):
         ActiveResource.site = None
-        ActiveResource.headers=None
+        ActiveResource.headers = None
 
         shopify.ShopifyResource.clear_session()
         shopify.ShopifyResource.site = "https://this-is-my-test-show.myshopify.com/admin/api/unstable"
@@ -30,13 +31,13 @@ class TestCase(unittest.TestCase):
                   )
 
     def load_fixture(self, name, format='json'):
-        with open(os.path.dirname(__file__)+'/fixtures/%s.%s' % (name, format), 'rb') as f:
+        with open(os.path.dirname(__file__) + '/fixtures/%s.%s' % (name, format), 'rb') as f:
             return f.read()
 
     def fake(self, endpoint, **kwargs):
         body = kwargs.pop('body', None) or self.load_fixture(endpoint)
-        format = kwargs.pop('format','json')
-        method = kwargs.pop('method','GET')
+        format = kwargs.pop('format', 'json')
+        method = kwargs.pop('method', 'GET')
         prefix = kwargs.pop('prefix', '/admin/api/unstable')
 
         if ('extension' in kwargs and not kwargs['extension']):
@@ -55,7 +56,7 @@ class TestCase(unittest.TestCase):
         try:
             headers.update(kwargs['headers'])
         except KeyError:
-           pass
+            pass
 
         code = kwargs.pop('code', 200)
 

@@ -2,11 +2,14 @@ import re
 import json
 from six.moves.urllib import request
 
+
 class InvalidVersionError(Exception):
     pass
 
+
 class VersionNotFoundError(Exception):
     pass
+
 
 class ApiVersion(object):
     versions = {}
@@ -76,7 +79,7 @@ class Unstable(ApiVersion):
     def __init__(self):
         self._name = 'unstable'
         self._numeric_version = 9000000
-        self._path =  '/admin/api/unstable'
+        self._path = '/admin/api/unstable'
 
     @property
     def stable(self):

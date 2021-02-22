@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class PublicationTest(TestCase):
     def test_find_all_publications(self):
         self.fake('publications')

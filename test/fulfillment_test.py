@@ -2,6 +2,7 @@ import shopify
 from test.test_helper import TestCase
 from pyactiveresource.activeresource import ActiveResource
 
+
 class FulFillmentTest(TestCase):
 
     def setUp(self):
@@ -12,8 +13,9 @@ class FulFillmentTest(TestCase):
         fulfillment = shopify.Fulfillment.find(255858046, order_id=450789469)
 
         success = self.load_fixture('fulfillment')
-        success = success.replace(b'pending',b'open')
-        self.fake("orders/450789469/fulfillments/255858046/open", method='POST', headers={'Content-length':'0', 'Content-type': 'application/json'}, body=success)
+        success = success.replace(b'pending', b'open')
+        self.fake("orders/450789469/fulfillments/255858046/open", method='POST',
+                  headers={'Content-length': '0', 'Content-type': 'application/json'}, body=success)
 
         self.assertEqual('pending', fulfillment.status)
         fulfillment.open()
@@ -23,8 +25,9 @@ class FulFillmentTest(TestCase):
         fulfillment = shopify.Fulfillment.find(255858046, order_id=450789469)
 
         success = self.load_fixture('fulfillment')
-        success = success.replace(b'pending',b'success')
-        self.fake("orders/450789469/fulfillments/255858046/complete", method='POST', headers={'Content-length':'0', 'Content-type': 'application/json'}, body=success)
+        success = success.replace(b'pending', b'success')
+        self.fake("orders/450789469/fulfillments/255858046/complete", method='POST',
+                  headers={'Content-length': '0', 'Content-type': 'application/json'}, body=success)
 
         self.assertEqual('pending', fulfillment.status)
         fulfillment.complete()
@@ -35,7 +38,8 @@ class FulFillmentTest(TestCase):
 
         cancelled = self.load_fixture('fulfillment')
         cancelled = cancelled.replace(b'pending', b'cancelled')
-        self.fake("orders/450789469/fulfillments/255858046/cancel", method='POST', headers={'Content-length':'0', 'Content-type': 'application/json'}, body=cancelled)
+        self.fake("orders/450789469/fulfillments/255858046/cancel", method='POST',
+                  headers={'Content-length': '0', 'Content-type': 'application/json'}, body=cancelled)
 
         self.assertEqual('pending', fulfillment.status)
         fulfillment.cancel()
@@ -44,7 +48,7 @@ class FulFillmentTest(TestCase):
     def test_update_tracking(self):
         fulfillment = shopify.Fulfillment.find(255858046, order_id=450789469)
 
-        tracking_info = { "number": 1111, "url": "http://www.my-url.com", "company": "my-company"}
+        tracking_info = {"number": 1111, "url": "http://www.my-url.com", "company": "my-company"}
         notify_customer = False
 
         update_tracking = self.load_fixture('fulfillment')
@@ -52,7 +56,8 @@ class FulFillmentTest(TestCase):
         update_tracking = update_tracking.replace(b'http://www.google.com/search?q=1Z2345', b'http://www.my-url.com')
         update_tracking = update_tracking.replace(b'1Z2345', b'1111')
 
-        self.fake("fulfillments/255858046/update_tracking", method="POST", headers={'Content-type': 'application/json'}, body=update_tracking)
+        self.fake("fulfillments/255858046/update_tracking", method="POST",
+                  headers={'Content-type': 'application/json'}, body=update_tracking)
 
         self.assertEqual("null-company", fulfillment.tracking_company)
         self.assertEqual("1Z2345", fulfillment.tracking_number)
