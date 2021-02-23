@@ -2,6 +2,7 @@ import shopify
 import json
 from test.test_helper import TestCase
 
+
 class ApplicationCreditTest(TestCase):
     def test_get_application_credit(self):
         self.fake('application_credits/445365009', method='GET', body=self.load_fixture('application_credit'), code=200)

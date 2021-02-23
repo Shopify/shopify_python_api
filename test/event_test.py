@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class EventTest(TestCase):
     def test_prefix_uses_resource(self):
         prefix = shopify.Event._prefix(options={'resource': "orders", "resource_id": 42})

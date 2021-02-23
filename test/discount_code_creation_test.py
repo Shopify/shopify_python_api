@@ -1,6 +1,7 @@
 from test.test_helper import TestCase
 import shopify
 
+
 class DiscountCodeCreationTest(TestCase):
     def test_find_batch_job_discount_codes(self):
         self.fake('price_rules/1213131', body=self.load_fixture('price_rule'))

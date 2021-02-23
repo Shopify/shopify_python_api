@@ -23,8 +23,9 @@ class DiscountCodeTest(TestCase):
         self.discount_code.save()
         self.assertEqual('BOGO',
                          json.loads(self.http.request.data.decode("utf-8"))["discount_code"]["code"]
-                        )
+                         )
+
     def test_delete_a_specific_discount_code(self):
-      self.fake('price_rules/1213131/discount_codes/34', method='DELETE', body='destroyed')
-      self.discount_code.destroy()
-      self.assertEqual('DELETE', self.http.request.get_method())
+        self.fake('price_rules/1213131/discount_codes/34', method='DELETE', body='destroyed')
+        self.discount_code.destroy()
+        self.assertEqual('DELETE', self.http.request.get_method())

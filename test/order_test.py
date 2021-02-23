@@ -3,6 +3,7 @@ from test.test_helper import TestCase
 from pyactiveresource.activeresource import ActiveResource
 from pyactiveresource.util import xml_to_dict
 
+
 class OrderTest(TestCase):
 
     def test_should_be_loaded_correctly_from_order_xml(self):

@@ -23,6 +23,7 @@ class Fulfillment(ShopifyResource):
 class FulfillmentOrders(ShopifyResource):
     _prefix_source = "/orders/$order_id/"
 
+
 class FulfillmentV2(ShopifyResource):
     _singular = 'fulfillment'
     _plural = 'fulfillments'

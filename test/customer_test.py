@@ -2,6 +2,7 @@ import shopify
 import json
 from test.test_helper import TestCase
 
+
 class CustomerTest(TestCase):
     def setUp(self):
         super(CustomerTest, self).setUp()
@@ -9,7 +10,8 @@ class CustomerTest(TestCase):
         self.customer = shopify.Customer.find(207119551)
 
     def test_create_customer(self):
-        self.fake("customers", method='POST', body=self.load_fixture('customer'), headers={'Content-type': 'application/json'})
+        self.fake("customers", method='POST', body=self.load_fixture(
+            'customer'), headers={'Content-type': 'application/json'})
         customer = shopify.Customer()
         customer.first_name = 'Bob'
         customer.last_name = 'Lastnameson'
@@ -26,7 +28,8 @@ class CustomerTest(TestCase):
         self.assertEqual("Bob", self.customer.first_name)
 
     def test_search(self):
-        self.fake("customers/search.json?query=Bob+country%3AUnited+States", extension=False, body=self.load_fixture('customers_search'))
+        self.fake("customers/search.json?query=Bob+country%3AUnited+States",
+                  extension=False, body=self.load_fixture('customers_search'))
 
         results = shopify.Customer.search(query='Bob country:United States')
         self.assertEqual('Bob', results[0].first_name)
@@ -34,7 +37,8 @@ class CustomerTest(TestCase):
     def test_send_invite_with_no_params(self):
         customer_invite_fixture = self.load_fixture('customer_invite')
         customer_invite = json.loads(customer_invite_fixture.decode("utf-8"))
-        self.fake('customers/207119551/send_invite', method='POST', body=customer_invite_fixture, headers={'Content-type': 'application/json'})
+        self.fake('customers/207119551/send_invite', method='POST',
+                  body=customer_invite_fixture, headers={'Content-type': 'application/json'})
         customer_invite_response = self.customer.send_invite()
         self.assertEqual(json.loads('{"customer_invite": {}}'), json.loads(self.http.request.data.decode("utf-8")))
         self.assertIsInstance(customer_invite_response, shopify.CustomerInvite)
@@ -43,7 +47,8 @@ class CustomerTest(TestCase):
     def test_send_invite_with_params(self):
         customer_invite_fixture = self.load_fixture('customer_invite')
         customer_invite = json.loads(customer_invite_fixture.decode("utf-8"))
-        self.fake('customers/207119551/send_invite', method='POST', body=customer_invite_fixture, headers={'Content-type': 'application/json'})
+        self.fake('customers/207119551/send_invite', method='POST',
+                  body=customer_invite_fixture, headers={'Content-type': 'application/json'})
         customer_invite_response = self.customer.send_invite(shopify.CustomerInvite(customer_invite['customer_invite']))
         self.assertEqual(customer_invite, json.loads(self.http.request.data.decode("utf-8")))
         self.assertIsInstance(customer_invite_response, shopify.CustomerInvite)

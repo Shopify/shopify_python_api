@@ -2,6 +2,7 @@ import shopify
 import json
 from test.test_helper import TestCase
 
+
 class PaginationTest(TestCase):
 
     def setUp(self):
@@ -17,15 +18,15 @@ class PaginationTest(TestCase):
 
         self.fake("products",
                   url=prefix + "/products.json?limit=2",
-                  body=json.dumps({ "products": fixture[:2] }),
+                  body=json.dumps({"products": fixture[:2]}),
                   response_headers=next_headers)
         self.fake("products",
                   url=prefix + "/products.json?limit=2&page_info=FOOBAR",
-                  body=json.dumps({ "products": fixture[2:4] }),
+                  body=json.dumps({"products": fixture[2:4]}),
                   response_headers=prev_headers)
         self.fake("products",
                   url=prefix + "/products.json?limit=2&page_info=BAZQUUX",
-                  body=json.dumps({ "products": fixture[:2] }),
+                  body=json.dumps({"products": fixture[:2]}),
                   response_headers=next_headers)
 
     def test_nonpaginates_collection(self):
@@ -33,7 +34,8 @@ class PaginationTest(TestCase):
         draft_orders = shopify.DraftOrder.find()
         self.assertEqual(1, len(draft_orders))
         self.assertEqual(517119332, draft_orders[0].id)
-        self.assertIsInstance(draft_orders, shopify.collection.PaginatedCollection, "find() result is not PaginatedCollection")
+        self.assertIsInstance(draft_orders, shopify.collection.PaginatedCollection,
+                              "find() result is not PaginatedCollection")
 
     def test_paginated_collection(self):
         items = shopify.Product.find(limit=2)
@@ -67,7 +69,7 @@ class PaginationTest(TestCase):
 
         self.assertIsInstance(p, shopify.collection.PaginatedCollection,
                               "previous_page() result is not PaginatedCollection")
-        self.assertEqual(len(p), 4, # cached
+        self.assertEqual(len(p), 4,  # cached
                          "previous_page() collection has incorrect length")
         self.assertIn("pagination", p.metadata)
         self.assertIn("next", p.metadata["pagination"],

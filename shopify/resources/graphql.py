@@ -3,6 +3,7 @@ from ..base import ShopifyResource
 from six.moves import urllib
 import json
 
+
 class GraphQL():
 
     def __init__(self):

@@ -3,6 +3,7 @@ import json
 from six.moves.urllib.parse import urlencode
 from test.test_helper import TestCase
 
+
 class InventoryLevelTest(TestCase):
 
     def test_fetch_inventory_level(self):
@@ -19,7 +20,8 @@ class InventoryLevelTest(TestCase):
             location_ids='905684977,487838322'
         )
         self.assertTrue(
-            all(item.location_id in params['location_ids'] and item.inventory_item_id in params['inventory_item_ids'] for item in inventory_levels)
+            all(item.location_id in params['location_ids']
+                and item.inventory_item_id in params['inventory_item_ids'] for item in inventory_levels)
         )
 
     def test_inventory_level_adjust(self):

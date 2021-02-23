@@ -2,6 +2,7 @@ import shopify
 import json
 from test.test_helper import TestCase
 
+
 class GraphQLTest(TestCase):
 
     def setUp(self):
@@ -18,7 +19,7 @@ class GraphQLTest(TestCase):
                 'X-Shopify-Access-Token': 'token',
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-                })
+            })
         query = '''
             {
                 shop {
@@ -28,7 +29,6 @@ class GraphQLTest(TestCase):
             }
         '''
         self.result = client.execute(query)
-
 
     def test_fetch_shop_with_graphql(self):
         self.assertTrue(json.loads(self.result)['shop']['name'] == 'Apple Computers')

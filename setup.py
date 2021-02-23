@@ -1,9 +1,9 @@
 from setuptools import setup
 
-NAME='ShopifyAPI'
+NAME = 'ShopifyAPI'
 exec(open('shopify/version.py').read())
-DESCRIPTION='Shopify API for Python'
-LONG_DESCRIPTION="""\
+DESCRIPTION = 'Shopify API for Python'
+LONG_DESCRIPTION = """\
 The ShopifyAPI library allows python developers to programmatically
 access the admin section of stores using an ActiveResource like
 interface similar the ruby Shopify API gem. The library makes HTTP
@@ -27,7 +27,7 @@ setup(name=NAME,
       ],
       test_suite='test',
       tests_require=[
-        'mock>=1.0.1',
+          'mock>=1.0.1',
       ],
       platforms='Any',
       classifiers=['Development Status :: 5 - Production/Stable',

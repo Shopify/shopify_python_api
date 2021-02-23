@@ -1,6 +1,7 @@
 import shopify
 from test.test_helper import TestCase
 
+
 class CollectionListingTest(TestCase):
 
     def test_get_collection_listings(self):
@@ -30,7 +31,8 @@ class CollectionListingTest(TestCase):
         self.assertEqual("Home page", collection_listing.title)
 
     def test_get_collection_listing_product_ids(self):
-        self.fake('collection_listings/1/product_ids', method='GET', code=200, body=self.load_fixture('collection_listing_product_ids'))
+        self.fake('collection_listings/1/product_ids', method='GET', code=200,
+                  body=self.load_fixture('collection_listing_product_ids'))
 
         collection_listing = shopify.CollectionListing()
         collection_listing.id = 1

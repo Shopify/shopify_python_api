@@ -21,6 +21,6 @@ class Customer(ShopifyResource, mixins.Metafields):
         """
         return cls._build_collection(cls.get("search", **kwargs))
 
-    def send_invite(self, customer_invite = CustomerInvite()):
+    def send_invite(self, customer_invite=CustomerInvite()):
         resource = self.post("send_invite", customer_invite.encode())
         return CustomerInvite(Customer.format.decode(resource.body))
