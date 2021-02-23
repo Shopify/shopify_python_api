@@ -48,3 +48,10 @@ class OrderTest(TestCase):
         self.fake('orders/450789469/transactions', method='GET', body=self.load_fixture('transactions'))
         transactions = order.transactions()
         self.assertEqual("409.94", transactions[0].amount)
+
+    def test_get_customer_orders(self):
+        self.fake("customers/207119551/orders", method='GET', body=self.load_fixture('orders'), code=200)
+        orders = shopify.Order.find(customer_id=207119551)
+        self.assertIsInstance(orders[0], shopify.Order)
+        self.assertEqual(450789469, orders[0].id)
+        self.assertEqual(207119551, orders[0].customer.id)
