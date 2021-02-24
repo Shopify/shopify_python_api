@@ -31,7 +31,9 @@ class Image(ShopifyResource):
         if self.is_new():
             return []
         query_params = {'metafield[owner_id]': self.id, 'metafield[owner_resource]': 'product_image'}
-        return Metafield.find(from_='%s/metafields.json?%s' % (ShopifyResource.site, urllib.parse.urlencode(query_params)))
+        return Metafield.find(
+            from_='%s/metafields.json?%s' % (ShopifyResource.site, urllib.parse.urlencode(query_params))
+        )
 
     def save(self):
         if 'product_id' not in self._prefix_options:

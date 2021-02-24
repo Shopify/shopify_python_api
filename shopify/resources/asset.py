@@ -18,8 +18,12 @@ class Asset(ShopifyResource):
     def _element_path(cls, id, prefix_options={}, query_options=None):
         if query_options is None:
             prefix_options, query_options = cls._split_options(prefix_options)
-        return "%s%s.%s%s" % (cls._prefix(prefix_options) + '/', cls.plural,
-                              cls.format.extension, cls._query_string(query_options))
+        return "%s%s.%s%s" % (
+            cls._prefix(prefix_options) + '/',
+            cls.plural,
+            cls.format.extension,
+            cls._query_string(query_options),
+        )
 
     @classmethod
     def find(cls, key=None, **kwargs):

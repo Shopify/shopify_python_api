@@ -3,7 +3,6 @@ from test.test_helper import TestCase
 
 
 class UserTest(TestCase):
-
     def test_get_all_users(self):
         self.fake('users', body=self.load_fixture('users'))
         users = shopify.User.find()

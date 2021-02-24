@@ -18,8 +18,12 @@ class MarketingEventTest(TestCase):
         self.assertEqual(len(marketing_events), 2)
 
     def test_create_marketing_event(self):
-        self.fake('marketing_events', method='POST', body=self.load_fixture(
-            'marketing_event'), headers={'Content-type': 'application/json'})
+        self.fake(
+            'marketing_events',
+            method='POST',
+            body=self.load_fixture('marketing_event'),
+            headers={'Content-type': 'application/json'},
+        )
 
         marketing_event = shopify.MarketingEvent()
         marketing_event.currency_code = 'GBP'
@@ -42,8 +46,13 @@ class MarketingEventTest(TestCase):
 
     def test_update_marketing_event(self):
         self.fake('marketing_events/1', method='GET', code=200, body=self.load_fixture('marketing_event'))
-        self.fake('marketing_events/1', method='PUT', code=200,
-                  body=self.load_fixture('marketing_event'), headers={'Content-type': 'application/json'})
+        self.fake(
+            'marketing_events/1',
+            method='PUT',
+            code=200,
+            body=self.load_fixture('marketing_event'),
+            headers={'Content-type': 'application/json'},
+        )
 
         marketing_event = shopify.MarketingEvent.find(1)
         marketing_event.currency = 'USD'
@@ -62,21 +71,25 @@ class MarketingEventTest(TestCase):
             method='POST',
             code=201,
             body=self.load_fixture('engagement'),
-            headers={'Content-type': 'application/json'}
+            headers={'Content-type': 'application/json'},
         )
 
         marketing_event = shopify.MarketingEvent.find(1)
-        response = marketing_event.add_engagements([{
-            'occurred_on': '2017-04-20',
-            'impressions_count': None,
-            'views_count': None,
-            'clicks_count': 10,
-            'shares_count': None,
-            'favorites_count': None,
-            'comments_count': None,
-            'ad_spend': None,
-            'is_cumulative': True
-        }])
+        response = marketing_event.add_engagements(
+            [
+                {
+                    'occurred_on': '2017-04-20',
+                    'impressions_count': None,
+                    'views_count': None,
+                    'clicks_count': 10,
+                    'shares_count': None,
+                    'favorites_count': None,
+                    'comments_count': None,
+                    'ad_spend': None,
+                    'is_cumulative': True,
+                }
+            ]
+        )
 
         request_data = json.loads(self.http.request.data.decode("utf-8"))['engagements']
         self.assertEqual(len(request_data), 1)

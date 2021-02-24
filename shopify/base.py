@@ -17,8 +17,7 @@ from pyactiveresource.collection import Collection
 class ShopifyConnection(pyactiveresource.connection.Connection):
     response = None
 
-    def __init__(self, site, user=None, password=None, timeout=None,
-                 format=formats.JSONFormat):
+    def __init__(self, site, user=None, password=None, timeout=None, format=formats.JSONFormat):
         super(ShopifyConnection, self).__init__(site, user, password, timeout, format)
 
     def _open(self, *args, **kwargs):
@@ -30,11 +29,11 @@ class ShopifyConnection(pyactiveresource.connection.Connection):
             raise
         return self.response
 
+
 # Inherit from pyactiveresource's metaclass in order to use ShopifyConnection
 
 
 class ShopifyResourceMeta(ResourceMeta):
-
     @property
     def connection(cls):
         """HTTP connection for the current thread"""
@@ -51,8 +50,7 @@ class ShopifyResourceMeta(ResourceMeta):
             local.url = cls.url
             if cls.site is None:
                 raise ValueError("No shopify session is active")
-            local.connection = ShopifyConnection(
-                cls.site, cls.user, cls.password, cls.timeout, cls.format)
+            local.connection = ShopifyConnection(cls.site, cls.user, cls.password, cls.timeout, cls.format)
         return local.connection
 
     def get_user(cls):
@@ -62,8 +60,7 @@ class ShopifyResourceMeta(ResourceMeta):
         cls._threadlocal.connection = None
         ShopifyResource._user = cls._threadlocal.user = value
 
-    user = property(get_user, set_user, None,
-                    "The username for HTTP Basic Auth.")
+    user = property(get_user, set_user, None, "The username for HTTP Basic Auth.")
 
     def get_password(cls):
         return getattr(cls._threadlocal, 'password', ShopifyResource._password)
@@ -72,8 +69,7 @@ class ShopifyResourceMeta(ResourceMeta):
         cls._threadlocal.connection = None
         ShopifyResource._password = cls._threadlocal.password = value
 
-    password = property(get_password, set_password, None,
-                        "The password for HTTP Basic Auth.")
+    password = property(get_password, set_password, None, "The password for HTTP Basic Auth.")
 
     def get_site(cls):
         return getattr(cls._threadlocal, 'site', ShopifyResource._site)
@@ -93,8 +89,7 @@ class ShopifyResourceMeta(ResourceMeta):
             if parts.password:
                 cls.password = urllib.parse.unquote(parts.password)
 
-    site = property(get_site, set_site, None,
-                    'The base REST site to connect to.')
+    site = property(get_site, set_site, None, 'The base REST site to connect to.')
 
     def get_timeout(cls):
         return getattr(cls._threadlocal, 'timeout', ShopifyResource._timeout)
@@ -103,8 +98,7 @@ class ShopifyResourceMeta(ResourceMeta):
         cls._threadlocal.connection = None
         ShopifyResource._timeout = cls._threadlocal.timeout = value
 
-    timeout = property(get_timeout, set_timeout, None,
-                       'Socket timeout for HTTP requests')
+    timeout = property(get_timeout, set_timeout, None, 'Socket timeout for HTTP requests')
 
     def get_headers(cls):
         if not hasattr(cls._threadlocal, 'headers'):
@@ -114,8 +108,7 @@ class ShopifyResourceMeta(ResourceMeta):
     def set_headers(cls, value):
         cls._threadlocal.headers = value
 
-    headers = property(get_headers, set_headers, None,
-                       'The headers sent with HTTP requests')
+    headers = property(get_headers, set_headers, None, 'The headers sent with HTTP requests')
 
     def get_format(cls):
         return getattr(cls._threadlocal, 'format', ShopifyResource._format)
@@ -124,8 +117,7 @@ class ShopifyResourceMeta(ResourceMeta):
         cls._threadlocal.connection = None
         ShopifyResource._format = cls._threadlocal.format = value
 
-    format = property(get_format, set_format, None,
-                      'Encoding used for request and responses')
+    format = property(get_format, set_format, None, 'Encoding used for request and responses')
 
     def get_prefix_source(cls):
         """Return the prefix source, by default derived from site."""
@@ -141,8 +133,7 @@ class ShopifyResourceMeta(ResourceMeta):
         """Set the prefix source, which will be rendered into the prefix."""
         cls._prefix_source = value
 
-    prefix_source = property(get_prefix_source, set_prefix_source, None,
-                             'prefix for lookups for this type of object.')
+    prefix_source = property(get_prefix_source, set_prefix_source, None, 'prefix for lookups for this type of object.')
 
     def get_version(cls):
         if hasattr(cls._threadlocal, 'version') or ShopifyResource._version:
@@ -153,8 +144,7 @@ class ShopifyResourceMeta(ResourceMeta):
     def set_version(cls, value):
         ShopifyResource._version = cls._threadlocal.version = value
 
-    version = property(get_version, set_version, None,
-                      'Shopify Api Version')
+    version = property(get_version, set_version, None, 'Shopify Api Version')
 
     def get_url(cls):
         return getattr(cls._threadlocal, 'url', ShopifyResource._url)
@@ -162,16 +152,14 @@ class ShopifyResourceMeta(ResourceMeta):
     def set_url(cls, value):
         ShopifyResource._url = cls._threadlocal.url = value
 
-    url = property(get_url, set_url, None,
-                   'Base URL including protocol and shopify domain')
+    url = property(get_url, set_url, None, 'Base URL including protocol and shopify domain')
 
 
 @six.add_metaclass(ShopifyResourceMeta)
 class ShopifyResource(ActiveResource, mixins.Countable):
     _format = formats.JSONFormat
     _threadlocal = threading.local()
-    _headers = {
-        'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])}
+    _headers = {'User-Agent': 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])}
     _version = None
     _url = None
 

@@ -19,5 +19,6 @@ class PriceRule(ShopifyResource):
         return DiscountCodeCreation(PriceRule.format.decode(response.body))
 
     def find_batch(self, batch_id):
-        return DiscountCodeCreation.find_one("%s/price_rules/%s/batch/%s.%s" % (
-            ShopifyResource.site, self.id, batch_id, PriceRule.format.extension))
+        return DiscountCodeCreation.find_one(
+            "%s/price_rules/%s/batch/%s.%s" % (ShopifyResource.site, self.id, batch_id, PriceRule.format.extension)
+        )

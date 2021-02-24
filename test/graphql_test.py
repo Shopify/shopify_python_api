@@ -4,7 +4,6 @@ from test.test_helper import TestCase
 
 
 class GraphQLTest(TestCase):
-
     def setUp(self):
         super(GraphQLTest, self).setUp()
         shopify.ApiVersion.define_known_versions()
@@ -18,8 +17,9 @@ class GraphQLTest(TestCase):
             headers={
                 'X-Shopify-Access-Token': 'token',
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            })
+                'Content-Type': 'application/json',
+            },
+        )
         query = '''
             {
                 shop {

@@ -30,8 +30,9 @@ class ResourceFeedbackTest(TestCase):
 
     def test_save_with_product_id_resource_feedback_endpoint(self):
         body = json.dumps({'resource_feedback': {}})
-        self.fake('products/42/resource_feedback', method='POST',
-                  body=body, headers={'Content-Type': 'application/json'})
+        self.fake(
+            'products/42/resource_feedback', method='POST', body=body, headers={'Content-Type': 'application/json'}
+        )
 
         feedback = shopify.ResourceFeedback({'product_id': 42})
         feedback.save()

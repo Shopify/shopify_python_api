@@ -2,7 +2,6 @@ from ..base import ShopifyResource
 
 
 class Comment(ShopifyResource):
-
     def remove(self):
         self._load_attributes_from_response(self.post("remove"))
 

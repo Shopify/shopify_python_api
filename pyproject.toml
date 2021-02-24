@@ -1,2 +1,6 @@
 [tool.autopep8]
 max_line_length = 120
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true

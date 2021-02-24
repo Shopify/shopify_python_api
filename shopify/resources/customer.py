@@ -4,7 +4,6 @@ from .customer_invite import CustomerInvite
 
 
 class Customer(ShopifyResource, mixins.Metafields):
-
     @classmethod
     def search(cls, **kwargs):
         """

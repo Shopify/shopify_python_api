@@ -3,10 +3,13 @@ from test.test_helper import TestCase
 
 
 class ArticleTest(TestCase):
-
     def test_create_article(self):
-        self.fake("blogs/1008414260/articles", method='POST', body=self.load_fixture('article'),
-                  headers={'Content-type': 'application/json'})
+        self.fake(
+            "blogs/1008414260/articles",
+            method='POST',
+            body=self.load_fixture('article'),
+            headers={'Content-type': 'application/json'},
+        )
         article = shopify.Article({'blog_id': 1008414260})
         article.save()
         self.assertEqual("First Post", article.title)
@@ -20,8 +23,12 @@ class ArticleTest(TestCase):
         self.fake('articles/6242736', method='GET', body=self.load_fixture('article'))
         article = shopify.Article.find(6242736)
 
-        self.fake('articles/6242736', method='PUT', body=self.load_fixture('article'),
-                  headers={'Content-type': 'application/json'})
+        self.fake(
+            'articles/6242736',
+            method='PUT',
+            body=self.load_fixture('article'),
+            headers={'Content-type': 'application/json'},
+        )
         article.save()
 
     def test_get_articles(self):

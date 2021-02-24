@@ -8,6 +8,7 @@ class Limits(object):
 
     Conversion of lib/shopify_api/limits.rb
     """
+
     # num_requests_executed/max_requests
     # Eg: 1/40
     CREDIT_LIMIT_HEADER_PARAM = 'X-Shopify-Shop-Api-Call-Limit'

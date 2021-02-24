@@ -22,7 +22,7 @@ class LocationTest(TestCase):
             "locations/%s/inventory_levels" % location.id,
             method='GET',
             code=200,
-            body=self.load_fixture('location_inventory_levels')
+            body=self.load_fixture('location_inventory_levels'),
         )
         inventory_levels = location.inventory_levels()
 

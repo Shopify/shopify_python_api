@@ -4,7 +4,6 @@ import shopify
 
 
 class Product(ShopifyResource, mixins.Metafields, mixins.Events):
-
     def price_range(self):
         prices = [float(variant.price) for variant in self.variants]
         f = "%0.2f"
@@ -34,8 +33,7 @@ class Product(ShopifyResource, mixins.Metafields, mixins.Events):
     def save(self):
         start_api_version = '201910'
         api_version = ShopifyResource.version
-        if api_version and (
-                api_version.strip('-') >= start_api_version) and api_version != 'unstable':
+        if api_version and (api_version.strip('-') >= start_api_version) and api_version != 'unstable':
             if 'variants' in self.attributes:
                 for variant in self.variants:
                     if 'inventory_quantity' in variant.attributes:

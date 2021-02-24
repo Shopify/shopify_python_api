@@ -4,7 +4,6 @@ from .event import Event
 
 
 class Shop(ShopifyResource):
-
     @classmethod
     def current(cls):
         return cls.find_one(cls.site + "/shop." + cls.format.extension)
