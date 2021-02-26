@@ -1,6 +1,7 @@
 from ..base import ShopifyResource
 from shopify import mixins
 from .customer_invite import CustomerInvite
+from .order import Order
 
 
 class Customer(ShopifyResource, mixins.Metafields):
@@ -23,3 +24,6 @@ class Customer(ShopifyResource, mixins.Metafields):
     def send_invite(self, customer_invite=CustomerInvite()):
         resource = self.post("send_invite", customer_invite.encode())
         return CustomerInvite(Customer.format.decode(resource.body))
+
+    def orders(self):
+        return Order.find(customer_id=self.id)

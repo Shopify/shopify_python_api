@@ -65,3 +65,12 @@ class CustomerTest(TestCase):
         self.assertEqual(customer_invite, json.loads(self.http.request.data.decode("utf-8")))
         self.assertIsInstance(customer_invite_response, shopify.CustomerInvite)
         self.assertEqual(customer_invite['customer_invite']['to'], customer_invite_response.to)
+
+    def test_get_customer_orders(self):
+        self.fake('customers/207119551', method='GET', body=self.load_fixture('customer'))
+        customer = shopify.Customer.find(207119551)
+        self.fake('customers/207119551/orders', method='GET', body=self.load_fixture('orders'))
+        orders = customer.orders()
+        self.assertIsInstance(orders[0], shopify.Order)
+        self.assertEqual(450789469, orders[0].id)
+        self.assertEqual(207119551, orders[0].customer.id)
