@@ -6,7 +6,6 @@ import threading
 
 
 class BaseTest(TestCase):
-
     @classmethod
     def setUpClass(self):
         shopify.ApiVersion.define_known_versions()
@@ -54,7 +53,9 @@ class BaseTest(TestCase):
         self.assertFalse('X-Shopify-Access-Token' in shopify.ShopifyResource.headers)
         self.assertFalse('X-Shopify-Access-Token' in shopify.Shop.headers)
 
-    def test_activate_session_with_one_session_then_clearing_and_activating_with_another_session_shoul_request_to_correct_shop(self):
+    def test_activate_session_with_one_session_then_clearing_and_activating_with_another_session_shoul_request_to_correct_shop(
+        self,
+    ):
         shopify.ShopifyResource.activate_session(self.session1)
         shopify.ShopifyResource.clear_session()
         shopify.ShopifyResource.activate_session(self.session2)
@@ -106,7 +107,7 @@ class BaseTest(TestCase):
             url='https://this-is-my-test-show.myshopify.com/admin/shop.json',
             method='GET',
             body=self.load_fixture('shop'),
-            headers={'Authorization': u'Basic dXNlcjpwYXNz'}
+            headers={'Authorization': u'Basic dXNlcjpwYXNz'},
         )
         API_KEY = 'user'
         PASSWORD = 'pass'

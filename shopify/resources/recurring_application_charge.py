@@ -10,7 +10,6 @@ def _get_first_by_status(resources, status):
 
 
 class RecurringApplicationCharge(ShopifyResource):
-
     def usage_charges(self):
         return UsageCharge.find(recurring_application_charge_id=self.id)
 

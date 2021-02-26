@@ -4,10 +4,9 @@ from six.moves import urllib
 import json
 
 
-class GraphQL():
-
+class GraphQL:
     def __init__(self):
-        self.endpoint = (shopify.ShopifyResource.get_site() + "/graphql.json")
+        self.endpoint = shopify.ShopifyResource.get_site() + "/graphql.json"
         self.headers = shopify.ShopifyResource.get_headers()
 
     def merge_headers(self, *headers):
@@ -20,8 +19,7 @@ class GraphQL():
         endpoint = self.endpoint
         default_headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
         headers = self.merge_headers(default_headers, self.headers)
-        data = {'query': query,
-                'variables': variables}
+        data = {'query': query, 'variables': variables}
 
         req = urllib.request.Request(self.endpoint, json.dumps(data).encode('utf-8'), headers)
 

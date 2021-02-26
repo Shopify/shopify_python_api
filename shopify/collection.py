@@ -56,13 +56,11 @@ class PaginatedCollection(Collection):
         return result
 
     def has_previous_page(self):
-        """Returns true if the current page has any previous pages before it.
-        """
+        """Returns true if the current page has any previous pages before it."""
         return bool(self.previous_page_url)
 
     def has_next_page(self):
-        """Returns true if the current page has any pages beyond the current position.
-        """
+        """Returns true if the current page has any pages beyond the current position."""
         return bool(self.next_page_url)
 
     def previous_page(self, no_cache=False):

@@ -18,6 +18,7 @@ def start_interpreter(**variables):
     sys.path.append(os.getcwd())
     console = type('shopify ' + shopify.version.VERSION, (code.InteractiveConsole, object), {})
     import readline
+
     console(variables).interact()
 
 
@@ -27,9 +28,11 @@ class ConfigFileError(Exception):
 
 def usage(usage_string):
     """Decorator to add a usage string to a function"""
+
     def decorate(func):
         func.usage = usage_string
         return func
+
     return decorate
 
 
@@ -44,6 +47,7 @@ class TasksMeta(type):
 
         def filter_func(item):
             return not item.startswith("_") and hasattr(getattr(cls, item), "__call__")
+
         tasks = filter(filter_func, tasks)
         cls._tasks = sorted(tasks)
 
@@ -84,7 +88,7 @@ class TasksMeta(type):
                 if desc:
                     line = "%s%s  # %s" % (line, " " * (max_len - len(line)), desc)
                 if len(line) > cols:
-                    line = line[:cols - 3] + "..."
+                    line = line[: cols - 3] + "..."
                 print(line)
         else:
             task_func = getattr(cls, task)
@@ -217,8 +221,10 @@ class Tasks(object):
 
     @classmethod
     def _available_connections(cls):
-        return map(lambda item: os.path.splitext(os.path.basename(item))[0],
-              glob.glob(os.path.join(cls._shop_config_dir, "*.yml")))
+        return map(
+            lambda item: os.path.splitext(os.path.basename(item))[0],
+            glob.glob(os.path.join(cls._shop_config_dir, "*.yml")),
+        )
 
     @classmethod
     def _default_connection_target(cls):

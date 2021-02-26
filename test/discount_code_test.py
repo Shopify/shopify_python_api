@@ -15,15 +15,15 @@ class DiscountCodeTest(TestCase):
 
     def test_update_a_specific_discount_code(self):
         self.discount_code.code = 'BOGO'
-        self.fake('price_rules/1213131/discount_codes/34',
-                  method='PUT',
-                  code=200,
-                  body=self.load_fixture('discount_code'),
-                  headers={'Content-type': 'application/json'})
+        self.fake(
+            'price_rules/1213131/discount_codes/34',
+            method='PUT',
+            code=200,
+            body=self.load_fixture('discount_code'),
+            headers={'Content-type': 'application/json'},
+        )
         self.discount_code.save()
-        self.assertEqual('BOGO',
-                         json.loads(self.http.request.data.decode("utf-8"))["discount_code"]["code"]
-                         )
+        self.assertEqual('BOGO', json.loads(self.http.request.data.decode("utf-8"))["discount_code"]["code"])
 
     def test_delete_a_specific_discount_code(self):
         self.fake('price_rules/1213131/discount_codes/34', method='DELETE', body='destroyed')

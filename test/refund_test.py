@@ -20,8 +20,7 @@ class RefundTest(TestCase):
             headers={'Content-type': 'application/json'},
         )
         refund = shopify.Refund.calculate(
-            order_id=450789469,
-            refund_line_items=[{'line_item_id': 518995019, 'quantity': 1}]
+            order_id=450789469, refund_line_items=[{'line_item_id': 518995019, 'quantity': 1}]
         )
 
         self.assertEqual("suggested_refund", refund.transactions[0].kind)

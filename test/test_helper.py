@@ -7,7 +7,6 @@ import shopify
 
 
 class TestCase(unittest.TestCase):
-
     def setUp(self):
         ActiveResource.site = None
         ActiveResource.headers = None
@@ -21,14 +20,15 @@ class TestCase(unittest.TestCase):
         self.http = http_fake.TestHandler
         self.http.set_response(Exception('Bad request'))
         self.http.site = 'https://this-is-my-test-show.myshopify.com'
-        self.fake('apis',
-                  url='https://app.shopify.com/services/apis.json',
-                  method='GET',
-                  code=200,
-                  response_headers={'Content-type': 'application/json'},
-                  body=self.load_fixture('api_version'),
-                  has_user_agent=False
-                  )
+        self.fake(
+            'apis',
+            url='https://app.shopify.com/services/apis.json',
+            method='GET',
+            code=200,
+            response_headers={'Content-type': 'application/json'},
+            body=self.load_fixture('api_version'),
+            has_user_agent=False,
+        )
 
     def load_fixture(self, name, format='json'):
         with open(os.path.dirname(__file__) + '/fixtures/%s.%s' % (name, format), 'rb') as f:
@@ -40,7 +40,7 @@ class TestCase(unittest.TestCase):
         method = kwargs.pop('method', 'GET')
         prefix = kwargs.pop('prefix', '/admin/api/unstable')
 
-        if ('extension' in kwargs and not kwargs['extension']):
+        if 'extension' in kwargs and not kwargs['extension']:
             extension = ""
         else:
             extension = ".%s" % (kwargs.pop('extension', 'json'))
@@ -61,5 +61,5 @@ class TestCase(unittest.TestCase):
         code = kwargs.pop('code', 200)
 
         self.http.respond_to(
-            method, url, headers, body=body, code=code,
-            response_headers=kwargs.pop('response_headers', None))
+            method, url, headers, body=body, code=code, response_headers=kwargs.pop('response_headers', None)
+        )

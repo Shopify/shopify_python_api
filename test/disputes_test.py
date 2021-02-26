@@ -11,7 +11,6 @@ class DisputeTest(TestCase):
         self.assertGreater(len(disputes), 0)
 
     def test_get_one_dispute(self):
-        self.fake('disputes/1052608616', method='GET',
-                  prefix=self.prefix, body=self.load_fixture('dispute'))
+        self.fake('disputes/1052608616', method='GET', prefix=self.prefix, body=self.load_fixture('dispute'))
         disputes = shopify.Disputes.find(1052608616)
         self.assertEqual('won', disputes.status)

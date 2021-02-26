@@ -8,7 +8,7 @@ class CollectionPublicationTest(TestCase):
         self.fake(
             'publications/55650051/collection_publications',
             method='GET',
-            body=self.load_fixture('collection_publications')
+            body=self.load_fixture('collection_publications'),
         )
         collection_publications = shopify.CollectionPublication.find(publication_id=55650051)
 
@@ -20,7 +20,7 @@ class CollectionPublicationTest(TestCase):
             'publications/55650051/collection_publications/96062799894',
             method='GET',
             body=self.load_fixture('collection_publication'),
-            code=200
+            code=200,
         )
         collection_publication = shopify.CollectionPublication.find(96062799894, publication_id=55650051)
 
@@ -33,15 +33,17 @@ class CollectionPublicationTest(TestCase):
             method='POST',
             headers={'Content-type': 'application/json'},
             body=self.load_fixture('collection_publication'),
-            code=201
+            code=201,
         )
 
-        collection_publication = shopify.CollectionPublication.create({
-            'publication_id': 55650051,
-            'published_at': "2018-01-29T14:06:08-05:00",
-            'published': True,
-            'collection_id': 60941828118
-        })
+        collection_publication = shopify.CollectionPublication.create(
+            {
+                'publication_id': 55650051,
+                'published_at': "2018-01-29T14:06:08-05:00",
+                'published': True,
+                'collection_id': 60941828118,
+            }
+        )
 
         expected_body = {
             'collection_publication': {
@@ -58,16 +60,11 @@ class CollectionPublicationTest(TestCase):
             'publications/55650051/collection_publications/96062799894',
             method='GET',
             body=self.load_fixture('collection_publication'),
-            code=200
+            code=200,
         )
         collection_publication = shopify.CollectionPublication.find(96062799894, publication_id=55650051)
 
-        self.fake(
-            'publications/55650051/collection_publications/96062799894',
-            method='DELETE',
-            body='{}',
-            code=200
-        )
+        self.fake('publications/55650051/collection_publications/96062799894', method='DELETE', body='{}', code=200)
         collection_publication.destroy()
 
         self.assertEqual('DELETE', self.http.request.get_method())

@@ -5,7 +5,6 @@ from pyactiveresource.util import xml_to_dict
 
 
 class OrderTest(TestCase):
-
     def test_should_be_loaded_correctly_from_order_xml(self):
         order_xml = """<?xml version="1.0" encoding="UTF-8"?>
           <order>

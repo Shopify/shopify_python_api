@@ -5,7 +5,6 @@ from .order import Order
 
 
 class Customer(ShopifyResource, mixins.Metafields):
-
     @classmethod
     def search(cls, **kwargs):
         """

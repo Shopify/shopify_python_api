@@ -21,19 +21,13 @@ class ApplicationCreditTest(TestCase):
             method='POST',
             body=self.load_fixture('application_credit'),
             headers={'Content-type': 'application/json'},
-            code=201
+            code=201,
         )
 
-        application_credit = shopify.ApplicationCredit.create({
-            'description': 'application credit for refund',
-            'amount': 5.0
-        })
+        application_credit = shopify.ApplicationCredit.create(
+            {'description': 'application credit for refund', 'amount': 5.0}
+        )
 
-        expected_body = {
-            "application_credit": {
-                "description": "application credit for refund",
-                "amount": 5.0
-            }
-        }
+        expected_body = {"application_credit": {"description": "application credit for refund", "amount": 5.0}}
 
         self.assertEqual(expected_body, json.loads(self.http.request.data.decode("utf-8")))

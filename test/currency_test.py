@@ -3,7 +3,6 @@ from test.test_helper import TestCase
 
 
 class CurrencyTest(TestCase):
-
     def test_get_currencies(self):
         self.fake('currencies', method='GET', code=200, body=self.load_fixture('currencies'))
 

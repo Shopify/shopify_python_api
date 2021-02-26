@@ -12,8 +12,10 @@ class ApiVersionTest(TestCase):
         shopify.ApiVersion.define_known_versions()
 
     def test_unstable_api_path_returns_correct_url(self):
-        self.assertEqual('https://fakeshop.myshopify.com/admin/api/unstable',
-            shopify.Unstable().api_path('https://fakeshop.myshopify.com'))
+        self.assertEqual(
+            'https://fakeshop.myshopify.com/admin/api/unstable',
+            shopify.Unstable().api_path('https://fakeshop.myshopify.com'),
+        )
 
     def test_coerce_to_version_returns_known_versions(self):
         v1 = shopify.Unstable()
@@ -29,14 +31,15 @@ class ApiVersionTest(TestCase):
 
 
 class ReleaseTest(TestCase):
-
     def test_raises_if_format_invalid(self):
         with self.assertRaises(shopify.InvalidVersionError):
             shopify.Release('crazy-name')
 
     def test_release_api_path_returns_correct_url(self):
-        self.assertEqual('https://fakeshop.myshopify.com/admin/api/2019-04',
-            shopify.Release('2019-04').api_path('https://fakeshop.myshopify.com'))
+        self.assertEqual(
+            'https://fakeshop.myshopify.com/admin/api/2019-04',
+            shopify.Release('2019-04').api_path('https://fakeshop.myshopify.com'),
+        )
 
     def test_two_release_versions_with_same_number_are_equal(self):
         version1 = shopify.Release('2019-01')
