@@ -26,7 +26,7 @@ class OrderTest(TestCase):
     def test_should_be_able_to_add_note_attributes_to_an_order(self):
         order = shopify.Order()
         order.note_attributes = []
-        order.note_attributes.append(shopify.NoteAttribute({'name': "color", 'value': "blue"}))
+        order.note_attributes.append(shopify.NoteAttribute({"name": "color", "value": "blue"}))
 
         order_xml = xml_to_dict(order.to_xml())
         note_attributes = order_xml["order"]["note_attributes"]
@@ -37,19 +37,19 @@ class OrderTest(TestCase):
         self.assertEqual("blue", attribute["value"])
 
     def test_get_order(self):
-        self.fake('orders/450789469', method='GET', body=self.load_fixture('order'))
+        self.fake("orders/450789469", method="GET", body=self.load_fixture("order"))
         order = shopify.Order.find(450789469)
-        self.assertEqual('bob.norman@hostmail.com', order.email)
+        self.assertEqual("bob.norman@hostmail.com", order.email)
 
     def test_get_order_transaction(self):
-        self.fake('orders/450789469', method='GET', body=self.load_fixture('order'))
+        self.fake("orders/450789469", method="GET", body=self.load_fixture("order"))
         order = shopify.Order.find(450789469)
-        self.fake('orders/450789469/transactions', method='GET', body=self.load_fixture('transactions'))
+        self.fake("orders/450789469/transactions", method="GET", body=self.load_fixture("transactions"))
         transactions = order.transactions()
         self.assertEqual("409.94", transactions[0].amount)
 
     def test_get_customer_orders(self):
-        self.fake("customers/207119551/orders", method='GET', body=self.load_fixture('orders'), code=200)
+        self.fake("customers/207119551/orders", method="GET", body=self.load_fixture("orders"), code=200)
         orders = shopify.Order.find(customer_id=207119551)
         self.assertIsInstance(orders[0], shopify.Order)
         self.assertEqual(450789469, orders[0].id)

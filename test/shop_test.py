@@ -28,15 +28,15 @@ class ShopTest(TestCase):
     def test_add_metafield(self):
         self.fake(
             "metafields",
-            method='POST',
+            method="POST",
             code=201,
-            body=self.load_fixture('metafield'),
-            headers={'Content-type': 'application/json'},
+            body=self.load_fixture("metafield"),
+            headers={"Content-type": "application/json"},
         )
 
         field = self.shop.add_metafield(
             shopify.Metafield(
-                {'namespace': "contact", 'key': "email", 'value': "123@example.com", 'value_type': "string"}
+                {"namespace": "contact", "key": "email", "value": "123@example.com", "value_type": "string"}
             )
         )
 

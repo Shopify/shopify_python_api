@@ -21,8 +21,8 @@ class ValidationException(Exception):
 class Session(object):
     api_key = None
     secret = None
-    protocol = 'https'
-    myshopify_domain = 'myshopify.com'
+    protocol = "https"
+    myshopify_domain = "myshopify.com"
     port = None
 
     @classmethod
@@ -36,7 +36,7 @@ class Session(object):
         import shopify
 
         original_domain = shopify.ShopifyResource.url
-        original_token = shopify.ShopifyResource.get_headers().get('X-Shopify-Access-Token')
+        original_token = shopify.ShopifyResource.get_headers().get("X-Shopify-Access-Token")
         original_version = shopify.ShopifyResource.get_version() or version
         original_session = shopify.Session(original_domain, original_version, original_token)
 
@@ -54,7 +54,7 @@ class Session(object):
     def create_permission_url(self, scope, redirect_uri, state=None):
         query_params = dict(client_id=self.api_key, scope=",".join(scope), redirect_uri=redirect_uri)
         if state:
-            query_params['state'] = state
+            query_params["state"] = state
         return "https://%s/admin/oauth/authorize?%s" % (self.url, urllib.parse.urlencode(query_params))
 
     def request_token(self, params):
@@ -62,17 +62,17 @@ class Session(object):
             return self.token
 
         if not self.validate_params(params):
-            raise ValidationException('Invalid HMAC: Possibly malicious login')
+            raise ValidationException("Invalid HMAC: Possibly malicious login")
 
-        code = params['code']
+        code = params["code"]
 
         url = "https://%s/admin/oauth/access_token?" % self.url
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
-        request = urllib.request.Request(url, urllib.parse.urlencode(query_params).encode('utf-8'))
+        request = urllib.request.Request(url, urllib.parse.urlencode(query_params).encode("utf-8"))
         response = urllib.request.urlopen(request)
 
         if response.code == 200:
-            self.token = json.loads(response.read().decode('utf-8'))['access_token']
+            self.token = json.loads(response.read().decode("utf-8"))["access_token"]
             return self.token
         else:
             raise Exception(response.msg)
@@ -112,18 +112,18 @@ class Session(object):
         # Avoid replay attacks by making sure the request
         # isn't more than a day old.
         one_day = 24 * 60 * 60
-        if int(params.get('timestamp', 0)) < time.time() - one_day:
+        if int(params.get("timestamp", 0)) < time.time() - one_day:
             return False
 
         return cls.validate_hmac(params)
 
     @classmethod
     def validate_hmac(cls, params):
-        if 'hmac' not in params:
+        if "hmac" not in params:
             return False
 
-        hmac_calculated = cls.calculate_hmac(params).encode('utf-8')
-        hmac_to_verify = params['hmac'].encode('utf-8')
+        hmac_calculated = cls.calculate_hmac(params).encode("utf-8")
+        hmac_to_verify = params["hmac"].encode("utf-8")
 
         # Try to use compare_digest() to reduce vulnerability to timing attacks.
         # If it's not available, just fall back to regular string comparison.
@@ -150,17 +150,17 @@ class Session(object):
 
         def encoded_pairs(params):
             for k, v in six.iteritems(params):
-                if k == 'hmac':
+                if k == "hmac":
                     continue
 
-                if k.endswith('[]'):
+                if k.endswith("[]"):
                     # foo[]=1&foo[]=2 has to be transformed as foo=["1", "2"] note the whitespace after comma
-                    k = k.rstrip('[]')
+                    k = k.rstrip("[]")
                     v = json.dumps(list(map(str, v)))
 
                 # escape delimiters to avoid tampering
                 k = str(k).replace("%", "%25").replace("=", "%3D")
                 v = str(v).replace("%", "%25")
-                yield '{0}={1}'.format(k, v).replace("&", "%26")
+                yield "{0}={1}".format(k, v).replace("&", "%26")
 
         return "&".join(sorted(encoded_pairs(params)))

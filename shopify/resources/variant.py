@@ -14,15 +14,15 @@ class Variant(ShopifyResource, mixins.Metafields):
             return cls.site
 
     def save(self):
-        if 'product_id' not in self._prefix_options:
-            self._prefix_options['product_id'] = self.product_id
+        if "product_id" not in self._prefix_options:
+            self._prefix_options["product_id"] = self.product_id
 
-        start_api_version = '201910'
+        start_api_version = "201910"
         api_version = ShopifyResource.version
-        if api_version and (api_version.strip('-') >= start_api_version) and api_version != 'unstable':
-            if 'inventory_quantity' in self.attributes:
-                del self.attributes['inventory_quantity']
-            if 'old_inventory_quantity' in self.attributes:
-                del self.attributes['old_inventory_quantity']
+        if api_version and (api_version.strip("-") >= start_api_version) and api_version != "unstable":
+            if "inventory_quantity" in self.attributes:
+                del self.attributes["inventory_quantity"]
+            if "old_inventory_quantity" in self.attributes:
+                del self.attributes["old_inventory_quantity"]
 
         return super(ShopifyResource, self).save()

@@ -7,13 +7,13 @@ class PaginationTest(TestCase):
     def setUp(self):
         super(PaginationTest, self).setUp()
         prefix = self.http.site + "/admin/api/unstable"
-        fixture = json.loads(self.load_fixture('products').decode())
+        fixture = json.loads(self.load_fixture("products").decode())
 
         self.next_page_url = prefix + "/products.json?limit=2&page_info=FOOBAR"
         self.prev_page_url = prefix + "/products.json?limit=2&page_info=BAZQUUX"
 
-        next_headers = {"Link": "<" + self.next_page_url + ">; rel=\"next\""}
-        prev_headers = {"Link": "<" + self.prev_page_url + ">; rel=\"previous\""}
+        next_headers = {"Link": "<" + self.next_page_url + '>; rel="next"'}
+        prev_headers = {"Link": "<" + self.prev_page_url + '>; rel="previous"'}
 
         self.fake(
             "products",
@@ -35,7 +35,7 @@ class PaginationTest(TestCase):
         )
 
     def test_nonpaginates_collection(self):
-        self.fake('draft_orders', method='GET', code=200, body=self.load_fixture('draft_orders'))
+        self.fake("draft_orders", method="GET", code=200, body=self.load_fixture("draft_orders"))
         draft_orders = shopify.DraftOrder.find()
         self.assertEqual(1, len(draft_orders))
         self.assertEqual(517119332, draft_orders[0].id)

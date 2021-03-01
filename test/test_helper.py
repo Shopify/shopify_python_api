@@ -18,48 +18,48 @@ class TestCase(unittest.TestCase):
 
         http_fake.initialize()
         self.http = http_fake.TestHandler
-        self.http.set_response(Exception('Bad request'))
-        self.http.site = 'https://this-is-my-test-show.myshopify.com'
+        self.http.set_response(Exception("Bad request"))
+        self.http.site = "https://this-is-my-test-show.myshopify.com"
         self.fake(
-            'apis',
-            url='https://app.shopify.com/services/apis.json',
-            method='GET',
+            "apis",
+            url="https://app.shopify.com/services/apis.json",
+            method="GET",
             code=200,
-            response_headers={'Content-type': 'application/json'},
-            body=self.load_fixture('api_version'),
+            response_headers={"Content-type": "application/json"},
+            body=self.load_fixture("api_version"),
             has_user_agent=False,
         )
 
-    def load_fixture(self, name, format='json'):
-        with open(os.path.dirname(__file__) + '/fixtures/%s.%s' % (name, format), 'rb') as f:
+    def load_fixture(self, name, format="json"):
+        with open(os.path.dirname(__file__) + "/fixtures/%s.%s" % (name, format), "rb") as f:
             return f.read()
 
     def fake(self, endpoint, **kwargs):
-        body = kwargs.pop('body', None) or self.load_fixture(endpoint)
-        format = kwargs.pop('format', 'json')
-        method = kwargs.pop('method', 'GET')
-        prefix = kwargs.pop('prefix', '/admin/api/unstable')
+        body = kwargs.pop("body", None) or self.load_fixture(endpoint)
+        format = kwargs.pop("format", "json")
+        method = kwargs.pop("method", "GET")
+        prefix = kwargs.pop("prefix", "/admin/api/unstable")
 
-        if 'extension' in kwargs and not kwargs['extension']:
+        if "extension" in kwargs and not kwargs["extension"]:
             extension = ""
         else:
-            extension = ".%s" % (kwargs.pop('extension', 'json'))
-        if kwargs.get('url'):
-            url = kwargs.get('url')
+            extension = ".%s" % (kwargs.pop("extension", "json"))
+        if kwargs.get("url"):
+            url = kwargs.get("url")
         else:
             url = "https://this-is-my-test-show.myshopify.com%s/%s%s" % (prefix, endpoint, extension)
         headers = {}
-        if kwargs.pop('has_user_agent', True):
-            userAgent = 'ShopifyPythonAPI/%s Python/%s' % (shopify.VERSION, sys.version.split(' ', 1)[0])
-            headers['User-agent'] = userAgent
+        if kwargs.pop("has_user_agent", True):
+            userAgent = "ShopifyPythonAPI/%s Python/%s" % (shopify.VERSION, sys.version.split(" ", 1)[0])
+            headers["User-agent"] = userAgent
 
         try:
-            headers.update(kwargs['headers'])
+            headers.update(kwargs["headers"])
         except KeyError:
             pass
 
-        code = kwargs.pop('code', 200)
+        code = kwargs.pop("code", 200)
 
         self.http.respond_to(
-            method, url, headers, body=body, code=code, response_headers=kwargs.pop('response_headers', None)
+            method, url, headers, body=body, code=code, response_headers=kwargs.pop("response_headers", None)
         )
