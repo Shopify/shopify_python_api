@@ -19,8 +19,8 @@ class Article(ShopifyResource, mixins.Metafields, mixins.Events):
 
     @classmethod
     def authors(cls, **kwargs):
-        return cls.get('authors', **kwargs)
+        return cls.get("authors", **kwargs)
 
     @classmethod
     def tags(cls, **kwargs):
-        return cls.get('tags', **kwargs)
+        return cls.get("tags", **kwargs)

@@ -19,7 +19,7 @@ class Asset(ShopifyResource):
         if query_options is None:
             prefix_options, query_options = cls._split_options(prefix_options)
         return "%s%s.%s%s" % (
-            cls._prefix(prefix_options) + '/',
+            cls._prefix(prefix_options) + "/",
             cls.plural,
             cls.format.extension,
             cls._query_string(query_options),

@@ -11,7 +11,7 @@ class Limits(object):
 
     # num_requests_executed/max_requests
     # Eg: 1/40
-    CREDIT_LIMIT_HEADER_PARAM = 'X-Shopify-Shop-Api-Call-Limit'
+    CREDIT_LIMIT_HEADER_PARAM = "X-Shopify-Shop-Api-Call-Limit"
 
     @classmethod
     def response(cls):
@@ -22,14 +22,14 @@ class Limits(object):
     @classmethod
     def api_credit_limit_param(cls):
         response = cls.response()
-        _safe_header = getattr(response, "headers", '')
+        _safe_header = getattr(response, "headers", "")
 
         if not _safe_header:
             raise Exception("No shopify headers found")
 
         if cls.CREDIT_LIMIT_HEADER_PARAM in response.headers:
             credits = response.headers[cls.CREDIT_LIMIT_HEADER_PARAM]
-            return credits.split('/')
+            return credits.split("/")
         else:
             raise Exception("No valid api call header found")
 

@@ -30,13 +30,13 @@ class ApiVersion(object):
     def define_known_versions(cls):
         req = request.urlopen("https://app.shopify.com/services/apis.json")
         data = json.loads(req.read().decode("utf-8"))
-        for api in data['apis']:
-            if api['handle'] == 'admin':
-                for release in api['versions']:
-                    if release['handle'] == 'unstable':
+        for api in data["apis"]:
+            if api["handle"] == "admin":
+                for release in api["versions"]:
+                    if release["handle"] == "unstable":
                         cls.define_version(Unstable())
                     else:
-                        cls.define_version(Release(release['handle']))
+                        cls.define_version(Release(release["handle"]))
 
     @classmethod
     def clear_defined_versions(cls):
@@ -60,15 +60,15 @@ class ApiVersion(object):
 
 
 class Release(ApiVersion):
-    FORMAT = re.compile(r'^\d{4}-\d{2}$')
-    API_PREFIX = '/admin/api'
+    FORMAT = re.compile(r"^\d{4}-\d{2}$")
+    API_PREFIX = "/admin/api"
 
     def __init__(self, version_number):
         if not self.FORMAT.match(version_number):
             raise InvalidVersionError
         self._name = version_number
-        self._numeric_version = int(version_number.replace('-', ''))
-        self._path = '%s/%s' % (self.API_PREFIX, version_number)
+        self._numeric_version = int(version_number.replace("-", ""))
+        self._path = "%s/%s" % (self.API_PREFIX, version_number)
 
     @property
     def stable(self):
@@ -77,9 +77,9 @@ class Release(ApiVersion):
 
 class Unstable(ApiVersion):
     def __init__(self):
-        self._name = 'unstable'
+        self._name = "unstable"
         self._numeric_version = 9000000
-        self._path = '/admin/api/unstable'
+        self._path = "/admin/api/unstable"
 
     @property
     def stable(self):

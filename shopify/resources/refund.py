@@ -22,8 +22,8 @@ class Refund(ShopifyResource):
         """
         data = {}
         if shipping:
-            data['shipping'] = shipping
-        data['refund_line_items'] = refund_line_items or []
-        body = {'refund': data}
+            data["shipping"] = shipping
+        data["refund_line_items"] = refund_line_items or []
+        body = {"refund": data}
         resource = cls.post("calculate", order_id=order_id, body=json.dumps(body).encode())
-        return cls(cls.format.decode(resource.body), prefix_options={'order_id': order_id})
+        return cls(cls.format.decode(resource.body), prefix_options={"order_id": order_id})

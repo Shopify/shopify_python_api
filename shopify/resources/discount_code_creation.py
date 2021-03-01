@@ -10,7 +10,7 @@ class DiscountCodeCreation(ShopifyResource):
             from_="%s/price_rules/%s/batch/%s/discount_codes.%s"
             % (
                 ShopifyResource.site,
-                self._prefix_options['price_rule_id'],
+                self._prefix_options["price_rule_id"],
                 self.id,
                 DiscountCodeCreation.format.extension,
             )

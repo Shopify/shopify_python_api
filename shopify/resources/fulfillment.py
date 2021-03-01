@@ -25,8 +25,8 @@ class FulfillmentOrders(ShopifyResource):
 
 
 class FulfillmentV2(ShopifyResource):
-    _singular = 'fulfillment'
-    _plural = 'fulfillments'
+    _singular = "fulfillment"
+    _plural = "fulfillments"
 
     def update_tracking(self, tracking_info, notify_customer):
         body = {"fulfillment": {"tracking_info": tracking_info, "notify_customer": notify_customer}}

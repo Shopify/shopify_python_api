@@ -9,7 +9,7 @@ class DraftOrder(ShopifyResource, mixins.Metafields):
         return DraftOrderInvoice(DraftOrder.format.decode(resource.body))
 
     def complete(self, params={}):
-        if params.get('payment_pending', False):
-            self._load_attributes_from_response(self.put("complete", payment_pending='true'))
+        if params.get("payment_pending", False):
+            self._load_attributes_from_response(self.put("complete", payment_pending="true"))
         else:
             self._load_attributes_from_response(self.put("complete"))

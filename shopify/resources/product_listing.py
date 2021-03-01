@@ -6,4 +6,4 @@ class ProductListing(ShopifyResource):
 
     @classmethod
     def product_ids(cls, **kwargs):
-        return cls.get('product_ids', **kwargs)
+        return cls.get("product_ids", **kwargs)

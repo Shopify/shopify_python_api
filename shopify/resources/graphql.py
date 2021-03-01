@@ -17,16 +17,16 @@ class GraphQL:
 
     def execute(self, query, variables=None):
         endpoint = self.endpoint
-        default_headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+        default_headers = {"Accept": "application/json", "Content-Type": "application/json"}
         headers = self.merge_headers(default_headers, self.headers)
-        data = {'query': query, 'variables': variables}
+        data = {"query": query, "variables": variables}
 
-        req = urllib.request.Request(self.endpoint, json.dumps(data).encode('utf-8'), headers)
+        req = urllib.request.Request(self.endpoint, json.dumps(data).encode("utf-8"), headers)
 
         try:
             response = urllib.request.urlopen(req)
-            return response.read().decode('utf-8')
+            return response.read().decode("utf-8")
         except urllib.error.HTTPError as e:
             print((e.read()))
-            print('')
+            print("")
             raise e
