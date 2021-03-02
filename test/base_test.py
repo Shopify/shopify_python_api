@@ -41,7 +41,7 @@ class BaseTest(TestCase):
         self.assertEqual("https://shop2.myshopify.com/admin/api/2019-04", shopify.Shop.site)
         self.assertIsNone(ActiveResource.headers)
 
-    def test_clear_session_should_clear_site_and_headers_from_Base(self):
+    def test_clear_session_should_clear_site_and_headers_from_base(self):
         shopify.ShopifyResource.activate_session(self.session1)
         shopify.ShopifyResource.clear_session()
 

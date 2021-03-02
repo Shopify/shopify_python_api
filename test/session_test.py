@@ -50,7 +50,7 @@ class SessionTest(TestCase):
     def test_use_https_protocol_by_default_for_all_sessions(self):
         self.assertEqual("https", shopify.Session.protocol)
 
-    def test_temp_reset_shopify_ShopifyResource_site_to_original_value(self):
+    def test_temp_reset_shopify_shopify_resource_site_to_original_value(self):
         shopify.Session.setup(api_key="key", secret="secret")
         session1 = shopify.Session("fakeshop.myshopify.com", "2019-04", "token1")
         shopify.ShopifyResource.activate_session(session1)

@@ -215,7 +215,7 @@ class Tasks(object):
 
     @classmethod
     @usage("version")
-    def version(cls, connection=None):
+    def version(cls):
         """output the shopify library version"""
         print(shopify.version.VERSION)
 
