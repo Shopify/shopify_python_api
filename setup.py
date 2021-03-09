@@ -23,6 +23,8 @@ setup(
     license="MIT License",
     install_requires=[
         "pyactiveresource>=2.2.2",
+        "PyJWT <= 1.7.1; python_version == '2.7'",
+        "PyJWT >= 2.0.0; python_version >= '3.6'",
         "PyYAML",
         "six",
     ],
