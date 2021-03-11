@@ -21,6 +21,24 @@ To easily install or upgrade to the latest release, use [pip](http://www.pip-ins
 pip install --upgrade ShopifyAPI
 ```
 
+### Table of Contents
+
+- [Getting Started](#getting-started)
+  - [Public and Custom Apps](#public-and-custom-apps)
+  - [Private Apps](#private-apps)
+- [Billing](#billing)
+- [Session Tokens](docs/session-tokens)
+- [Handling Access Scope Operations](docs/api-access.md)
+- [Advanced Usage](#advanced-usage)
+- [Prefix Options](#prefix-options)
+- [Console](#console)
+- [GraphQL](#graphql)
+- [Using Development Version](#using-development-version)
+- [Relative Cursor Pagination](#relative-cursor-pagination)
+- [Limitations](#limitations)
+- [Additional Resources](#additional-resources)
+
+
 ### Getting Started
 #### Public and Custom Apps
 
@@ -119,61 +137,6 @@ _Note: Your application must be public to test the billing process. To test on a
     activated_charge = shopify.ApplicationCharge.find(charge_id)
     has_been_billed = activated_charge.status == 'active'
     ```
-
-### Session tokens
-
-The Shopify Python API library provides helper methods to decode [session tokens](https://shopify.dev/concepts/apps/building-embedded-apps-using-session-tokens). You can use the `decode_from_header` function to extract and decode a session token from an HTTP Authorization header.
-
-#### Basic usage
-
-```python
-from shopify import session_token
-
-decoded_payload = session_token.decode_from_header(
-    authorization_header=your_auth_request_header,
-    api_key=your_api_key,
-    secret=your_api_secret,
-)
-```
-
-#### Create a decorator using `session_token`
-
-Here's a sample decorator that protects your app views/routes by requiring the presence of valid session tokens as part of a request's headers.
-
-```python
-from shopify import session_token
-
-
-def session_token_required(func):
-    def wrapper(*args, **kwargs):
-        request = args[0]  # Or flask.request if you use Flask
-        try:
-            decoded_session_token = session_token.decode_from_header(
-                authorization_header = request.headers.get('Authorization'),
-                api_key = SHOPIFY_API_KEY,
-                secret = SHOPIFY_API_SECRET
-            )
-            with shopify_session(decoded_session_token):
-                return func(*args, **kwargs)
-        except session_token.SessionTokenError as e:
-            # Log the error here
-            return unauthorized_401_response()
-
-    return wrapper
-
-
-def shopify_session(decoded_session_token):
-    shopify_domain = decoded_session_token.get("dest")
-    access_token = get_offline_access_token_by_shop_domain(shopify_domain)
-
-    return shopify.Session.temp(shopify_domain, SHOPIFY_API_VERSION, access_token)
-
-
-@session_token_required  # Requests to /products require session tokens
-def products(request):
-    products = shopify.Product.find()
-    ...
-```
 
 ### Advanced Usage
 It is recommended to have at least a basic grasp on the principles of the [pyactiveresource](https://github.com/Shopify/pyactiveresource) library, which is a port of rails/ActiveResource to Python and upon which this package relies heavily.
