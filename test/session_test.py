@@ -257,6 +257,32 @@ class SessionTest(TestCase):
             session = shopify.Session("http://localhost.myshopify.com", "unstable")
             session = session.request_token(params)
 
+    def test_access_scopes_are_nil_by_default(self):
+        session = shopify.Session("testshop.myshopify.com", "unstable", "any-token")
+        self.assertIsNone(session.access_scopes)
+
+    def test_access_scopes_when_valid_scopes_passed_in(self):
+        session = shopify.Session(
+            shop_url = "testshop.myshopify.com",
+            version = "unstable",
+            token = "any-token",
+            access_scopes = 'read_products, write_orders'
+        )
+
+        expected_access_scopes = shopify.ApiAccess('read_products, write_orders')
+        self.assertEqual(expected_access_scopes, session.access_scopes)
+
+    def test_access_scopes_when_scopes_of_apiaccess_type_passed_in(self):
+        session = shopify.Session(
+            shop_url = "testshop.myshopify.com",
+            version = "unstable",
+            token = "any-token",
+            access_scopes = shopify.ApiAccess('read_products, write_orders')
+        )
+
+        expected_access_scopes = shopify.ApiAccess('read_products, write_orders')
+        self.assertEqual(expected_access_scopes, session.access_scopes)
+
     def normalize_url(self, url):
         scheme, netloc, path, query, fragment = urllib.parse.urlsplit(url)
         query = "&".join(sorted(query.split("&")))
