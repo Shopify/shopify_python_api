@@ -33,7 +33,7 @@ class TokenAuthenticationError(SessionTokenError):
     pass
 
 
-def get_decoded_session_token(authorization_header, api_key, secret):
+def decode_from_header(authorization_header, api_key, secret):
     session_token = _extract_session_token(authorization_header)
     decoded_payload = _decode_session_token(session_token, api_key, secret)
     _validate_issuer(decoded_payload)
