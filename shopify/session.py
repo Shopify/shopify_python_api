@@ -51,10 +51,13 @@ class Session(object):
         self.version = ApiVersion.coerce_to_version(version)
         return
 
-    def create_permission_url(self, scope, redirect_uri, state=None):
+    def create_permission_url(self, scope, redirect_uri, state=None, grant_options=None):
         query_params = dict(client_id=self.api_key, scope=",".join(scope), redirect_uri=redirect_uri)
         if state:
             query_params["state"] = state
+        if grant_options:
+            query_params["grant_options[]"] = grant_options
+        print(urllib.parse.urlencode(query_params))
         return "https://%s/admin/oauth/authorize?%s" % (self.url, urllib.parse.urlencode(query_params))
 
     def request_token(self, params):

@@ -135,6 +135,16 @@ class SessionTest(TestCase):
             "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=write_customers&state=mystate",
             self.normalize_url(permission_url),
         )
+    
+    def test_create_permission_url_returns_correct_url_with_single_scope_and_redirect_uri_and_grant_options(self):
+        shopify.Session.setup(api_key="My_test_key", secret="My test secret")
+        session = shopify.Session("http://localhost.myshopify.com", "unstable")
+        scope = ["write_customers"]
+        permission_url = session.create_permission_url(scope, "my_redirect_uri.com", grant_options="per-user")
+        self.assertEqual(
+            "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&grant_options[]=per-user&redirect_uri=my_redirect_uri.com&scope=write_customers",
+            self.normalize_url(permission_url),
+        )
 
     def test_raise_exception_if_code_invalid_in_request_token(self):
         shopify.Session.setup(api_key="My test key", secret="My test secret")
