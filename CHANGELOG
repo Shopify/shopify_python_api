@@ -1,3 +1,10 @@
+== Version 8.3.0
+- Add support for [session tokens](https://shopify.dev/concepts/apps/building-embedded-apps-using-session-tokens) ([#479](https://github.com/Shopify/shopify_python_api/pull/479))
+  - Use `session_token.decode_from_header` to obtain a decoded session token from an HTTP Authorization header
+- Create a `utils` sub-package with a `shop_url` utility file ([#483](https://github.com/Shopify/shopify_python_api/pull/483))
+  - Use `shop_url.sanitize_shop_domain()` to sanitize shop names given as input
+- Introduce the `ApiAccess` class to handle access scopes operations for apps
+  - `Session` class now store access_scopes attributes as `ApiAccess` objects
 - Added support for Fulfillment.update_tracking ([#432](https://github.com/Shopify/shopify_python_api/pull/432))
 - Add FulfillmentEvent resource ([#454](https://github.com/Shopify/shopify_python_api/pull/454))
 - Fix for being unable to get the len() of a filter ([#456](https://github.com/Shopify/shopify_python_api/pull/456))
