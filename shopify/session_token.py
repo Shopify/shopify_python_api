@@ -3,14 +3,13 @@ import re
 import six
 import sys
 
+from shopify.utils import shop_url
+
 if sys.version_info[0] < 3:  # Backwards compatibility for python < v3.0.0
     from urlparse import urljoin
 else:
     from urllib.parse import urljoin
 
-
-HOSTNAME_PATTERN = r"[a-z0-9][a-z0-9-]*[a-z0-9]"
-SHOP_DOMAIN_RE = re.compile(r"^https://{h}\.myshopify\.com/$".format(h=HOSTNAME_PATTERN))
 
 ALGORITHM = "HS256"
 PREFIX = "Bearer "
@@ -69,7 +68,7 @@ def _validate_issuer(decoded_payload):
 def _validate_issuer_hostname(decoded_payload):
     issuer_root = urljoin(decoded_payload["iss"], "/")
 
-    if not SHOP_DOMAIN_RE.match(issuer_root):
+    if not shop_url.sanitize_shop_domain(issuer_root):
         raise InvalidIssuerError("Invalid issuer")
 
 
