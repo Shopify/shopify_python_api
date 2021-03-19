@@ -208,7 +208,7 @@ class SessionTest(TestCase):
         }
         self.assertEqual(True, shopify.Session.validate_hmac(params))
 
-    def test_return_token_if_hmac_is_valid(self):
+    def test_return_token_and_scope_if_hmac_is_valid(self):
         shopify.Session.secret = "secret"
         params = {"code": "any-code", "timestamp": time.time()}
         hmac = shopify.Session.calculate_hmac(params)
@@ -218,12 +218,13 @@ class SessionTest(TestCase):
             None,
             url="https://localhost.myshopify.com/admin/oauth/access_token",
             method="POST",
-            body='{"access_token" : "token"}',
+            body='{"access_token" : "token", "scope": "read_products,write_orders"}',
             has_user_agent=False,
         )
         session = shopify.Session("http://localhost.myshopify.com", "unstable")
         token = session.request_token(params)
         self.assertEqual("token", token)
+        self.assertEqual(shopify.ApiAccess("read_products,write_orders"), session.access_scopes)
 
     def test_raise_error_if_hmac_is_invalid(self):
         shopify.Session.secret = "secret"
@@ -256,6 +257,32 @@ class SessionTest(TestCase):
         with self.assertRaises(shopify.ValidationException):
             session = shopify.Session("http://localhost.myshopify.com", "unstable")
             session = session.request_token(params)
+
+    def test_access_scopes_are_nil_by_default(self):
+        session = shopify.Session("testshop.myshopify.com", "unstable", "any-token")
+        self.assertIsNone(session.access_scopes)
+
+    def test_access_scopes_when_valid_scopes_passed_in(self):
+        session = shopify.Session(
+            shop_url="testshop.myshopify.com",
+            version="unstable",
+            token="any-token",
+            access_scopes="read_products, write_orders",
+        )
+
+        expected_access_scopes = shopify.ApiAccess("read_products, write_orders")
+        self.assertEqual(expected_access_scopes, session.access_scopes)
+
+    def test_access_scopes_set_with_api_access_object_passed_in(self):
+        session = shopify.Session(
+            shop_url="testshop.myshopify.com",
+            version="unstable",
+            token="any-token",
+            access_scopes=shopify.ApiAccess("read_products, write_orders"),
+        )
+
+        expected_access_scopes = shopify.ApiAccess("read_products, write_orders")
+        self.assertEqual(expected_access_scopes, session.access_scopes)
 
     def normalize_url(self, url):
         scheme, netloc, path, query, fragment = urllib.parse.urlsplit(url)

@@ -1,4 +1,12 @@
 import re
+import sys
+
+
+def basestring_type():
+    if sys.version_info[0] < 3:  # Backwards compatibility for python < v3.0.0
+        return basestring
+    else:
+        return str
 
 
 class ApiAccessError(Exception):
@@ -12,7 +20,7 @@ class ApiAccess:
     IMPLIED_SCOPE_RE = re.compile(r"\A(?P<unauthenticated>unauthenticated_)?write_(?P<resource>.*)\Z")
 
     def __init__(self, scopes):
-        if type(scopes) == str:
+        if isinstance(scopes, basestring_type()):
             scopes = scopes.split(self.SCOPE_DELIMITER)
 
         self.__store_scopes(scopes)
@@ -32,7 +40,6 @@ class ApiAccess:
     def __store_scopes(self, scopes):
         sanitized_scopes = frozenset(filter(None, [scope.strip() for scope in scopes]))
         self.__validate_scopes(sanitized_scopes)
-
         implied_scopes = frozenset(self.__implied_scope(scope) for scope in sanitized_scopes)
         self._compressed_scopes = sanitized_scopes - implied_scopes
         self._expanded_scopes = sanitized_scopes.union(implied_scopes)

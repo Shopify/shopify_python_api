@@ -10,6 +10,7 @@ except ImportError:
 import re
 from contextlib import contextmanager
 from six.moves import urllib
+from shopify.api_access import ApiAccess
 from shopify.api_version import ApiVersion, Release, Unstable
 import six
 
@@ -45,10 +46,11 @@ class Session(object):
         yield
         shopify.ShopifyResource.activate_session(original_session)
 
-    def __init__(self, shop_url, version=None, token=None):
+    def __init__(self, shop_url, version=None, token=None, access_scopes=None):
         self.url = self.__prepare_url(shop_url)
         self.token = token
         self.version = ApiVersion.coerce_to_version(version)
+        self.access_scopes = access_scopes
         return
 
     def create_permission_url(self, scope, redirect_uri, state=None):
@@ -72,7 +74,10 @@ class Session(object):
         response = urllib.request.urlopen(request)
 
         if response.code == 200:
-            self.token = json.loads(response.read().decode("utf-8"))["access_token"]
+            json_payload = json.loads(response.read().decode("utf-8"))
+            self.token = json_payload["access_token"]
+            self.access_scopes = json_payload["scope"]
+
             return self.token
         else:
             raise Exception(response.msg)
@@ -88,6 +93,17 @@ class Session(object):
     @property
     def valid(self):
         return self.url is not None and self.token is not None
+
+    @property
+    def access_scopes(self):
+        return self._access_scopes
+
+    @access_scopes.setter
+    def access_scopes(self, scopes):
+        if scopes is None or type(scopes) == ApiAccess:
+            self._access_scopes = scopes
+        else:
+            self._access_scopes = ApiAccess(scopes)
 
     @classmethod
     def __prepare_url(cls, url):
