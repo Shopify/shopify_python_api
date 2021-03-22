@@ -18,7 +18,7 @@ setup(
     author="Shopify",
     author_email="developers@shopify.com",
     url="https://github.com/Shopify/shopify_python_api",
-    packages=["shopify", "shopify/resources"],
+    packages=["shopify", "shopify/resources", "shopify/utils"],
     scripts=["scripts/shopify_api.py"],
     license="MIT License",
     install_requires=[

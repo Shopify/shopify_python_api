@@ -1,3 +1,6 @@
+== Version 8.3.1
+- Fix bug: Add the `shopify/utils` sub-package when building the source distribution ([#493](https://github.com/Shopify/shopify_python_api/pull/493))
+
 == Version 8.3.0
 - Add support for [session tokens](https://shopify.dev/concepts/apps/building-embedded-apps-using-session-tokens) ([#479](https://github.com/Shopify/shopify_python_api/pull/479))
   - Use `session_token.decode_from_header` to obtain a decoded session token from an HTTP Authorization header
