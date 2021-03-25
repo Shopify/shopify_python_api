@@ -1,3 +1,6 @@
+== Unreleased
+- Revert Feature #441 Dynamic API Versioning ([#495](https://github.com/Shopify/shopify_python_api/pull/495))
+
 == Version 8.3.1
 - Fix bug: Add the `shopify/utils` sub-package when building the source distribution ([#493](https://github.com/Shopify/shopify_python_api/pull/493))
 
