@@ -20,15 +20,6 @@ class TestCase(unittest.TestCase):
         self.http = http_fake.TestHandler
         self.http.set_response(Exception("Bad request"))
         self.http.site = "https://this-is-my-test-show.myshopify.com"
-        self.fake(
-            "apis",
-            url="https://app.shopify.com/services/apis.json",
-            method="GET",
-            code=200,
-            response_headers={"Content-type": "application/json"},
-            body=self.load_fixture("api_version"),
-            has_user_agent=False,
-        )
 
     def load_fixture(self, name, format="json"):
         with open(os.path.dirname(__file__) + "/fixtures/%s.%s" % (name, format), "rb") as f:
@@ -44,10 +35,13 @@ class TestCase(unittest.TestCase):
             extension = ""
         else:
             extension = ".%s" % (kwargs.pop("extension", "json"))
-        if kwargs.get("url"):
-            url = kwargs.get("url")
-        else:
-            url = "https://this-is-my-test-show.myshopify.com%s/%s%s" % (prefix, endpoint, extension)
+
+        url = "https://this-is-my-test-show.myshopify.com%s/%s%s" % (prefix, endpoint, extension)
+        try:
+            url = kwargs["url"]
+        except KeyError:
+            pass
+
         headers = {}
         if kwargs.pop("has_user_agent", True):
             userAgent = "ShopifyPythonAPI/%s Python/%s" % (shopify.VERSION, sys.version.split(" ", 1)[0])
