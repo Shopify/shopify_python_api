@@ -1,4 +1,6 @@
 == Unreleased
+
+== Version 8.4.0
 - Revert Feature #441 Dynamic API Versioning ([#495](https://github.com/Shopify/shopify_python_api/pull/495))
 
 == Version 8.3.1
