@@ -21,6 +21,6 @@ https://shopify.dev/changelog
 Test against the upcoming release by using the Release Candidate.
 
 Another reminder issue will be created on the date of the next release.
-When that happens, test again using the Stable API version, and aim to release an update of the library within one week.
+When that happens, test again using the now Stable API version, and aim to release an update of the library within one week.
 
 Thank you!
