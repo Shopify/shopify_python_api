@@ -1,6 +1,6 @@
 ---
 title: A new release of the Shopify API is due soon
-assignees: andyw8 # @platform/dev-tools-education
+assignees: @platform/dev-tools-education
 labels: automated
 ---
 
