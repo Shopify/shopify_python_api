@@ -10,7 +10,7 @@ HOSTNAME_PATTERN = r"[a-z0-9][a-z0-9-]*[a-z0-9]"
 
 
 def sanitize_shop_domain(shop_domain, myshopify_domain="myshopify.com"):
-    name = str(shop_domain).lower().strip()
+    name = str(shop_domain or "").lower().strip()
     if myshopify_domain not in name and "." not in name:
         name += ".{domain}".format(domain=myshopify_domain)
     name = re.sub(r"https?://", "", name)
