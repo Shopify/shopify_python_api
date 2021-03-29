@@ -1,5 +1,8 @@
 == Unreleased
 
+== Version 8.4.1
+- Bug fix: `sanitize_shop_domain` now returns `None` rather than `'none.myshopify.com'` if no `shop_domain` arg is passed in ([#499](https://github.com/Shopify/shopify_python_api/pull/499))
+
 == Version 8.4.0
 - Revert Feature #441 Dynamic API Versioning ([#495](https://github.com/Shopify/shopify_python_api/pull/495))
 
