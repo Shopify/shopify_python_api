@@ -42,3 +42,6 @@ class TestSanitizeShopDomain(TestCase):
         ]
 
         self.assertTrue(all(shop == "my-shop.myshopify.io" for shop in sanitized_shops))
+
+    def test_returns_none_for_none_type(self):
+        self.assertIsNone(shop_url.sanitize_shop_domain(None))
