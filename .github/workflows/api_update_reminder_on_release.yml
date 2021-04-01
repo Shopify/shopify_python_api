@@ -1,4 +1,5 @@
 on:
+  workflow_dispatch: ~
   schedule:
     - cron: "0 0 1 1,4,7,10 *" # At 00:00 on 1st of January, April, July, and October
 
