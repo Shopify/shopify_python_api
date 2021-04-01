@@ -13,7 +13,7 @@ Review the changelog again and consider if anything in the library needs to chan
 
 https://shopify.dev/changelog
 
-Test against the new release by using the Stable version just releaesd
+Test against the new release by using the Stable version just released.
 
 Aim to release an update of the library within one week.
 
