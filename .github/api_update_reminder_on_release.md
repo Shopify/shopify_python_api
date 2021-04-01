@@ -1,6 +1,6 @@
 ---
 title: A new release of the Shopify API occurred
-assignees: @platform/dev-tools-education
+assignees: Shopify/platform-dev-tools-education
 labels: automated
 ---
 
