@@ -3,8 +3,8 @@ title: A new release of the Shopify API occurred
 labels: automated
 ---
 
-This is an automated reminder for the maintainers that a new Stable release of the Shopify API was scheduled for today,
-so a new release of the library is now due.
+This is an automated reminder for the maintainers that a new Stable release of the Shopify API is scheduled for today
+at 12pm Eastern Time, so a new release of the library is now due.
 
 A draft PR should already exist for this.
 
