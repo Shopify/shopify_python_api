@@ -7,9 +7,10 @@ import threading
 import sys
 from six.moves import urllib
 import six
-
+import logging
 from shopify.collection import PaginatedCollection
 from pyactiveresource.collection import Collection
+log = logging.getLogger(__name__)
 
 # Store the response from the last request in the connection object
 
@@ -23,10 +24,14 @@ class ShopifyConnection(pyactiveresource.connection.Connection):
     def _open(self, *args, **kwargs):
         self.response = None
         try:
+            log.debug(f"Request: {args, kwargs}")
             self.response = super(ShopifyConnection, self)._open(*args, **kwargs)
+            log.debug(f'Response {self.response}')
         except pyactiveresource.connection.ConnectionError as err:
             self.response = err.response
+            log.exception(f"Exception with request: {args, kwargs}, Response: {self.response}")
             raise
+
         return self.response
 
 
