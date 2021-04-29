@@ -1,13 +1,13 @@
 version: 2
 updates:
-- package-ecosystem: "pip"
-  directory: "/"
-  schedule:
-    interval: "daily"
-    time: "00:00"
-    timezone: "UTC"
-  reviewers:
-      - Shopify/core-build-learn
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "00:00"
+      timezone: "UTC"
+    reviewers:
+        - Shopify/core-build-learn
     labels:
       - "Pip upgrades"
     open-pull-requests-limit: 100
