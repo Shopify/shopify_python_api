@@ -1,4 +1,9 @@
 version: 2
+registries:
+  python-shopify:
+    type: python-index
+    url: https://pkgs.shopify.io/basic/data/python/simple
+    token: ${{secrets.PYTHON_CLOUDSMITH_TOKEN}}
 updates:
   - package-ecosystem: "pip"
     directory: "/"
