@@ -1,5 +1,6 @@
 == Unreleased
 
+== Version 8.4.2
 - Update API version with 2021-07 release, remove API version 2020-01 ([#521](https://github.com/Shopify/shopify_python_api/pull/521))
 
 == Version 8.4.1
