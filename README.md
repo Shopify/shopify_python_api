@@ -62,7 +62,7 @@ pip install --upgrade ShopifyAPI
     # redirect to auth_url
     ```
 
-1. Once the merchant accepts, the shop redirects the owner to the `redirect_uri` of your application with a parameter named 'code'. This is a temporary token that the app can exchange for a permanent access token. You should compare the state you provided above with the one you recieved back to ensure the request is correct. Now we can exchange the code for an access_token when you get the request from shopify in your callback handler:
+1. Once the merchant accepts, the shop redirects the owner to the `redirect_uri` of your application with a parameter named 'code'. This is a temporary token that the app can exchange for a permanent access token. You should compare the state you provided above with the one you received back to ensure the request is correct. Now we can exchange the code for an access_token when you get the request from shopify in your callback handler:
 
     ```python
     session = shopify.Session(shop_url, api_version)

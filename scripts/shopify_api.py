@@ -58,7 +58,7 @@ class TasksMeta(type):
             cls.help()
             return
 
-        # Allow unambigious abbreviations of tasks
+        # Allow unambiguous abbreviations of tasks
         if task not in cls._tasks:
             matches = filter(lambda item: item.startswith(task), cls._tasks)
             list_of_matches = list(matches)
