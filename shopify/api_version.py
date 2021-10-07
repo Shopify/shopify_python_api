@@ -1,4 +1,8 @@
 import re
+from datetime import datetime
+
+
+MIN_API_VERSION = "2019-04"
 
 
 class InvalidVersionError(Exception):
@@ -27,12 +31,18 @@ class ApiVersion(object):
     @classmethod
     def define_known_versions(cls):
         cls.define_version(Unstable())
-        cls.define_version(Release("2020-04"))
-        cls.define_version(Release("2020-07"))
-        cls.define_version(Release("2020-10"))
-        cls.define_version(Release("2021-01"))
-        cls.define_version(Release("2021-04"))
-        cls.define_version(Release("2021-07"))
+        # Generate quarterly API versions thru next release candidate
+        ver_yr = int(MIN_API_VERSION.split('-')[0])
+        ver_mo = int(MIN_API_VERSION.split('-')[1])
+        now = datetime.utcnow()
+        while ver_yr <= now.year + 1:
+            cls.define_version(Release("{0}-{1:02}".format(ver_yr, ver_mo)))
+            if ver_yr > now.year or ver_mo > now.month:
+                break
+            ver_mo += 3
+            if ver_mo > 12:
+                ver_yr += 1
+                ver_mo = 1
 
     @classmethod
     def clear_defined_versions(cls):
