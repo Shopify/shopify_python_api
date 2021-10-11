@@ -32,8 +32,8 @@ class ApiVersion(object):
     def define_known_versions(cls):
         cls.define_version(Unstable())
         # Generate quarterly API versions thru next release candidate
-        ver_yr = int(MIN_API_VERSION.split('-')[0])
-        ver_mo = int(MIN_API_VERSION.split('-')[1])
+        ver_yr = int(MIN_API_VERSION.split("-")[0])
+        ver_mo = int(MIN_API_VERSION.split("-")[1])
         now = datetime.utcnow()
         while ver_yr <= now.year + 1:
             cls.define_version(Release("{0}-{1:02}".format(ver_yr, ver_mo)))
