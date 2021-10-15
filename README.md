@@ -27,7 +27,7 @@ pip install --upgrade ShopifyAPI
   - [Public and Custom Apps](#public-and-custom-apps)
   - [Private Apps](#private-apps)
 - [Billing](#billing)
-- [Session Tokens](docs/session-tokens)
+- [Session Tokens](docs/session-tokens.md)
 - [Handling Access Scope Operations](docs/api-access.md)
 - [Advanced Usage](#advanced-usage)
 - [Prefix Options](#prefix-options)
