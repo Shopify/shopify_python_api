@@ -234,3 +234,6 @@ Currently there is no support for:
 * [developers.shopify.com](https://developers.shopify.com)
 * [Shopify.dev](https://shopify.dev)
 * [Ask questions on the Shopify forums](http://ecommerce.shopify.com/c/shopify-apis-and-technology)
+
+### Sample apps built using this library
+* [Sample Django app](https://github.com/shopify/sample-django-app)
