@@ -23,8 +23,7 @@ setup(
     license="MIT License",
     install_requires=[
         "pyactiveresource>=2.2.2",
-        "PyJWT <= 1.7.1; python_version == '2.7'",
-        "PyJWT >= 2.0.0; python_version >= '3.6'",
+        "PyJWT >= 2.0.0",
         "PyYAML",
         "six",
     ],
@@ -39,8 +38,6 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
