@@ -27,7 +27,7 @@ pip install --upgrade ShopifyAPI
   - [Public and Custom Apps](#public-and-custom-apps)
   - [Private Apps](#private-apps)
 - [Billing](#billing)
-- [Session Tokens](docs/session-tokens)
+- [Session Tokens](docs/session-tokens.md)
 - [Handling Access Scope Operations](docs/api-access.md)
 - [Advanced Usage](#advanced-usage)
 - [Prefix Options](#prefix-options)
@@ -234,3 +234,6 @@ Currently there is no support for:
 * [developers.shopify.com](https://developers.shopify.com)
 * [Shopify.dev](https://shopify.dev)
 * [Ask questions on the Shopify forums](http://ecommerce.shopify.com/c/shopify-apis-and-technology)
+
+### Sample apps built using this library
+* [Sample Django app](https://github.com/shopify/sample-django-app)
