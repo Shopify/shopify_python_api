@@ -6,7 +6,7 @@ jobs:
     name: Python ${{ matrix.version }}
     strategy:
       matrix:
-        version: [2.7, 3.6, 3.8, 3.9]
+        version: [3.6, 3.10.0]
 
     steps:
       - name: Checkout
