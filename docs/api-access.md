@@ -24,7 +24,7 @@ another_api_access = ApiAccess("read_products, write_products, unauthenticated_r
 api_access = ApiAccess(["read_products", "write_orders", "unauthenticated_read_themes"])
 
 access_scopes_list = list(api_access) # ["read_products", "write_orders", "unauthenticated_read_themes"]
-comma_delmited_access_scopes = str(api_access) # "read_products,write_orders,unauthenticated_read_themes"
+comma_delimited_access_scopes = str(api_access) # "read_products,write_orders,unauthenticated_read_themes"
 ```
 
 ### Comparing ApiAccess objects
@@ -60,7 +60,7 @@ from shopify import ApiAccess
 
 def oauth_on_access_scopes_mismatch(func):
   def wrapper(*args, **kwargs):
-    shop_domain = get_shop_query_paramer(request) # shop query param when loading app
+    shop_domain = get_shop_query_parameter(request) # shop query param when loading app
     current_shop_scopes = ApiAccess(ShopStore.get_record(shopify_domain = shop_domain).access_scopes)
     expected_access_scopes = ApiAccess(SHOPIFY_API_SCOPES)
 
