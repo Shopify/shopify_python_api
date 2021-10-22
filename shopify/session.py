@@ -73,14 +73,14 @@ class Session(object):
         request = urllib.request.Request(url, urllib.parse.urlencode(query_params).encode("utf-8"))
         response = urllib.request.urlopen(request)
 
-        if response.code == 200:
-            json_payload = json.loads(response.read().decode("utf-8"))
-            self.token = json_payload["access_token"]
-            self.access_scopes = json_payload["scope"]
-
-            return self.token
-        else:
+        if response.code != 200:
             raise Exception(response.msg)
+
+        json_payload = json.loads(response.read().decode("utf-8"))
+        self.token = json_payload["access_token"]
+        self.access_scopes = json_payload["scope"]
+
+        return self.token
 
     @property
     def api_version(self):
