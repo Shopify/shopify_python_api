@@ -6,8 +6,8 @@ labels: automated
 This is an automated reminder for the maintainers that a new Stable release of the Shopify API is due soon, so the library needs to be updated.
 
 A new library release should be prepared to:
-* add the upcoming Stable release
-* remove the oldest Stable release which will no longer be supported.
+
+- add the upcoming Stable release
 
 The PR should be created as a **draft** but not yet be merged.
 

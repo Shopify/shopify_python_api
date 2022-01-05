@@ -27,6 +27,7 @@ class ApiVersion(object):
     @classmethod
     def define_known_versions(cls):
         cls.define_version(Unstable())
+        cls.define_version(Release("2020-07"))
         cls.define_version(Release("2020-10"))
         cls.define_version(Release("2021-01"))
         cls.define_version(Release("2021-04"))
