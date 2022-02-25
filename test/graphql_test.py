@@ -9,7 +9,7 @@ class GraphQLTest(TestCase):
         shopify.ApiVersion.define_known_versions()
         shopify_session = shopify.Session("this-is-my-test-show.myshopify.com", "unstable", "token")
         shopify.ShopifyResource.activate_session(shopify_session)
-        client = shopify.GraphQL()
+        self.client = shopify.GraphQL()
         self.fake(
             "graphql",
             method="POST",
@@ -20,6 +20,8 @@ class GraphQLTest(TestCase):
                 "Content-Type": "application/json",
             },
         )
+
+    def test_fetch_shop_with_graphql(self):
         query = """
             {
                 shop {
@@ -28,7 +30,17 @@ class GraphQLTest(TestCase):
                 }
             }
         """
-        self.result = client.execute(query)
+        result = self.client.execute(query)
+        self.assertTrue(json.loads(result)["shop"]["name"] == "Apple Computers")
 
-    def test_fetch_shop_with_graphql(self):
-        self.assertTrue(json.loads(self.result)["shop"]["name"] == "Apple Computers")
+    def test_specify_operation_name(self):
+        query = """
+            query GetShop{
+                shop {
+                    name
+                    id
+                }
+            }
+        """
+        result = self.client.execute(query, operation_name="GetShop")
+        self.assertTrue(json.loads(result)["shop"]["name"] == "Apple Computers")

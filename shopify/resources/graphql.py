@@ -15,11 +15,11 @@ class GraphQL:
             merged_headers.update(header)
         return merged_headers
 
-    def execute(self, query, variables=None):
+    def execute(self, query, variables=None, operation_name=None):
         endpoint = self.endpoint
         default_headers = {"Accept": "application/json", "Content-Type": "application/json"}
         headers = self.merge_headers(default_headers, self.headers)
-        data = {"query": query, "variables": variables}
+        data = {"query": query, "variables": variables, "operationName": operation_name}
 
         req = urllib.request.Request(self.endpoint, json.dumps(data).encode("utf-8"), headers)
 

@@ -183,6 +183,45 @@ This library also supports Shopify's new [GraphQL API](https://help.shopify.com/
 result = shopify.GraphQL().execute('{ shop { name id } }')
 ```
 
+You can perform more complex operations using the `variables` and `operation_name` parameters of `execute`. 
+
+For example, this GraphQL document uses a fragment to construct two named queries - one for a single order, and one for multiple orders:  
+
+```graphql
+    # ./order_queries.graphql
+
+    fragment orderInfo on Order {
+        id
+        name
+        createdAt
+    }
+    
+    query GetOneOrder($order_id: ID!){
+        node(id: $order_id){
+            ...OrderInfo
+        }
+    }
+    
+    query GetManyOrders($order_ids: [ID]!){
+        nodes(ids: $order_ids){
+           ...OrderInfo
+        }
+    }
+```
+
+Now you can chose which operation to execute:       
+
+```python
+# Load the document with both queries
+document = Path("./order_queries.graphql").read_text()
+
+# Specify the named operation to execute, and the parameters for the query
+result = shopify.GraphQL().execute(
+    query=document,
+    variables={"order_id": "gid://shopify/Order/12345"},
+    operation_name="GetOneOrder",
+)
+```
 
 ## Using Development Version
 
