@@ -190,7 +190,7 @@ For example, this GraphQL document uses a fragment to construct two named querie
 ```graphql
     # ./order_queries.graphql
 
-    fragment orderInfo on Order {
+    fragment OrderInfo on Order {
         id
         name
         createdAt
