@@ -209,7 +209,7 @@ For example, this GraphQL document uses a fragment to construct two named querie
     }
 ```
 
-Now you can chose which operation to execute:
+Now you can choose which operation to execute:
 
 ```python
 # Load the document with both queries
