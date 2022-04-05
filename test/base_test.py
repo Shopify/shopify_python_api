@@ -107,7 +107,7 @@ class BaseTest(TestCase):
             url="https://this-is-my-test-show.myshopify.com/admin/shop.json",
             method="GET",
             body=self.load_fixture("shop"),
-            headers={"Authorization": u"Basic dXNlcjpwYXNz"},
+            headers={"Authorization": "Basic dXNlcjpwYXNz"},
         )
         API_KEY = "user"
         PASSWORD = "pass"
