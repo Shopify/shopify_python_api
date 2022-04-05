@@ -1,4 +1,6 @@
 == Unreleased
+
+== Version 11.0.0
 - Update API version with 2022-04 release
 - remove API version 2020-10, 2021-01, 2021-04 as they are all unsupported as of 2022-04
 
