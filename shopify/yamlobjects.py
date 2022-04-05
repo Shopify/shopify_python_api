@@ -15,6 +15,5 @@ try:
         def from_yaml(cls, loader, node):
             return loader.construct_mapping(node, cls)
 
-
 except ImportError:
     pass
