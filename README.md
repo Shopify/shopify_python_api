@@ -159,6 +159,11 @@ product.save()                      # => True
 product.destroy()
 # Delete the resource from the remote server (i.e. Shopify)
 ```
+There may be resources where it's best to pass some the relevant arguments upon creation, rather than updating a new object (e.g. creating a new asset for an unpublished theme)
+
+```
+asset = shopify.Asset({'key': 'sections/my-new-asset.liquid', 'theme_id': 0123456789, 'value': 'Welcome'})
+```
 
 ### Prefix options
 
