@@ -1,6 +1,7 @@
 == Unreleased
 
-- Update API version with 2022-04 release, remove API version 2021-07
+== Version 12.0.0
+- Update API version with 2022-04 release, remove API version 2021-07 ([#591](https://github.com/Shopify/shopify_python_api/pull/591))
 
 == Version 11.0.0
 - Update API version with 2022-04 release
