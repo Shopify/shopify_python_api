@@ -4,7 +4,7 @@ name: shopify-python-api
 type: python
 
 up:
-  - python: 3.8.0
+  - python: 3.8.13
   - pip:
       - requirements.txt
 
