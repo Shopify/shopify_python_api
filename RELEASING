@@ -18,3 +18,12 @@ Releasing shopify_python_api
     git push --tags origin master
 
 8. Shipit!
+
+--
+
+You may run into an issue relating to invalid credentials: https://github.com/Shopify/shipit/pull/1814
+
+If you need to, you can release from your local machine.
+Refer to the command in https://github.com/Shopify/shopify_python_api/blob/master/shipit.pypi.yml
+The key in available in the team password vault.
+You may also need to `pip install twine`.
