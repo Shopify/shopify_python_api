@@ -48,7 +48,7 @@ class TestSessionTokenGetDecodedSessionToken(TestCase):
         self.assertEqual("The HTTP_AUTHORIZATION_HEADER provided does not contain a Bearer token", str(cm.exception))
 
     def test_raises_jwt_error_if_session_token_is_expired(self):
-        self.payload["exp"] = timestamp((datetime.now() + timedelta(0, -10)))
+        self.payload["exp"] = timestamp((datetime.now() + timedelta(0, -11)))
 
         with self.assertRaises(session_token.SessionTokenError) as cm:
             session_token.decode_from_header(self.build_auth_header(), api_key=self.api_key, secret=self.secret)
@@ -103,3 +103,8 @@ class TestSessionTokenGetDecodedSessionToken(TestCase):
         )
 
         self.assertEqual(self.payload, decoded_payload)
+
+    def test_allow_10_seconds_clock_skew_in_nbf(self):
+        self.payload["nbf"] = timestamp((datetime.now() + timedelta(seconds=10)))
+
+        session_token.decode_from_header(self.build_auth_header(), api_key=self.api_key, secret=self.secret)
