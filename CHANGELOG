@@ -1,4 +1,5 @@
 == Unreleased
+- Getting the test to work with various Python versions.
 
 == Version 12.0.1
 - Allow up to 10 seconds clock skew to avoid `ImmatureSignatureError`
