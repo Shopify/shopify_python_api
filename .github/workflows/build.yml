@@ -23,8 +23,8 @@ jobs:
           pytest --cov=./ --cov-report=xml
       - name: Run Tests
         run: python -m pytest -v
-      # - name: upload coverage to Codecov
-      #   uses: codecov/codecov-action@v1
-      #   with:
-      #     name: codecov-umbrella
-      #     fail_ci_if_error: true
+      - name: upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          name: codecov-umbrella
+          fail_ci_if_error: true
