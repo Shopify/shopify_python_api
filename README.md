@@ -70,6 +70,8 @@ pip install --upgrade ShopifyAPI
     # you should save the access token now for future use.
     ```
 
+    > See an [example OAuth workflow here](docs/oauth-workflow-example.md)
+
 1.  Now you're ready to make authorized API requests to your shop!:
 
     ```python
