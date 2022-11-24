@@ -269,10 +269,9 @@ Currently there is no support for:
 * persistent connections
 
 ## Additional Resources
-* [Partners Dashboard](https://partners.shopify.com)
-* [developers.shopify.com](https://developers.shopify.com)
+* [Partners Dashboard](https://www.shopify.com/partners)
 * [Shopify.dev](https://shopify.dev)
-* [Ask questions on the Shopify forums](http://ecommerce.shopify.com/c/shopify-apis-and-technology)
+* [Ask questions on the Shopify forums](https://community.shopify.com/c/shopify-apis-and-sdks/bd-p/shopify-apis-and-technology)
 
 ### Sample apps built using this library
 * [Sample Django app](https://github.com/shopify/sample-django-app)
