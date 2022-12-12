@@ -11,6 +11,6 @@ repos:
     hooks:
     -   id: black
 -   repo: https://github.com/PyCQA/pylint
-    rev: pylint-2.7.2
+    rev: pylint-2.15.8
     hooks:
     -   id: pylint
