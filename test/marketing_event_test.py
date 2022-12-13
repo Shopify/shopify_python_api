@@ -4,9 +4,6 @@ from test.test_helper import TestCase
 
 
 class MarketingEventTest(TestCase):
-    def setUp(self):
-        super(MarketingEventTest, self).setUp()
-
     def test_get_marketing_event(self):
         self.fake("marketing_events/1", method="GET", body=self.load_fixture("marketing_event"))
         marketing_event = shopify.MarketingEvent.find(1)

@@ -17,9 +17,6 @@ from pyactiveresource.collection import Collection
 class ShopifyConnection(pyactiveresource.connection.Connection):
     response = None
 
-    def __init__(self, site, user=None, password=None, timeout=None, format=formats.JSONFormat):
-        super(ShopifyConnection, self).__init__(site, user, password, timeout, format)
-
     def _open(self, *args, **kwargs):
         self.response = None
         try:

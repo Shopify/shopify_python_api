@@ -1,5 +1,8 @@
 == Unreleased
 
+== Version 12.1.0
+- Add API version with 2022-10 release
+
 == Version 12.0.1
 - Allow up to 10 seconds clock skew to avoid `ImmatureSignatureError`
 ([#609](https://github.com/Shopify/shopify_python_api/pull/609))
