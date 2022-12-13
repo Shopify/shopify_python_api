@@ -17,9 +17,6 @@ class BaseTest(TestCase):
     def tearDownClass(self):
         shopify.ApiVersion.clear_defined_versions()
 
-    def setUp(self):
-        super(BaseTest, self).setUp()
-
     def tearDown(self):
         shopify.ShopifyResource.clear_session()
 
