@@ -1,5 +1,5 @@
 == Unreleased
-- Update API version with 2022-10 release, remove API version 2021-10
+- Add API version with 2022-10 release
 
 == Version 12.0.1
 - Allow up to 10 seconds clock skew to avoid `ImmatureSignatureError`
