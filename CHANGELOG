@@ -1,4 +1,6 @@
 == Unreleased
+- Update API version with 2023-01 release
+- remove API version 2021-10, 2022-01 as they are all unsupported as of 2023-01
 
 == Version 12.1.0
 - Add API version with 2022-10 release
