@@ -1,20 +1,27 @@
 == Unreleased
 
+- Update API version with 2023-01 release ([#](https://github.com/Shopify/shopify_python_api/pull/))
+
 == Version 12.1.0
+
 - Add API version with 2022-10 release
 
 == Version 12.0.1
+
 - Allow up to 10 seconds clock skew to avoid `ImmatureSignatureError`
-([#609](https://github.com/Shopify/shopify_python_api/pull/609))
+  ([#609](https://github.com/Shopify/shopify_python_api/pull/609))
 
 == Version 12.0.0
+
 - Update API version with 2022-04 release, remove API version 2021-07 ([#591](https://github.com/Shopify/shopify_python_api/pull/591))
 
 == Version 11.0.0
+
 - Update API version with 2022-04 release
 - remove API version 2020-10, 2021-01, 2021-04 as they are all unsupported as of 2022-04
 
 == Version 10.0.0
+
 - Update API version with 2022-01 release, remove API version 2020-07
 
 == Version 9.0.0
@@ -23,18 +30,23 @@
 - Update API version with 2021-10 release, remove API version 2020-04 ([#548](https://github.com/Shopify/shopify_python_api/pull/548))
 
 == Version 8.4.2
+
 - Update API version with 2021-07 release, remove API version 2020-01 ([#521](https://github.com/Shopify/shopify_python_api/pull/521))
 
 == Version 8.4.1
+
 - Bug fix: `sanitize_shop_domain` now returns `None` rather than `'none.myshopify.com'` if no `shop_domain` arg is passed in ([#499](https://github.com/Shopify/shopify_python_api/pull/499))
 
 == Version 8.4.0
+
 - Revert Feature #441 Dynamic API Versioning ([#495](https://github.com/Shopify/shopify_python_api/pull/495))
 
 == Version 8.3.1
+
 - Fix bug: Add the `shopify/utils` sub-package when building the source distribution ([#493](https://github.com/Shopify/shopify_python_api/pull/493))
 
 == Version 8.3.0
+
 - Add support for [session tokens](https://shopify.dev/concepts/apps/building-embedded-apps-using-session-tokens) ([#479](https://github.com/Shopify/shopify_python_api/pull/479))
   - Use `session_token.decode_from_header` to obtain a decoded session token from an HTTP Authorization header
 - Create a `utils` sub-package with a `shop_url` utility file ([#483](https://github.com/Shopify/shopify_python_api/pull/483))
@@ -48,297 +60,325 @@
 - Add support for retrieving all orders using customer_id ([#466](https://github.com/Shopify/shopify_python_api/pull/466))
 
 == Version 8.2.0
+
 - [Feature] Add support for Dynamic API Versioning. When the library is initialized, it will now make a request to
-Shopify to fetch a list of the available API versions. ([#441](https://github.com/Shopify/shopify_python_api/pull/441))
+  Shopify to fetch a list of the available API versions. ([#441](https://github.com/Shopify/shopify_python_api/pull/441))
 
 == Version 8.1.0
+
 - [Feature] Add support for Shopify Payments resources (#428)
 
 == Version 8.0.4
+
 - Release API version 2020-10
 - Deprecate API version 2019-10
 
 == Version 8.0.3
-- Patch for replacing call to _build_list() with _build_collection() in gift_card.py
+
+- Patch for replacing call to \_build_list() with \_build_collection() in gift_card.py
 
 == Version 8.0.2
+
 - Patch for product updating with variants
 
 == Version 8.0.1
+
 - release api version 2020-07
 - deprecate api version 2019-07
 - Add support for FulfillmentOrder resource (#390)
 
 == Version 8.0.0
+
 - release api version 2020-04
 - deprecate api version 2019-04
 
 == Version 7.0.3
+
 - bug fix for temporary sessions
 - deprecation fix for regexs
 
 == Version 7.0.2
+
 - bug fix for variant updates after the 2019-10 api version
 
 == Version 7.0.1
+
 - bug fix for string interpolation
 
 == Version 7.0.0
-* Made no_iter_next default to True on collection so that by default it only
-fetches a single page
-* Passes kwargs to paginated collections so that attributes can be set with
-find()
-* Allow case insensitive check for the link header for cursor pagination.
+
+- Made no_iter_next default to True on collection so that by default it only
+  fetches a single page
+- Passes kwargs to paginated collections so that attributes can be set with
+  find()
+- Allow case insensitive check for the link header for cursor pagination.
 
 == Version 6.0.1
-* Made the collection access more consistent so that there is no confusion
-between a collection and a paginated collection
+
+- Made the collection access more consistent so that there is no confusion
+  between a collection and a paginated collection
 
 == Version 6.0.0
-* Add Cursor pagination support
+
+- Add Cursor pagination support
 
 == Version 5.1.2
-* Add version 2020-01 to known ApiVersions. This version will not be usable until October 2019.
+
+- Add version 2020-01 to known ApiVersions. This version will not be usable until October 2019.
 
 == Version 5.1.1
-* Fix initializing API with basic auth URL.
+
+- Fix initializing API with basic auth URL.
 
 == Version 5.1.0
-* Added support for GraphQL queries with a GraphQL resource
+
+- Added support for GraphQL queries with a GraphQL resource
 
 == Version 5.0.1
-* Fixing missing class variable causing exception when creating a session without a token
+
+- Fixing missing class variable causing exception when creating a session without a token
 
 == Version 5.0.0
-* Added support for Shopify API Versioning
+
+- Added support for Shopify API Versioning
 
 == Version 4.0.0
-* Added AccessScope resource
-* Added ApiPermission resource
-* Added User resource
-* Added Publication, CollectionPublication and ProductPublication resources
-* Added Currency resource
-* Added TenderTransaction resource
-* Added shopify.Limits class, for retrieving the current status of Shopify rate limiting.
-* Added support for Refund.calculate
-* Added support for Location.inventory_levels
-* Added support for PriceRule batch operations
-* Removed `cancel()` method for RecurringApplicationCharge resource (use `destroy()` going forward)
-* Fix for handling array query parameters (e.g. `foo[]=1&foo[]=2`) during HMAC calculation
-* Fixed Python 3 compatibility with the API console
+
+- Added AccessScope resource
+- Added ApiPermission resource
+- Added User resource
+- Added Publication, CollectionPublication and ProductPublication resources
+- Added Currency resource
+- Added TenderTransaction resource
+- Added shopify.Limits class, for retrieving the current status of Shopify rate limiting.
+- Added support for Refund.calculate
+- Added support for Location.inventory_levels
+- Added support for PriceRule batch operations
+- Removed `cancel()` method for RecurringApplicationCharge resource (use `destroy()` going forward)
+- Fix for handling array query parameters (e.g. `foo[]=1&foo[]=2`) during HMAC calculation
+- Fixed Python 3 compatibility with the API console
 
 == Version 3.1.0
-* Adds InventoryItem resource
-* Adds InventoryLevel resource
-* Adds GiftCardAdjustment resource
-* Fix to properly handle byte data for Asset.attach()
+
+- Adds InventoryItem resource
+- Adds InventoryLevel resource
+- Adds GiftCardAdjustment resource
+- Fix to properly handle byte data for Asset.attach()
 
 == Version 3.0.0
-* Added CollectListing resource
-* Added ResourceFeedback resource
-* Added StorefrontAccessToken resource
-* Added ProductListing resource
-* Removed deprecated ProductSearchEngine resource
-* Removed deprecated Discount resource
-* Fixed Python3 compatibility issue with `Image.attach_image()`
+
+- Added CollectListing resource
+- Added ResourceFeedback resource
+- Added StorefrontAccessToken resource
+- Added ProductListing resource
+- Removed deprecated ProductSearchEngine resource
+- Removed deprecated Discount resource
+- Fixed Python3 compatibility issue with `Image.attach_image()`
 
 == Version 2.6.0
-* Added support for Marketing Event API through Marketing Event resource
+
+- Added support for Marketing Event API through Marketing Event resource
 
 == Version 2.5.1
-* Fixed an issue preventing creation of Order Risk resources
+
+- Fixed an issue preventing creation of Order Risk resources
 
 == Version 2.5.0
-* Added Price Rule and Discount Code resources
+
+- Added Price Rule and Discount Code resources
 
 == Version 2.4.0
-* Add support for report publishing
+
+- Add support for report publishing
 
 == Version 2.3.0
-* Add support for customer#send_invite
+
+- Add support for customer#send_invite
 
 == Version 2.2.0
-* Add support for draft orders
+
+- Add support for draft orders
 
 == Version 2.1.8
-* Added support for `open` method on fulfillments
+
+- Added support for `open` method on fulfillments
 
 == Version 2.1.7
 
-* Removed all references to the deprecated MD5 `signature` parameter which is no longer provided by Shopify.
+- Removed all references to the deprecated MD5 `signature` parameter which is no longer provided by Shopify.
 
 == Version 2.1.6
 
-* Added Refund resource
+- Added Refund resource
 
 == Version 2.1.5
 
-* bump pyactiveresource for camelcase bugfix
+- bump pyactiveresource for camelcase bugfix
 
 == Version 2.1.4
 
 == Version 2.1.3
 
-* Fixed hmac signature validation for params with delimiters (`&`, `=` or `%`)
+- Fixed hmac signature validation for params with delimiters (`&`, `=` or `%`)
 
 == Version 2.1.2
 
-* Fixed an issue with unicode strings in params passed to validate_hmac
-* Added shop domain verification when creating a session
+- Fixed an issue with unicode strings in params passed to validate_hmac
+- Added shop domain verification when creating a session
 
 == Version 2.1.1
 
-* Added Checkout resource
-* Updated to pyactiveresource v2.1.1 which includes a test-related bugfix
-* Changed OAuth validation from MD5 to HMAC-SHA256
+- Added Checkout resource
+- Updated to pyactiveresource v2.1.1 which includes a test-related bugfix
+- Changed OAuth validation from MD5 to HMAC-SHA256
 
 == Version 2.1.0
 
-* Added python 3 compatibility
-* Fixed setting the format attribute on carrier and fulfillment services
-* Add a specific exception for signature validation failures
+- Added python 3 compatibility
+- Fixed setting the format attribute on carrier and fulfillment services
+- Add a specific exception for signature validation failures
 
 == Version 2.0.4
 
-* Bug fixes
-* Added CarrierService resource
-* Added Property resource to LineItem
+- Bug fixes
+- Added CarrierService resource
+- Added Property resource to LineItem
 
 == Version 2.0.3
 
-* Add Order Risk resource
+- Add Order Risk resource
 
 == Version 2.0.2
 
-* Add access to FulfillmentService endpoint
-* Fix some import bugs
+- Add access to FulfillmentService endpoint
+- Fix some import bugs
 
 == Version 2.0.1
 
-* Package bug fix
+- Package bug fix
 
 == Version 2.0.0
 
-* Removed support for legacy auth
-* Updated to pyactiveresource v2.0.0 which changes the default form to JSON
-* in Session::request_token params is no longer optional, you must pass all the params
+- Removed support for legacy auth
+- Updated to pyactiveresource v2.0.0 which changes the default form to JSON
+- in Session::request_token params is no longer optional, you must pass all the params
   and the method will now extract the code
-* made create_permission_url an instance method, you'll need an instance
+- made create_permission_url an instance method, you'll need an instance
   of session to call this method from now on
-* Updated session.request_token
-* Updated Session to better match the ShopifyAPI Ruby gem
-* Updated the readme to better describe how to use the library
-* Added support for CustomerSavedSearch (CustomerGroup is deprecated)
+- Updated session.request_token
+- Updated Session to better match the ShopifyAPI Ruby gem
+- Updated the readme to better describe how to use the library
+- Added support for CustomerSavedSearch (CustomerGroup is deprecated)
 
 == Version 1.0.7
 
-* Fix thread local headers to store a copy of the default hash which
-prevents activate_session in one thread from affecting other threads.
+- Fix thread local headers to store a copy of the default hash which
+  prevents activate_session in one thread from affecting other threads.
 
 == Version 1.0.6
 
-* Fix deserializing and serializing fulfillments which can now contain
-arrays of strings in the tracking_urls attribute.
+- Fix deserializing and serializing fulfillments which can now contain
+  arrays of strings in the tracking_urls attribute.
 
 == Version 1.0.5
 
-* Fix parameter passing for order cancellation.
-* Fix Product.price_range method for variants with different prices.
+- Fix parameter passing for order cancellation.
+- Fix Product.price_range method for variants with different prices.
 
 == Version 1.0.4
 
-* Fixed another bug in Image size methods regex.
+- Fixed another bug in Image size methods regex.
 
 == Version 1.0.3
 
-* Fix bug in setting format attribute on Webhook instances.
-* Fixed missing slash in return value of Image size methods
-* Upgrade pyactiveresource to fix unicode encoding issues
+- Fix bug in setting format attribute on Webhook instances.
+- Fixed missing slash in return value of Image size methods
+- Upgrade pyactiveresource to fix unicode encoding issues
 
 == Version 1.0.2
 
-* Made ShopifyResource.clear_session idempotent.
+- Made ShopifyResource.clear_session idempotent.
 
 == Version 1.0.1
 
-* Use the correct redirect parameter in Session.create_permission_url.
-Was redirect_url but corrected to redirect_uri.
+- Use the correct redirect parameter in Session.create_permission_url.
+  Was redirect_url but corrected to redirect_uri.
 
 == Version 1.0.0
 
-* Added support for OAuth2.
-* ShopifyResource.activate_session must now be used with OAuth2 instead
-of setting ShopifyResource.site directly.
-* Session.__init__ no longer allows params to be passed in as **params
-* Session.__init__ now makes an HTTP request when using OAuth2 if
-params are specified
-* Session now exposes the access token through the token instance
-variable to simplify session saving and resuming
+- Added support for OAuth2.
+- ShopifyResource.activate_session must now be used with OAuth2 instead
+  of setting ShopifyResource.site directly.
+- Session.**init** no longer allows params to be passed in as \*\*params
+- Session.**init** now makes an HTTP request when using OAuth2 if
+  params are specified
+- Session now exposes the access token through the token instance
+  variable to simplify session saving and resuming
 
 == Version 0.4.0
 
-* Using setup.py no longer requires all dependencies
-* More compatibility fixes for using the latest pyactiveresource
-* ShopifyResource.activate_session is not recommended over setting site
-directly for forward compatibility with coming OAuth2 changes.
+- Using setup.py no longer requires all dependencies
+- More compatibility fixes for using the latest pyactiveresource
+- ShopifyResource.activate_session is not recommended over setting site
+  directly for forward compatibility with coming OAuth2 changes.
 
 == Version 0.3.1
 
-* Compatibility fixes for using latest (unreleased) pyactiveresource
+- Compatibility fixes for using latest (unreleased) pyactiveresource
 
 == Version 0.3.0
 
-* Added support for customer search and customer group search.
-* Resource errors are cleared on save from previous save attempt.
-* Made the library thread-safe using thread-local connections.
+- Added support for customer search and customer group search.
+- Resource errors are cleared on save from previous save attempt.
+- Made the library thread-safe using thread-local connections.
 
 == Version 0.2.1
 
-* Fixed a regression that caused a different connection
-object to be created on each resource.
+- Fixed a regression that caused a different connection
+  object to be created on each resource.
 
 == Version 0.2.0
 
-* Made responses available through the connection object.
+- Made responses available through the connection object.
 
 == Version 0.1.8
 
-* Added ability to add metafields on customers.
+- Added ability to add metafields on customers.
 
 == Version 0.1.7
 
-* Fixed missing theme_id in return value of Asset.find.
+- Fixed missing theme_id in return value of Asset.find.
 
 == Version 0.1.6
 
-* Fixed attribute setting on Asset objects
-* Strip path from shop_url to get just the shop's domain.
+- Fixed attribute setting on Asset objects
+- Strip path from shop_url to get just the shop's domain.
 
 == Version 0.1.5
 
-* Fixed Asset.find()
-* Fixed Variant.find(id)
-* Allow running from source directory with PYTHONPATH=./lib
+- Fixed Asset.find()
+- Fixed Variant.find(id)
+- Allow running from source directory with PYTHONPATH=./lib
 
 == Version 0.1.4
 
-* Fixed a bug in metafields method caused by missing import.
-* Prefix options can be specified in the attributes dict on creation
-* Allow count method to be used the same way as find
+- Fixed a bug in metafields method caused by missing import.
+- Prefix options can be specified in the attributes dict on creation
+- Allow count method to be used the same way as find
 
 == Version 0.1.3
 
-* Fixed the automatic download of dependencies.
-* Updated the README instructions.
+- Fixed the automatic download of dependencies.
+- Updated the README instructions.
 
 == Version 0.1.2
 
-* Add python 2.5 compatibility
+- Add python 2.5 compatibility
 
 == Version 0.1.1
 
-* Make creating a session simpler with django
+- Make creating a session simpler with django
 
 == Version 0.1.0
 
-* ported ShopifyAPI from ruby to python
+- ported ShopifyAPI from ruby to python
