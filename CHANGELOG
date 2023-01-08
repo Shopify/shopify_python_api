@@ -1,4 +1,5 @@
 == Unreleased
+- Improve: Stop reading and printing an HTTPError message on a GraphQL error
 
 == Version 12.2.0
 
