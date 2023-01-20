@@ -1,12 +1,12 @@
 name: CI
-on: [push]
+on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
     name: Python ${{ matrix.version }}
     strategy:
       matrix:
-        version: [3.7, 3.10.0]
+        version: ["3.7", "3.10"]
 
     steps:
       - name: Checkout
