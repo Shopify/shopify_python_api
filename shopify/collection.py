@@ -29,7 +29,7 @@ class PaginatedCollection(Collection):
         else:
             super(PaginatedCollection, self).__init__(metadata=metadata or {}, *args, **kwargs)
 
-        if not ("resource_class" in self.metadata):
+        if "resource_class" not in self.metadata:
             raise AttributeError('Cursor-based pagination requires a "resource_class" attribute in the metadata.')
 
         self.metadata["pagination"] = self.__parse_pagination()
@@ -101,9 +101,7 @@ class PaginatedCollection(Collection):
 
     def __iter__(self):
         """Iterates through all items, also fetching other pages."""
-        for item in super(PaginatedCollection, self).__iter__():
-            yield item
-
+        yield from super(PaginatedCollection, self).__iter__()
         if self._no_iter_next:
             return
 
@@ -112,18 +110,14 @@ class PaginatedCollection(Collection):
                 self._current_iter = self
             self._current_iter = self.next_page()
 
-            for item in self._current_iter:
-                yield item
+            yield from self._current_iter
         except IndexError:
             return
 
     def __len__(self):
         """If fetched count all the pages."""
 
-        if self._next:
-            count = len(self._next)
-        else:
-            count = 0
+        count = len(self._next) if self._next else 0
         return count + super(PaginatedCollection, self).__len__()
 
 

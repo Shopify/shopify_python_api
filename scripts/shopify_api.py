@@ -119,24 +119,23 @@ class Tasks(object):
         filename = cls._get_config_filename(connection)
         if os.path.exists(filename):
             raise ConfigFileError("There is already a config file at " + filename)
-        else:
-            config = dict(protocol="https")
-            domain = input("Domain? (leave blank for %s.myshopify.com) " % (connection))
-            if not domain.strip():
-                domain = "%s.myshopify.com" % (connection)
-            config["domain"] = domain
-            print("")
-            print("open https://%s/admin/apps/private in your browser to generate API credentials" % (domain))
-            config["api_key"] = input("API key? ")
-            config["password"] = input("Password? ")
-            config["api_version"] = input("API version? (leave blank for %s) " % (cls._default_api_version))
-            if not config["api_version"].strip():
-                config["api_version"] = cls._default_api_version
+        config = dict(protocol="https")
+        domain = input("Domain? (leave blank for %s.myshopify.com) " % (connection))
+        if not domain.strip():
+            domain = "%s.myshopify.com" % (connection)
+        config["domain"] = domain
+        print("")
+        print("open https://%s/admin/apps/private in your browser to generate API credentials" % (domain))
+        config["api_key"] = input("API key? ")
+        config["password"] = input("Password? ")
+        config["api_version"] = input("API version? (leave blank for %s) " % (cls._default_api_version))
+        if not config["api_version"].strip():
+            config["api_version"] = cls._default_api_version
 
-            if not os.path.isdir(cls._shop_config_dir):
-                os.makedirs(cls._shop_config_dir)
-            with open(filename, "w") as f:
-                f.write(yaml.dump(config, default_flow_style=False, explicit_start="---"))
+        if not os.path.isdir(cls._shop_config_dir):
+            os.makedirs(cls._shop_config_dir)
+        with open(filename, "w") as f:
+            f.write(yaml.dump(config, default_flow_style=False, explicit_start="---"))
         if len(list(cls._available_connections())) == 1:
             cls.default(connection)
 
