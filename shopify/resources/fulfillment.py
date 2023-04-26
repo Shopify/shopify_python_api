@@ -12,8 +12,9 @@ class Fulfillment(ShopifyResource):
     @classmethod
     def _split_options(cls, options):
         if cls._prefix_sources and options:
-            if cls._prefix_sources.get(tuple(options)):
-                cls._prefix_source = cls._prefix_sources[tuple(options)]
+            options_tuples = tuple(options)
+            if options_tuples in cls._prefix_sources:
+                cls._prefix_source = cls._prefix_sources[options_tuples]
 
         return super()._split_options(options)
 
@@ -39,7 +40,8 @@ class FulfillmentOrders(ShopifyResource):
     @classmethod
     def _split_options(cls, options):
         if cls._prefix_sources and options:
-            if cls._prefix_sources.get(tuple(options)):
+            options_tuples = tuple(options)
+            if options_tuples in cls._prefix_sources:
                 cls._prefix_source = cls._prefix_sources[tuple(options)]
 
         return super()._split_options(options)
