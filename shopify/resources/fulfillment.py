@@ -8,7 +8,7 @@ class Fulfillment(ShopifyResource):
         ("order_id",): "/orders/$order_id/",
         ("fulfillment_order_id",): "/fulfillment_orders/$fulfillment_order_id/",
     }
-    # cla
+
     @classmethod
     def _split_options(cls, options):
         if cls._prefix_sources and options:
