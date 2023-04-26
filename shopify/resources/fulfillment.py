@@ -1,17 +1,21 @@
-from ..base import ShopifyResource
 import json
+
+from ..base import ShopifyResource
 
 
 class Fulfillment(ShopifyResource):
+    _prefix_sources = {
+        ("order_id",): "/orders/$order_id/",
+        ("fulfillment_order_id",): "/fulfillment_orders/$fulfillment_order_id/",
+    }
+
     @classmethod
-    def _prefix(cls, options=None):
-        if options is None:
-            options = {}
-        order_id = options.get("order_id")
-        if order_id:
-            return "%s/orders/%s" % (cls.site, order_id)
-        else:
-            return cls.site
+    def _split_options(cls, options):
+        if cls._prefix_sources and options:
+            if cls._prefix_sources.get(tuple(options)):
+                cls._prefix_source = cls._prefix_sources[tuple(options)]
+
+        return super()._split_options(options)
 
     def cancel(self):
         self._load_attributes_from_response(self.post("cancel"))
@@ -28,12 +32,14 @@ class Fulfillment(ShopifyResource):
 
 
 class FulfillmentOrders(ShopifyResource):
+    _prefix_sources = {
+        ("order_id",): "/orders/$order_id/",
+    }
+
     @classmethod
-    def _prefix(cls, options=None):
-        if options is None:
-            options = {}
-        order_id = options.get("order_id")
-        if order_id:
-            return "%s/orders/%s" % (cls.site, order_id)
-        else:
-            return cls.site
+    def _split_options(cls, options):
+        if cls._prefix_sources and options:
+            if cls._prefix_sources.get(tuple(options)):
+                cls._prefix_source = cls._prefix_sources[tuple(options)]
+
+        return super()._split_options(options)
