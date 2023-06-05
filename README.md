@@ -52,7 +52,7 @@ pip install --upgrade ShopifyAPI
 
     ```python
     shop_url = "SHOP_NAME.myshopify.com"
-    api_version = '2020-10'
+    api_version = '2023-04'
     state = binascii.b2a_hex(os.urandom(15)).decode("utf-8")
     redirect_uri = "http://myapp.com/auth/shopify/callback"
     scopes = ['read_products', 'read_orders']
