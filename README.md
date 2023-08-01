@@ -51,7 +51,7 @@ pip install --upgrade ShopifyAPI
 1.  In order to access a shop's data, apps need an access token from that specific shop. We need to authenticate with that shop using OAuth, which we can start in the following way:
 
     ```python
-    shop_url = "SHOP_NAME.myshopify.com"
+    shop_url = "SHOP_NAME.myshopify.com" # You must also use this URL if you are using your own domain name!
     api_version = '2020-10'
     state = binascii.b2a_hex(os.urandom(15)).decode("utf-8")
     redirect_uri = "http://myapp.com/auth/shopify/callback"
