@@ -1,7 +1,11 @@
+import logging
+
 import shopify
 from ..base import ShopifyResource
 from six.moves import urllib
 import json
+
+logger = logging.getLogger(__name__)
 
 
 class GraphQL:
@@ -27,6 +31,5 @@ class GraphQL:
             response = urllib.request.urlopen(req)
             return response.read().decode("utf-8")
         except urllib.error.HTTPError as e:
-            print((e.read()))
-            print("")
+            logger.exception("GraphQL error response:\n%s" % e.read())
             raise e
