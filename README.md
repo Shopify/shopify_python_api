@@ -242,7 +242,7 @@ python setup.py test
 ## Relative Cursor Pagination
 Cursor based pagination support has been added in 6.0.0.
 
-```
+```python
 import shopify
 
 page1 = shopify.Product.find()
