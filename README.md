@@ -160,6 +160,12 @@ product.destroy()
 # Delete the resource from the remote server (i.e. Shopify)
 ```
 
+Here is another example to retrieve a list of open orders using certain parameters:
+
+```python
+new_orders = shopify.Order.find(status="open", limit="50")
+```
+
 ### Prefix options
 
 Some resources such as `Fulfillment` are prefixed by a parent resource in the Shopify API (e.g. `orders/450789469/fulfillments/255858046`). In order to interact with these resources, you must specify the identifier of the parent resource in your request.
