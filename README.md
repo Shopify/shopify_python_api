@@ -46,6 +46,7 @@ pip install --upgrade ShopifyAPI
 1. We then need to supply these keys to the Shopify Session Class so that it knows how to authenticate.
 
    ```python
+   import shopify
    shopify.Session.setup(api_key=API_KEY, secret=API_SECRET)
    ```
 1.  In order to access a shop's data, apps need an access token from that specific shop. We need to authenticate with that shop using OAuth, which we can start in the following way:
@@ -158,6 +159,12 @@ product.price = 19.99
 product.save()                      # => True
 product.destroy()
 # Delete the resource from the remote server (i.e. Shopify)
+```
+
+Here is another example to retrieve a list of open orders using certain parameters:
+
+```python
+new_orders = shopify.Order.find(status="open", limit="50")
 ```
 
 ### Prefix options
