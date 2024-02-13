@@ -79,7 +79,7 @@ class TestSessionTokenGetDecodedSessionToken(TestCase):
         with self.assertRaises(session_token.SessionTokenError) as cm:
             session_token.decode_from_header(self.build_auth_header(), api_key=self.api_key, secret=self.secret)
 
-        self.assertEqual("Invalid audience", str(cm.exception))
+        self.assertEqual("Audience doesn't match", str(cm.exception))
 
     def test_raises_if_issuer_hostname_is_invalid(self):
         self.payload["iss"] = "bad_shop_hostname"

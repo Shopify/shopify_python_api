@@ -2,6 +2,14 @@
 
 - Remove `cgi` import to avoid triggering a `DeprecationWarning` on Python 3.11.
 
+== Version 12.4.0
+
+- Update API version with 2023-07, 2023-10, 2024-01 releases ([#694](https://github.com/Shopify/shopify_python_api/pull/694))
+
+== Version 12.3.0
+
+- Update API version with 2023-04 release ([#649](https://github.com/Shopify/shopify_python_api/pull/649))
+
 == Version 12.2.0
 
 - Update API version with 2023-01 release ([#631](https://github.com/Shopify/shopify_python_api/pull/631))

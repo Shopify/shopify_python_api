@@ -46,13 +46,15 @@ pip install --upgrade ShopifyAPI
 1. We then need to supply these keys to the Shopify Session Class so that it knows how to authenticate.
 
    ```python
+   import shopify
+
    shopify.Session.setup(api_key=API_KEY, secret=API_SECRET)
    ```
 1.  In order to access a shop's data, apps need an access token from that specific shop. We need to authenticate with that shop using OAuth, which we can start in the following way:
 
     ```python
     shop_url = "SHOP_NAME.myshopify.com"
-    api_version = '2020-10'
+    api_version = '2024-01'
     state = binascii.b2a_hex(os.urandom(15)).decode("utf-8")
     redirect_uri = "http://myapp.com/auth/shopify/callback"
     scopes = ['read_products', 'read_orders']
@@ -160,6 +162,12 @@ product.destroy()
 # Delete the resource from the remote server (i.e. Shopify)
 ```
 
+Here is another example to retrieve a list of open orders using certain parameters:
+
+```python
+new_orders = shopify.Order.find(status="open", limit="50")
+```
+
 ### Prefix options
 
 Some resources such as `Fulfillment` are prefixed by a parent resource in the Shopify API (e.g. `orders/450789469/fulfillments/255858046`). In order to interact with these resources, you must specify the identifier of the parent resource in your request.
@@ -242,7 +250,7 @@ python setup.py test
 ## Relative Cursor Pagination
 Cursor based pagination support has been added in 6.0.0.
 
-```
+```python
 import shopify
 
 page1 = shopify.Product.find()
