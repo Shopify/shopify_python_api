@@ -47,7 +47,7 @@ pip install --upgrade ShopifyAPI
 
    ```python
    import shopify
-   
+
    shopify.Session.setup(api_key=API_KEY, secret=API_SECRET)
    ```
 1.  In order to access a shop's data, apps need an access token from that specific shop. We need to authenticate with that shop using OAuth, which we can start in the following way:
