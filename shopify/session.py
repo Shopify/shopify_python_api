@@ -13,6 +13,9 @@ from six.moves import urllib
 from shopify.api_access import ApiAccess
 from shopify.api_version import ApiVersion, Release, Unstable
 import six
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class ValidationException(Exception):
@@ -71,10 +74,13 @@ class Session(object):
         url = "https://%s/admin/oauth/access_token?" % self.url
         query_params = dict(client_id=self.api_key, client_secret=self.secret, code=code)
         request = urllib.request.Request(url, urllib.parse.urlencode(query_params).encode("utf-8"))
+        log.debug(f"Request URL: {url}, query params: {query_params}")
         response = urllib.request.urlopen(request)
+        logging.debug(f"Response: {response}")
 
         if response.code == 200:
             json_payload = json.loads(response.read().decode("utf-8"))
+            log.debug(f"Response: {json_payload}")
             self.token = json_payload["access_token"]
             self.access_scopes = json_payload["scope"]
 
