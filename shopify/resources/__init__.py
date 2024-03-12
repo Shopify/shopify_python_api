@@ -38,7 +38,7 @@ from .blog import Blog
 from .page import Page
 from .country import Country
 from .refund import Refund
-from .fulfillment import Fulfillment, FulfillmentOrders
+from .fulfillment import Fulfillment, FulfillmentOrders, FulfillmentV2
 from .fulfillment_event import FulfillmentEvent
 from .fulfillment_service import FulfillmentService
 from .carrier_service import CarrierService
