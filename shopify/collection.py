@@ -1,6 +1,4 @@
 from pyactiveresource.collection import Collection
-from six.moves.urllib.parse import urlparse, parse_qs
-import cgi
 
 
 class PaginatedCollection(Collection):
