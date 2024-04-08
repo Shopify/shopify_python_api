@@ -1,6 +1,7 @@
 == Unreleased
 
 - Remove `cgi` import to avoid triggering a `DeprecationWarning` on Python 3.11.
+- Update API version with 2024-04 release.
 
 == Version 12.4.0
 
