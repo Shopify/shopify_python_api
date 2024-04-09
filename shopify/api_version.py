@@ -37,6 +37,7 @@ class ApiVersion(object):
         cls.define_version(Release("2023-07"))
         cls.define_version(Release("2023-10"))
         cls.define_version(Release("2024-01"))
+        cls.define_version(Release("2024-04"))
 
     @classmethod
     def clear_defined_versions(cls):
