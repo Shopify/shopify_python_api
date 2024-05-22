@@ -14,6 +14,7 @@ else:
 ALGORITHM = "HS256"
 PREFIX = "Bearer "
 REQUIRED_FIELDS = ["iss", "dest", "sub", "jti", "sid"]
+EXTENSION_REQUIRED_FIELDS = ["aud", "dest", "jti", "exp", "nbf", "iat"]
 LEEWAY_SECONDS = 10
 
 
@@ -33,10 +34,11 @@ class TokenAuthenticationError(SessionTokenError):
     pass
 
 
-def decode_from_header(authorization_header, api_key, secret):
+def decode_from_header(authorization_header, api_key, secret, is_extension=False):
     session_token = _extract_session_token(authorization_header)
-    decoded_payload = _decode_session_token(session_token, api_key, secret)
-    _validate_issuer(decoded_payload)
+    decoded_payload = _decode_session_token(session_token, api_key, secret, is_extension)
+    # skip validation for tokens coming from ui-extensions
+    _validate_issuer(decoded_payload) if not is_extension else None
 
     return decoded_payload
 
@@ -48,7 +50,8 @@ def _extract_session_token(authorization_header):
     return authorization_header[len(PREFIX) :]
 
 
-def _decode_session_token(session_token, api_key, secret):
+def _decode_session_token(session_token, api_key, secret, is_extension):
+    required_fields = EXTENSION_REQUIRED_FIELDS if is_extension else REQUIRED_FIELDS
     try:
         return jwt.decode(
             session_token,
@@ -58,7 +61,7 @@ def _decode_session_token(session_token, api_key, secret):
             # AppBridge frequently sends future `nbf`, and it causes `ImmatureSignatureError`.
             # Accept few seconds clock skew to avoid this error.
             leeway=LEEWAY_SECONDS,
-            options={"require": REQUIRED_FIELDS},
+            options={"require": required_fields},
         )
     except jwt.exceptions.PyJWTError as exception:
         six.raise_from(SessionTokenError(str(exception)), exception)
