@@ -15,6 +15,6 @@ Releasing shopify_python_api
     git tag -m "Release X.Y.Z" vX.Y.Z
 
 7. Push the changes to github
-    git push --tags origin master
+    git push --tags origin main
 
 8. Shipit!
