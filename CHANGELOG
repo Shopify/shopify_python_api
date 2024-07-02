@@ -1,6 +1,9 @@
 == Unreleased
 
+- Update API version with 2024-07 release ([#](https://github.com/Shopify/shopify_python_api/pull/))
+
 == Version 12.5.0
+
 - Remove `cgi` import to avoid triggering a `DeprecationWarning` on Python 3.11.
 - Update API version with 2024-04 release.([710](https://github.com/Shopify/shopify_python_api/pull/710))
 
