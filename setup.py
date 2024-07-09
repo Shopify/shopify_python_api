@@ -24,7 +24,8 @@ setup(
     install_requires=[
         "pyactiveresource>=2.2.2",
         "PyJWT >= 2.0.0",
-        "PyYAML",
+        "PyYAML>=6.0.1; python_version>='3.12'",
+        "PyYAML; python_version<'3.12'",
         "six",
     ],
     test_suite="test",
@@ -44,6 +45,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: Software Development",
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",
