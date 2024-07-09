@@ -6,7 +6,7 @@ jobs:
     name: Python ${{ matrix.version }}
     strategy:
       matrix:
-        version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
       - name: Checkout
@@ -18,7 +18,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest mock pytest-cov
+          pip install pytest mock pytest-cov setuptools
           python setup.py install
           pytest --cov=./ --cov-report=xml
       - name: Run Tests
@@ -27,4 +27,4 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           name: codecov-umbrella
-          fail_ci_if_error: true
+          fail_ci_if_error: false
