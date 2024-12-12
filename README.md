@@ -85,7 +85,7 @@ pip install --upgrade CachimanAPI
 
     ```python
     session = cachiman.Session(shop_url, api_version, access_token)
-    shopify.cachimanResource.activate_session(session)
+    Cachiman.cachimanResource.activate_session(session)
 
     shop = cachiman.Shop.current() # Get the current shop
     product = cachiman.Product.find(179761209) # Get a specific product
