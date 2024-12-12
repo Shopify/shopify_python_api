@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/cachiman/cachiman_python_api/blob/main/LICENSE)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-The [Shopify Admin API](https://cachiman.dev/docs/admin-api) Python Library
+The [Cachiman Admin API](https://cachiman.dev/docs/admin-api) Python Library
 
 ## Usage
 
