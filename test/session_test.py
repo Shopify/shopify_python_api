@@ -86,51 +86,69 @@ class SessionTest(TestCase):
         self.assertEqual("https://testshop.myshopify.com/admin/api/unstable", assigned_site)
         self.assertEqual("https://none/admin/api/unstable", shopify.ShopifyResource.site)
 
-    def test_create_permission_url_returns_correct_url_with_single_scope_and_redirect_uri(self):
+    def test_create_permission_url_returns_correct_url_with_redirect_uri(self):
+        shopify.Session.setup(api_key="My_test_key", secret="My test secret")
+        session = shopify.Session("http://localhost.myshopify.com", "unstable")
+        permission_url = session.create_permission_url("my_redirect_uri.com")
+        self.assertEqual(
+            "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com",
+            self.normalize_url(permission_url),
+        )
+
+    def test_create_permission_url_returns_correct_url_with_redirect_uri_and_single_scope(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session("http://localhost.myshopify.com", "unstable")
         scope = ["write_products"]
-        permission_url = session.create_permission_url(scope, "my_redirect_uri.com")
+        permission_url = session.create_permission_url("my_redirect_uri.com", scope=scope)
         self.assertEqual(
             "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=write_products",
             self.normalize_url(permission_url),
         )
 
-    def test_create_permission_url_returns_correct_url_with_dual_scope_and_redirect_uri(self):
+    def test_create_permission_url_returns_correct_url_with_redirect_uri_and_dual_scope(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session("http://localhost.myshopify.com", "unstable")
         scope = ["write_products", "write_customers"]
-        permission_url = session.create_permission_url(scope, "my_redirect_uri.com")
+        permission_url = session.create_permission_url("my_redirect_uri.com", scope=scope)
         self.assertEqual(
             "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=write_products%2Cwrite_customers",
             self.normalize_url(permission_url),
         )
 
-    def test_create_permission_url_returns_correct_url_with_no_scope_and_redirect_uri(self):
+    def test_create_permission_url_returns_correct_url_with_redirect_uri_and_empty_scope(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session("http://localhost.myshopify.com", "unstable")
         scope = []
-        permission_url = session.create_permission_url(scope, "my_redirect_uri.com")
+        permission_url = session.create_permission_url("my_redirect_uri.com", scope=scope)
         self.assertEqual(
-            "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=",
+            "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com",
             self.normalize_url(permission_url),
         )
 
-    def test_create_permission_url_returns_correct_url_with_no_scope_and_redirect_uri_and_state(self):
+    def test_create_permission_url_returns_correct_url_with_redirect_uri_and_state(self):
+        shopify.Session.setup(api_key="My_test_key", secret="My test secret")
+        session = shopify.Session("http://localhost.myshopify.com", "unstable")
+        permission_url = session.create_permission_url("my_redirect_uri.com", state="mystate")
+        self.assertEqual(
+            "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&state=mystate",
+            self.normalize_url(permission_url),
+        )
+
+    def test_create_permission_url_returns_correct_url_with_redirect_uri_empty_scope_and_state(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session("http://localhost.myshopify.com", "unstable")
         scope = []
-        permission_url = session.create_permission_url(scope, "my_redirect_uri.com", state="mystate")
+        permission_url = session.create_permission_url("my_redirect_uri.com", scope=scope, state="mystate")
         self.assertEqual(
-            "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=&state=mystate",
+            "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&state=mystate",
             self.normalize_url(permission_url),
         )
 
-    def test_create_permission_url_returns_correct_url_with_single_scope_and_redirect_uri_and_state(self):
+    def test_create_permission_url_returns_correct_url_with_redirect_uri_and_single_scope_and_state(self):
         shopify.Session.setup(api_key="My_test_key", secret="My test secret")
         session = shopify.Session("http://localhost.myshopify.com", "unstable")
         scope = ["write_customers"]
-        permission_url = session.create_permission_url(scope, "my_redirect_uri.com", state="mystate")
+        permission_url = session.create_permission_url("my_redirect_uri.com", scope=scope, state="mystate")
         self.assertEqual(
             "https://localhost.myshopify.com/admin/oauth/authorize?client_id=My_test_key&redirect_uri=my_redirect_uri.com&scope=write_customers&state=mystate",
             self.normalize_url(permission_url),

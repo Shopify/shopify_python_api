@@ -66,10 +66,12 @@ pip install --upgrade ShopifyAPI
     api_version = '2024-07'
     state = binascii.b2a_hex(os.urandom(15)).decode("utf-8")
     redirect_uri = "http://myapp.com/auth/shopify/callback"
+    # `scope` should be omitted if provided by app's TOML
     scopes = ['read_products', 'read_orders']
 
     newSession = shopify.Session(shop_url, api_version)
-    auth_url = newSession.create_permission_url(scopes, redirect_uri, state)
+    # `scope` should be omitted if provided by app's TOML
+    auth_url = newSession.create_permission_url(redirect_uri, scopes, state)
     # redirect to auth_url
     ```
 
@@ -155,7 +157,7 @@ _Note: Your application must be public to test the billing process. To test on a
 > **⚠️ Note**: As of October 1, 2024, the REST Admin API is legacy:
 > - Public apps must migrate to GraphQL by February 2025
 > - Custom apps must migrate to GraphQL by April 2025
-> 
+>
 > For migration guidance, see [Shopify's migration guide](https://shopify.dev/docs/apps/build/graphql/migrate/new-product-model)
 
 It is recommended to have at least a basic grasp on the principles of the [pyactiveresource](https://github.com/Shopify/pyactiveresource) library, which is a port of rails/ActiveResource to Python and upon which this package relies heavily.
