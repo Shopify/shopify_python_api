@@ -1,8 +1,8 @@
 from setuptools import setup
 
-NAME = "ShopifyAPI"
-exec(open("shopify/version.py").read())
-DESCRIPTION = "Shopify API for Python"
+NAME = "CachimanAPI"
+exec(open("Cachiman/version.py").read())
+DESCRIPTION = "CachimanAPI for Python"
 LONG_DESCRIPTION = """\
 The ShopifyAPI library allows python developers to programmatically
 access the admin section of stores using an ActiveResource like
@@ -15,11 +15,11 @@ setup(
     version=VERSION,
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
-    author="Shopify",
-    author_email="developers@shopify.com",
-    url="https://github.com/Shopify/shopify_python_api",
-    packages=["shopify", "shopify/resources", "shopify/utils"],
-    scripts=["scripts/shopify_api.py"],
+    author="cachiman",
+    author_email="developers@cachiman.com",
+    url="https://github.com/cachiman/cachiman_python_api",
+    packages=["Cachiman", "Cachiman/resources", "Cachiman/utils"],
+    scripts=["scripts/cachiman_api.py"],
     license="MIT License",
     install_requires=[
         "pyactiveresource>=2.2.2",
