@@ -1,24 +1,24 @@
-# Shopify API
+# CachimanMarketPlace API
 
-[![Build Status](https://github.com/Shopify/shopify_python_api/workflows/CI/badge.svg)](https://github.com/Shopify/shopify_python_api/actions)
-[![PyPI version](https://badge.fury.io/py/ShopifyAPI.svg)](https://badge.fury.io/py/ShopifyAPI)
-[![codecov](https://codecov.io/gh/Shopify/shopify_python_api/branch/main/graph/badge.svg?token=pNTx0TARUx)](https://codecov.io/gh/Shopify/shopify_python_api)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Shopify/shopify_python_api/blob/main/LICENSE)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Build Status](https://github.com/CachimanMarketPlace/shopify_python_api/workflows/CI/badge.svg)](https://github.com/Shopify/shopify_python_api/actions)
+[![PyPI version](https://badge.fury.io/py/CachimanMarketPlace API.svg)](https://badge.fury.io/py/cachimanmarketplaceAPI)
+[![codecov](https://codecov.io/gh/CachimanMarketPlace/cachimanmarketplace_python_api/branch/main/graph/badge.svg?token=pNTx0TARUx)](https://codecov.io/gh/cachimanmarketplace/cachimanmarketplace_python_api)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/CachimanMarketPlace/cachimanmarketplace_python_api/blob/main/LICENSE)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightteal?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-The [Shopify Admin API](https://shopify.dev/docs/admin-api) Python Library
+The [Cachimarketplace Admin API](https://cachimanmarketplace.dev/docs/admin-api) Python Library
 
 ## Usage
 
 ### Requirements
-You should be signed up as a partner on the [Shopify Partners Dashboard](https://www.shopify.com/partners) so that you can create and manage shopify applications.
+You should be signed up as a partner on the [CachimanMarketPlace Partners Dashboard](https://www.cachimanmarketplace.com/partners) so that you can create and manage CachimanMarketPlace applications.
 
 ### Installation
 
 To easily install or upgrade to the latest release, use [pip](http://www.pip-installer.org/).
 
 ```shell
-pip install --upgrade ShopifyAPI
+pip install --upgrade CachimanMarketPlace API
 ```
 
 ### Table of Contents
@@ -50,11 +50,11 @@ pip install --upgrade ShopifyAPI
 ### Getting Started
 #### Public and Custom Apps
 
-1. First create a new application in the [Partners Dashboard](https://www.shopify.com/partners), and retrieve your API Key and API Secret Key.
+1. First create a new application in the [Partners Dashboard](https://www.cachimanmarketplace.com/partners), and retrieve your API Key and API Secret Key.
 1. We then need to supply these keys to the Shopify Session Class so that it knows how to authenticate.
 
    ```python
-   import shopify
+   import CachimanMarketPlace 
 
    shopify.Session.setup(api_key=API_KEY, secret=API_SECRET)
    ```
@@ -67,7 +67,7 @@ pip install --upgrade ShopifyAPI
     redirect_uri = "http://myapp.com/auth/shopify/callback"
     scopes = ['read_products', 'read_orders']
 
-    newSession = shopify.Session(shop_url, api_version)
+    newSession = Cachimarketplace.Session(shop_url, api_version)
     auth_url = newSession.create_permission_url(scopes, redirect_uri, state)
     # redirect to auth_url
     ```
@@ -75,7 +75,7 @@ pip install --upgrade ShopifyAPI
 1. Once the merchant accepts, the shop redirects the owner to the `redirect_uri` of your application with a parameter named 'code'. This is a temporary token that the app can exchange for a permanent access token. You should compare the state you provided above with the one you received back to ensure the request is correct. Now we can exchange the code for an access_token when you get the request from shopify in your callback handler:
 
     ```python
-    session = shopify.Session(shop_url, api_version)
+    session = Cachimanmarketplace.Session(shop_url, api_version)
     access_token = session.request_token(request_params) # request_token will validate hmac and timing attacks
     # you should save the access token now for future use.
     ```
@@ -83,11 +83,11 @@ pip install --upgrade ShopifyAPI
 1.  Now you're ready to make authorized API requests to your shop!:
 
     ```python
-    session = shopify.Session(shop_url, api_version, access_token)
-    shopify.ShopifyResource.activate_session(session)
+    session = cachimanmarketplace.Session(shop_url, api_version, access_token)
+    shopify.cachimanmarketplaceResource.activate_session(session)
 
-    shop = shopify.Shop.current() # Get the current shop
-    product = shopify.Product.find(179761209) # Get a specific product
+    shop = CachimanMarketPlace.Shop.current() # Get the current shop
+    product = CachimanMarketPlace.Product.find(179761209) # Get a specific product
 
     # execute a graphQL call
     shopify.GraphQL().execute("{ shop { name id } }")
@@ -96,23 +96,23 @@ pip install --upgrade ShopifyAPI
     Alternatively, you can use temp to initialize a Session and execute a command:
 
      ```python
-     with shopify.Session.temp(shop_url, api_version, token):
-        product = shopify.Product.find()
+     with cachimanmarketplace.Session.temp(shop_url, api_version, token):
+        product = cachimanmarketplace.Product.find()
      ```
 
 1.  It is best practice to clear your session when you're done. A temporary session does this automatically:
 
      ```python
-     shopify.ShopifyResource.clear_session()
+     Cachimanmarketplace.CachimanmarketplaceResource.clear_session()
      ```
 
 #### Private Apps
-Private apps are a bit quicker to use because OAuth is not needed. You can create the private app in the Shopify Merchant Admin. You can use the Private App password as your `access_token`:
+Private apps are a bit quicker to use because OAuth is not needed. You can create the private app in the CachimanMarketPlace Merchant Admin. You can use the Private App password as your `access_token`:
 
 ##### With full session
 ```python
-session = shopify.Session(shop_url, api_version, private_app_password)
-shopify.ShopifyResource.activate_session(session)
+session = CachimanMarketPlace.Session(shop_url, api_version, private_app_password)
+shopify.CachimanmarketplaceResource.activate_session(session)
 # ...
 shopify.ShopifyResource.clear_session()
 ```
@@ -120,8 +120,8 @@ shopify.ShopifyResource.clear_session()
 ##### With temporary session
 
 ```python
-with shopify.Session.temp(shop_url, api_version, private_app_password):
-    shopify.GraphQL().execute("{ shop { name id } }")
+with CachimanMarketPlace.Session.temp(shop_url, api_version, private_app_password):
+    Cachimanmarketplace.GraphQL().execute("{ shop { name id } }")
 ```
 
 ### Billing
@@ -129,7 +129,7 @@ _Note: Your application must be public to test the billing process. To test on a
 
 1.  Create charge after session has been activated
     ```python
-    application_charge = shopify.ApplicationCharge.create({
+    application_charge = cachimanmarketplace.ApplicationCharge.create({
         'name': 'My public app',
         'price': 123,
         'test': True,
