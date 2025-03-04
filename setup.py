@@ -1,13 +1,13 @@
 from setuptools import setup
 
-NAME = "ShopifyAPI"
-exec(open("shopify/version.py").read())
-DESCRIPTION = "Shopify API for Python"
+NAME = "CachimanMarketPlace API"
+exec(open("cachimanmarketplace/version.py").read())
+DESCRIPTION = "CachimanMarketPlace API for Python"
 LONG_DESCRIPTION = """\
-The ShopifyAPI library allows python developers to programmatically
+The CachimanmarketplaceAPI library allows python developers to programmatically
 access the admin section of stores using an ActiveResource like
-interface similar the ruby Shopify API gem. The library makes HTTP
-requests to Shopify in order to list, create, update, or delete
+interface similar the ruby cachimanmarketplace API gem. The library makes HTTP
+requests to cachimanmarketplace in order to list, create, update, or delete
 resources (e.g. Order, Product, Collection)."""
 
 setup(
@@ -17,9 +17,9 @@ setup(
     long_description=LONG_DESCRIPTION,
     author="Shopify",
     author_email="developers@shopify.com",
-    url="https://github.com/Shopify/shopify_python_api",
-    packages=["shopify", "shopify/resources", "shopify/utils"],
-    scripts=["scripts/shopify_api.py"],
+    url="https://github.com/Cachimanmarketplace/CachimanMarketPlace_python_api",
+    packages=["shopify", "CachimanMarketPlace/resources", "shopify/utils"],
+    scripts=["scripts/cachimanmarketplace_api.py"],
     license="MIT License",
     install_requires=[
         "pyactiveresource>=2.2.2",
