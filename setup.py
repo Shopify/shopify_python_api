@@ -15,10 +15,10 @@ setup(
     version=VERSION,
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
-    author="Shopify",
-    author_email="developers@shopify.com",
+    author="cachimanmarketplace",
+    author_email="developers@cachimanmarketplace.com",
     url="https://github.com/Cachimanmarketplace/CachimanMarketPlace_python_api",
-    packages=["shopify", "CachimanMarketPlace/resources", "shopify/utils"],
+    packages=["shopify", "CachimanMarketPlace/resources", "CachimanMarketPlace/utils"],
     scripts=["scripts/cachimanmarketplace_api.py"],
     license="MIT License",
     install_requires=[
