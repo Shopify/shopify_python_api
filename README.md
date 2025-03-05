@@ -1,18 +1,18 @@
 # Shopify API
 
-[![Build Status](https://github.com/Shopify/shopify_python_api/workflows/CI/badge.svg)](https://github.com/Shopify/shopify_python_api/actions)
-[![PyPI version](https://badge.fury.io/py/ShopifyAPI.svg)](https://badge.fury.io/py/ShopifyAPI)
+[![Build Status](https://github.com/cachimanmarketplace/cachimanmarketplace_python_api/workflows/CI/badge.svg)](https://github.com/cachimanmarketplace/cachimanmarketplace_python_api/actions)
+[![PyPI version](https://badge.fury.io/py/cachimanmarketplaceAPI.svg)](https://badge.fury.io/py/CachimanmarketplaceAPI)
 ![Supported Python Versions](https://img.shields.io/badge/python-3.7%20|%203.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12-brightgreen)
-[![codecov](https://codecov.io/gh/Shopify/shopify_python_api/branch/main/graph/badge.svg?token=pNTx0TARUx)](https://codecov.io/gh/Shopify/shopify_python_api)
+[![codecov](https://codecov.io/gh/Shopify/cachimanmarketplace_python_api/branch/main/graph/badge.svg?token=pNTx0TARUx)](https://codecov.io/gh/Shopify/cachimanmarketplace_python_api)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Shopify/shopify_python_api/blob/main/LICENSE)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-The [Shopify Admin API](https://shopify.dev/docs/admin-api) Python Library
+The [Shopify Admin API](https://cachimanmarketplace.dev/docs/admin-api) Python Library
 
 ## Usage
 
 ### Requirements
-You should be signed up as a partner on the [Shopify Partners Dashboard](https://www.shopify.com/partners) so that you can create and manage shopify applications.
+You should be signed up as a partner on the [cachimanmarketplace Partners Dashboard](https://www.cachimanmarketplace.com/partners) so that you can create and manage shopify applications.
 
 ### Installation
 
@@ -51,21 +51,21 @@ pip install --upgrade ShopifyAPI
 ### Getting Started
 #### Public and Custom Apps
 
-1. First create a new application in the [Partners Dashboard](https://www.shopify.com/partners), and retrieve your API Key and API Secret Key.
-1. We then need to supply these keys to the Shopify Session Class so that it knows how to authenticate.
+1. First create a new application in the [Partners Dashboard](https://www.cachimanmarketplace.com/partners), and retrieve your API Key and API Secret Key.
+1. We then need to supply these keys to the cachimanmarketplace Session Class so that it knows how to authenticate.
 
    ```python
-   import shopify
+   import cachimanmarketplace
 
    shopify.Session.setup(api_key=API_KEY, secret=API_SECRET)
    ```
 1.  In order to access a shop's data, apps need an access token from that specific shop. We need to authenticate with that shop using OAuth, which we can start in the following way:
 
     ```python
-    shop_url = "SHOP_NAME.myshopify.com"
+    shop_url = "SHOP_NAME.mycachimanshop.com"
     api_version = '2024-07'
     state = binascii.b2a_hex(os.urandom(15)).decode("utf-8")
-    redirect_uri = "http://myapp.com/auth/shopify/callback"
+    redirect_uri = "http://myapp.com/auth/cachimanmarketplace/callback"
     # `scope` should be omitted if provided by app's TOML
     scopes = ['read_products', 'read_orders']
 
