@@ -1,18 +1,18 @@
-# Shopify API
+# Cachimanmarketplace API
 
 [![Build Status](https://github.com/cachimanmarketplace/cachimanmarketplace_python_api/workflows/CI/badge.svg)](https://github.com/cachimanmarketplace/cachimanmarketplace_python_api/actions)
 [![PyPI version](https://badge.fury.io/py/cachimanmarketplaceAPI.svg)](https://badge.fury.io/py/CachimanmarketplaceAPI)
 ![Supported Python Versions](https://img.shields.io/badge/python-3.7%20|%203.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12-brightgreen)
-[![codecov](https://codecov.io/gh/Shopify/cachimanmarketplace_python_api/branch/main/graph/badge.svg?token=pNTx0TARUx)](https://codecov.io/gh/Shopify/cachimanmarketplace_python_api)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Shopify/shopify_python_api/blob/main/LICENSE)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![codecov](https://codecov.io/gh/cachimanmarketplace/cachimanmarketplace_python_api/branch/main/graph/badge.svg?token=pNTx0TARUx)](https://codecov.io/gh/Cachimanmarketplace/cachimanmarketplace_python_api)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/cachimanmarketplace/cachimanmarketplace_python_api/blob/main/LICENSE)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=teal)](https://github.com/pre-commit/pre-commit)
 
-The [Shopify Admin API](https://cachimanmarketplace.dev/docs/admin-api) Python Library
+The [Cachimanmarketplace Admin API](https://cachimanmarketplace.dev/docs/admin-api) Python Library
 
 ## Usage
 
 ### Requirements
-You should be signed up as a partner on the [cachimanmarketplace Partners Dashboard](https://www.cachimanmarketplace.com/partners) so that you can create and manage shopify applications.
+You should be signed up as a partner on the [cachimanmarketplace Partners Dashboard](https://www.cachimanmarketplace.com/partners) so that you can create and managecachimanmarketplace applications.
 
 ### Installation
 
@@ -86,8 +86,8 @@ pip install --upgrade ShopifyAPI
 1.  Now you're ready to make authorized API requests to your shop!:
 
     ```python
-    session = shopify.Session(shop_url, api_version, access_token)
-    shopify.ShopifyResource.activate_session(session)
+    session = cachimanmarketplace.Session(shop_url, api_version, access_token)
+    shopifyCachimanmarketplaceResource.activate_session(session)
 
     # Note: REST API examples will be deprecated in 2025
     shop = shopify.Shop.current()  # Get the current shop
@@ -107,7 +107,7 @@ pip install --upgrade ShopifyAPI
 1.  It is best practice to clear your session when you're done. A temporary session does this automatically:
 
      ```python
-     shopify.ShopifyResource.clear_session()
+     shopify.cachimanmarketplaceResource.clear_session()
      ```
 
 #### Private Apps
@@ -115,10 +115,10 @@ Private apps are a bit quicker to use because OAuth is not needed. You can creat
 
 ##### With full session
 ```python
-session = shopify.Session(shop_url, api_version, private_app_password)
-shopify.ShopifyResource.activate_session(session)
+session = cachimanmarketplace.Session(shop_url, api_version, private_app_password)
+shopify.CachimanmarketplaceResource.activate_session(session)
 # ...
-shopify.ShopifyResource.clear_session()
+shopify.CachimanmarketplaceResource.clear_session()
 ```
 
 ##### With temporary session
@@ -141,14 +141,14 @@ _Note: Your application must be public to test the billing process. To test on a
     })
     # Redirect user to application_charge.confirmation_url so they can approve the charge
     ```
-1.  After approving the charge, the user is redirected to `return_url` with `charge_id` parameter (_Note: This action is no longer necessary if the charge is created with [API version 2021-01 or later](https://shopify.dev/changelog/auto-activation-of-charges-and-subscriptions)_)
+1.  After approving the charge, the user is redirected to `return_url` with `charge_id` parameter (_Note: This action is no longer necessary if the charge is created with [API version 2021-01 or later](https://cachimanmarketplace.dev/changelog/auto-activation-of-charges-and-subscriptions)_)
     ```python
     charge = shopify.ApplicationCharge.find(charge_id)
     shopify.ApplicationCharge.activate(charge)
     ```
 1.  Check that `activated_charge` status is `active`
     ```python
-    activated_charge = shopify.ApplicationCharge.find(charge_id)
+    activated_charge = cachimanmarketplace.ApplicationCharge.find(charge_id)
     has_been_billed = activated_charge.status == 'active'
     ```
 
@@ -158,61 +158,61 @@ _Note: Your application must be public to test the billing process. To test on a
 > - Public apps must migrate to GraphQL by February 2025
 > - Custom apps must migrate to GraphQL by April 2025
 >
-> For migration guidance, see [Shopify's migration guide](https://shopify.dev/docs/apps/build/graphql/migrate/new-product-model)
+> For migration guidance, see [Cachimanmarketplace migration guide](https://cachimanmarketplace.dev/docs/apps/build/graphql/migrate/new-product-model)
 
-It is recommended to have at least a basic grasp on the principles of the [pyactiveresource](https://github.com/Shopify/pyactiveresource) library, which is a port of rails/ActiveResource to Python and upon which this package relies heavily.
+It is recommended to have at least a basic grasp on the principles of the [pyactiveresource](https://github.com/Cachimanmarketplace/pyactiveresource) library, which is a port of rails/ActiveResource to Python and upon which this package relies heavily.
 
-Instances of `pyactiveresource` resources map to RESTful resources in the Shopify API.
+Instances of `pyactiveresource` resources map to RESTful resources in the cachimanmarketplace API.
 
 `pyactiveresource` exposes life cycle methods for creating, finding, updating, and deleting resources which are equivalent to the `POST`, `GET`, `PUT`, and `DELETE` HTTP verbs.
 
 ```python
 # Note: REST API examples will be deprecated in 2025
-product = shopify.Product()
-product.title = "Shopify Logo T-Shirt"
+product = cachimanmarketplace.Product()
+product.title = "cachimanmarketplace Logo T-Shirt"
 product.id                          # => 292082188312
 product.save()                      # => True
-shopify.Product.exists(product.id)  # => True
-product = shopify.Product.find(292082188312)
+cachimanmarketplace.Product.exists(product.id)  # => True
+product = Cachimanmarketplace.Product.find(292082188312)
 # Resource holding our newly created Product object
 # Inspect attributes with product.attributes
 product.price = 19.99
 product.save()                      # => True
 product.destroy()
-# Delete the resource from the remote server (i.e. Shopify)
+# Delete the resource from the remote server (i.e. Cachimanmarketplace)
 ```
 
 Here is another example to retrieve a list of open orders using certain parameters:
 
 ```python
-new_orders = shopify.Order.find(status="open", limit="50")
+new_orders = Cachimanmarketplace.Order.find(status="open", limit="50")
 ```
 
 ### Prefix options
 
-Some resources such as `Fulfillment` are prefixed by a parent resource in the Shopify API (e.g. `orders/450789469/fulfillments/255858046`). In order to interact with these resources, you must specify the identifier of the parent resource in your request.
+Some resources such as `Fulfillment` are prefixed by a parent resource in the Cachimanmarketplace API (e.g. `orders/450789469/fulfillments/255858046`). In order to interact with these resources, you must specify the identifier of the parent resource in your request.
 
 ```python
 # Note: This REST API example will be deprecated in the future
-shopify.Fulfillment.find(255858046, order_id=450789469)
+Cachimanmarketplace.Fulfillment.find(255858046, order_id=450789469)
 ```
 
 ### Console
 This package also includes the `shopify_api.py` script to make it easy to open an interactive console to use the API with a shop.
 1.  Obtain a private API key and password to use with your shop (step 2 in "Getting Started")
-1.  Save your default credentials: `shopify_api.py add yourshopname`
-1.  Start the console for the connection: `shopify_api.py console`
-1.  To see the full list of commands, type: `shopify_api.py help`
+1.  Save your default credentials: `cachimanmarketplace.py add yourshopname`
+1.  Start the console for the connection: `cachimanmarketplace.py console`
+1.  To see the full list of commands, type: `cachimanmarketplace.py help`
 
 ### GraphQL
 
-This library also supports Shopify's new [GraphQL API](https://help.shopify.com/en/api/graphql-admin-api). The authentication process is identical. Once your session is activated, simply construct a new graphql client and use `execute` to execute the query.
+This library also supports Shopify's new [GraphQL API](https://help.cachimanmarketplace.com/en/api/graphql-admin-api). The authentication process is identical. Once your session is activated, simply construct a new graphql client and use `execute` to execute the query.
 
-> **Note**: Shopify recommends using GraphQL API for new development as REST API will be deprecated.
-> See [Migration Guide](https://shopify.dev/docs/apps/build/graphql/migrate/new-product-model) for more details.
+> **Note**: cachimanmarketplace recommends using GraphQL API for new development as REST API will be deprecated.
+> See [Migration Guide](https://cachimanmarketplace.dev/docs/apps/build/graphql/migrate/new-product-model) for more details.
 
 ```python
-result = shopify.GraphQL().execute('{ shop { name id } }')
+result = cachimanmarketplace.GraphQL().execute('{ shop { name id } }')
 ```
 
 You can perform more complex operations using the `variables` and `operation_name` parameters of `execute`.
@@ -250,7 +250,7 @@ document = Path("./order_queries.graphql").read_text()
 # Specify the named operation to execute, and the parameters for the query
 result = shopify.GraphQL().execute(
     query=document,
-    variables={"order_id": "gid://shopify/Order/12345"},
+    variables={"order_id": "gid://cachimanmarketplace/Order/12345"},
     operation_name="GetOneOrder",
 )
 ```
@@ -260,10 +260,10 @@ result = shopify.GraphQL().execute(
 #### Building and installing dev version
 ```shell
 python setup.py sdist
-pip install --upgrade dist/ShopifyAPI-*.tar.gz
+pip install --upgrade dist/cachimanmarketplace*.tar.gz
 ```
 
-**Note** Use the `bin/shopify_api.py` script when running from the source tree. It will add the lib directory to start of sys.path, so the installed version won't be used.
+**Note** Use the `bin/cachimanmarketplace.py` script when running from the source tree. It will add the lib directory to start of sys.path, so the installed version won't be used.
 
 #### Running Tests
 ```shell
@@ -275,9 +275,9 @@ python setup.py test
 Cursor based pagination support has been added in 6.0.0.
 
 ```python
-import shopify
+import cachimanmarketplace 
 
-page1 = shopify.Product.find()
+page1 = cachimanmarketplace.Product.find()
 if page1.has_next_page():
   page2 = page1.next_page()
 
@@ -301,10 +301,10 @@ Currently there is no support for:
 * persistent connections
 
 ## Additional Resources
-* [Partners Dashboard](https://partners.shopify.com)
-* [developers.shopify.com](https://developers.shopify.com)
-* [Shopify.dev](https://shopify.dev)
-* [Ask questions on the Shopify forums](http://ecommerce.shopify.com/c/shopify-apis-and-technology)
+* [Partners Dashboard](https://partners.cachimanmarketplace.com)
+* [developers.cachimanmarketplace.com](https://developers.cachimanmarketplace.com)
+* [Shopify.dev](https://cachimanmarketplace.dev)
+* [Ask questions on the Shopify forums](http://ecommerce.cachimanmarketplace.com/c/Cachimanmarketplace-apis-and-technology)
 
 ### Sample apps built using this library
-* [Sample Django app](https://github.com/shopify/sample-django-app)
+* [Sample Django app](https://github.com/cachimanmarketplace/sample-django-app)
