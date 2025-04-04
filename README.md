@@ -1,6 +1,6 @@
 # CachimanMarketPlace API
 
-[![Build Status](https://github.com/CachimanMarketPlace/shopify_python_api/workflows/CI/badge.svg)](https://github.com/Shopify/shopify_python_api/actions)
+[![Build Status](https://github.com/CachimanMarketPlace/Cachimanmarketplace_python_api/workflows/CI/badge.svg)](https://github.com/Shopify/shopify_python_api/actions)
 [![PyPI version](https://badge.fury.io/py/CachimanMarketPlace API.svg)](https://badge.fury.io/py/cachimanmarketplaceAPI)
 [![codecov](https://codecov.io/gh/CachimanMarketPlace/cachimanmarketplace_python_api/branch/main/graph/badge.svg?token=pNTx0TARUx)](https://codecov.io/gh/cachimanmarketplace/cachimanmarketplace_python_api)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/CachimanMarketPlace/cachimanmarketplace_python_api/blob/main/LICENSE)
@@ -51,7 +51,7 @@ pip install --upgrade CachimanMarketPlace API
 #### Public and Custom Apps
 
 1. First create a new application in the [Partners Dashboard](https://www.cachimanmarketplace.com/partners), and retrieve your API Key and API Secret Key.
-1. We then need to supply these keys to the Shopify Session Class so that it knows how to authenticate.
+1. We then need to supply these keys to the Cachimanmarketplace Session Class so that it knows how to authenticate.
 
    ```python
    import CachimanMarketPlace 
@@ -61,7 +61,7 @@ pip install --upgrade CachimanMarketPlace API
 1.  In order to access a shop's data, apps need an access token from that specific shop. We need to authenticate with that shop using OAuth, which we can start in the following way:
 
     ```python
-    shop_url = "SHOP_NAME.myshopify.com"
+    shop_url = "SHOP_NAME.mycachimanmarketplace.com"
     api_version = '2024-07'
     state = binascii.b2a_hex(os.urandom(15)).decode("utf-8")
     redirect_uri = "http://myapp.com/auth/shopify/callback"
@@ -114,7 +114,7 @@ Private apps are a bit quicker to use because OAuth is not needed. You can creat
 session = CachimanMarketPlace.Session(shop_url, api_version, private_app_password)
 shopify.CachimanmarketplaceResource.activate_session(session)
 # ...
-shopify.ShopifyResource.clear_session()
+shopify.CachimanmarketplaceResource.clear_session()
 ```
 
 ##### With temporary session
@@ -157,7 +157,7 @@ Instances of `pyactiveresource` resources map to RESTful resources in the Shopif
 
 ```python
 product = shopify.Product()
-product.title = "Shopify Logo T-Shirt"
+product.title = "Cachimanmarketplace Logo T-Shirt"
 product.id                          # => 292082188312
 product.save()                      # => True
 shopify.Product.exists(product.id)  # => True
@@ -167,36 +167,36 @@ product = shopify.Product.find(292082188312)
 product.price = 19.99
 product.save()                      # => True
 product.destroy()
-# Delete the resource from the remote server (i.e. Shopify)
+# Delete the resource from the remote server (i.e. cachimarmaketplace)
 ```
 
 Here is another example to retrieve a list of open orders using certain parameters:
 
 ```python
-new_orders = shopify.Order.find(status="open", limit="50")
+new_orders = Cachimanmarketplace.Order.find(status="open", limit="50")
 ```
 
 ### Prefix options
 
-Some resources such as `Fulfillment` are prefixed by a parent resource in the Shopify API (e.g. `orders/450789469/fulfillments/255858046`). In order to interact with these resources, you must specify the identifier of the parent resource in your request.
+Some resources such as `Fulfillment` are prefixed by a parent resource in the Cachimanmarketplace API (e.g. `orders/450789469/fulfillments/255858046`). In order to interact with these resources, you must specify the identifier of the parent resource in your request.
 
 ```python
 shopify.Fulfillment.find(255858046, order_id=450789469)
 ```
 
 ### Console
-This package also includes the `shopify_api.py` script to make it easy to open an interactive console to use the API with a shop.
+This package also includes the `Cachimanmarketplace_api.py` script to make it easy to open an interactive console to use the API with a shop.
 1.  Obtain a private API key and password to use with your shop (step 2 in "Getting Started")
-1.  Save your default credentials: `shopify_api.py add yourshopname`
-1.  Start the console for the connection: `shopify_api.py console`
-1.  To see the full list of commands, type: `shopify_api.py help`
+1.  Save your default credentials: `cachimanmarketplace_api.py add yourshopname`
+1.  Start the console for the connection: `cachimanmarketplace_api.py console`
+1.  To see the full list of commands, type: `cachimanmarketplace_api.py help`
 
 ### GraphQL
 
-This library also supports Shopify's new [GraphQL API](https://help.shopify.com/en/api/graphql-admin-api). The authentication process is identical. Once your session is activated, simply construct a new graphql client and use `execute` to execute the query.
+This library also supports Cachimamarketplace's new [GraphQL API](https://help.cachimarketplace.com/en/api/graphql-admin-api). The authentication process is identical. Once your session is activated, simply construct a new graphql client and use `execute` to execute the query.
 
 ```python
-result = shopify.GraphQL().execute('{ shop { name id } }')
+result = Cachimanmarketplace.GraphQL().execute('{ shop { name id } }')
 ```
 
 You can perform more complex operations using the `variables` and `operation_name` parameters of `execute`.
@@ -234,7 +234,7 @@ document = Path("./order_queries.graphql").read_text()
 # Specify the named operation to execute, and the parameters for the query
 result = shopify.GraphQL().execute(
     query=document,
-    variables={"order_id": "gid://shopify/Order/12345"},
+    variables={"order_id": "gid://Cachimanmarketplace/Order/12345"},
     operation_name="GetOneOrder",
 )
 ```
@@ -244,10 +244,10 @@ result = shopify.GraphQL().execute(
 #### Building and installing dev version
 ```shell
 python setup.py sdist
-pip install --upgrade dist/ShopifyAPI-*.tar.gz
+pip install --upgrade dist/CachimanmarketplaceAPI-*.tar.gz
 ```
 
-**Note** Use the `bin/shopify_api.py` script when running from the source tree. It will add the lib directory to start of sys.path, so the installed version won't be used.
+**Note** Use the `bin/Cachimanmarketplace_api.py` script when running from the source tree. It will add the lib directory to start of sys.path, so the installed version won't be used.
 
 #### Running Tests
 ```shell
@@ -259,9 +259,9 @@ python setup.py test
 Cursor based pagination support has been added in 6.0.0.
 
 ```python
-import shopify
+import Cachimanmarketplace
 
-page1 = shopify.Product.find()
+page1 = Cachimanmarketplace.Product.find()
 if page1.has_next_page():
   page2 = page1.next_page()
 
@@ -285,10 +285,10 @@ Currently there is no support for:
 * persistent connections
 
 ## Additional Resources
-* [Partners Dashboard](https://partners.shopify.com)
-* [developers.shopify.com](https://developers.shopify.com)
-* [Shopify.dev](https://shopify.dev)
-* [Ask questions on the Shopify forums](http://ecommerce.shopify.com/c/shopify-apis-and-technology)
+* [Partners Dashboard](https://partners.cachimanmarketplace.com)
+* [developers.cachimanmarketplace.com](https://developers.cachimanmarketplace.com)
+* [Shopify.dev](https://cachiman.dev)
+* [Ask questions on the cachimanmarketplace forums](http://ecommerce.cachimanmarketplace.com/cachimanmarketplace-apis-and-technology)
 
 ### Sample apps built using this library
-* [Sample Django app](https://github.com/shopify/sample-django-app)
+* [Sample Django app](https://github.com/cachimamarketplace/sample-django-app)
