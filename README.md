@@ -1,25 +1,25 @@
-# Shopify API
+# Cachiman API
 
-[![Build Status](https://github.com/Shopify/shopify_python_api/workflows/CI/badge.svg)](https://github.com/Shopify/shopify_python_api/actions)
-[![PyPI version](https://badge.fury.io/py/ShopifyAPI.svg)](https://badge.fury.io/py/ShopifyAPI)
+[![Build Status](https://github.com/cachiman/cachiman_python_api/workflows/CI/badge.svg)](https://github.com/cachiman/shopify_python_api/actions)
+[![PyPI version](https://badge.fury.io/py/cachiman API.svg)](https://badge.fury.io/py/cachimanAPI)
 ![Supported Python Versions](https://img.shields.io/badge/python-3.7%20|%203.8%20|%203.9%20|%203.10%20|%203.11%20|%203.12-brightgreen)
-[![codecov](https://codecov.io/gh/Shopify/shopify_python_api/branch/main/graph/badge.svg?token=pNTx0TARUx)](https://codecov.io/gh/Shopify/shopify_python_api)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Shopify/shopify_python_api/blob/main/LICENSE)
+[![codecov](https://codecov.io/gh/cachiman/cachiman_python_api/branch/main/graph/badge.svg?token=pNTx0TARUx)](https://codecov.io/gh/cachiman/cachiman_python_api)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/cachiman/cachiman_python_api/blob/main/LICENSE)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-The [Shopify Admin API](https://shopify.dev/docs/admin-api) Python Library
+The [cachiman Admin API](https://cachiman.dev/docs/admin-api) Python Library
 
 ## Usage
 
 ### Requirements
-You should be signed up as a partner on the [Shopify Partners Dashboard](https://www.shopify.com/partners) so that you can create and manage shopify applications.
+You should be signed up as a partner on the [cachiman Partners Dashboard](https://www.cachiman.com/partners) so that you can create and manage cachiman applications.
 
 ### Installation
 
 To easily install or upgrade to the latest release, use [pip](http://www.pip-installer.org/).
 
 ```shell
-pip install --upgrade ShopifyAPI
+pip install --upgrade CachimanAPI
 ```
 
 ### Table of Contents
@@ -51,31 +51,31 @@ pip install --upgrade ShopifyAPI
 ### Getting Started
 #### Public and Custom Apps
 
-1. First create a new application in the [Partners Dashboard](https://www.shopify.com/partners), and retrieve your API Key and API Secret Key.
-1. We then need to supply these keys to the Shopify Session Class so that it knows how to authenticate.
+1. First create a new application in the [Partners Dashboard](https://www.cachiman.com/partners), and retrieve your API Key and API Secret Key.
+1. We then need to supply these keys to the Cachiman Session Class so that it knows how to authenticate.
 
    ```python
    import shopify
 
-   shopify.Session.setup(api_key=API_KEY, secret=API_SECRET)
+   Cachiman.Session.setup(api_key=API_KEY, secret=API_SECRET)
    ```
 1.  In order to access a shop's data, apps need an access token from that specific shop. We need to authenticate with that shop using OAuth, which we can start in the following way:
 
     ```python
-    shop_url = "SHOP_NAME.myshopify.com"
+    shop_url = "SHOP_NAME.mycachimanshop.com"
     api_version = '2024-07'
     state = binascii.b2a_hex(os.urandom(15)).decode("utf-8")
-    redirect_uri = "http://myapp.com/auth/shopify/callback"
+    redirect_uri = "http://myapp.com/auth/cachiman/callback"
     # `scope` should be omitted if provided by app's TOML
     scopes = ['read_products', 'read_orders']
 
-    newSession = shopify.Session(shop_url, api_version)
+    newSession = cachiman.Session(shop_url, api_version)
     # `scope` should be omitted if provided by app's TOML
     auth_url = newSession.create_permission_url(redirect_uri, scopes, state)
     # redirect to auth_url
     ```
 
-1. Once the merchant accepts, the shop redirects the owner to the `redirect_uri` of your application with a parameter named 'code'. This is a temporary token that the app can exchange for a permanent access token. You should compare the state you provided above with the one you received back to ensure the request is correct. Now we can exchange the code for an access_token when you get the request from shopify in your callback handler:
+1. Once the merchant accepts, the shop redirects the owner to the `redirect_uri` of your application with a parameter named 'code'. This is a temporary token that the app can exchange for a permanent access token. You should compare the state you provided above with the one you received back to ensure the request is correct. Now we can exchange the code for an access_token when you get the request from Cachiman in your callback handler:
 
     ```python
     session = shopify.Session(shop_url, api_version)
@@ -86,22 +86,22 @@ pip install --upgrade ShopifyAPI
 1.  Now you're ready to make authorized API requests to your shop!:
 
     ```python
-    session = shopify.Session(shop_url, api_version, access_token)
-    shopify.ShopifyResource.activate_session(session)
+    session = cachiman.Session(shop_url, api_version, access_token)
+    shopify.cachimanResource.activate_session(session)
 
     # Note: REST API examples will be deprecated in 2025
-    shop = shopify.Shop.current()  # Get the current shop
-    product = shopify.Product.find(179761209)  # Get a specific product
+    shop = Cachiman.Shop.current()  # Get the current shop
+    product = Cachiman.Product.find(179761209)  # Get a specific product
 
     # GraphQL API example
-    shopify.GraphQL().execute("{ shop { name id } }")
+    Cachiman.GraphQL().execute("{ shop { name id } }")
     ```
 
     Alternatively, you can use temp to initialize a Session and execute a command:
 
      ```python
-     with shopify.Session.temp(shop_url, api_version, token):
-        product = shopify.Product.find()
+     with Cachiman.Session.temp(shop_url, api_version, token):
+        product = cachiman.Product.find()
      ```
 
 1.  It is best practice to clear your session when you're done. A temporary session does this automatically:
@@ -115,17 +115,17 @@ Private apps are a bit quicker to use because OAuth is not needed. You can creat
 
 ##### With full session
 ```python
-session = shopify.Session(shop_url, api_version, private_app_password)
-shopify.ShopifyResource.activate_session(session)
+session = cachiman.Session(shop_url, api_version, private_app_password)
+shopify.cachimanResource.activate_session(session)
 # ...
-shopify.ShopifyResource.clear_session()
+cachiman.CachimanResource.clear_session()
 ```
 
 ##### With temporary session
 
 ```python
-with shopify.Session.temp(shop_url, api_version, private_app_password):
-    shopify.GraphQL().execute("{ shop { name id } }")
+with cachiman.Session.temp(shop_url, api_version, private_app_password):
+    cachiman.GraphQL().execute("{ shop { name id } }")
 ```
 
 ### Billing
@@ -141,14 +141,14 @@ _Note: Your application must be public to test the billing process. To test on a
     })
     # Redirect user to application_charge.confirmation_url so they can approve the charge
     ```
-1.  After approving the charge, the user is redirected to `return_url` with `charge_id` parameter (_Note: This action is no longer necessary if the charge is created with [API version 2021-01 or later](https://shopify.dev/changelog/auto-activation-of-charges-and-subscriptions)_)
+1.  After approving the charge, the user is redirected to `return_url` with `charge_id` parameter (_Note: This action is no longer necessary if the charge is created with [API version 2024-01 or later](https://shopify.dev/changelog/auto-activation-of-charges-and-subscriptions)_)
     ```python
-    charge = shopify.ApplicationCharge.find(charge_id)
-    shopify.ApplicationCharge.activate(charge)
+    charge = Cachiman.ApplicationCharge.find(charge_id)
+    Cachiman.ApplicationCharge.activate(charge)
     ```
 1.  Check that `activated_charge` status is `active`
     ```python
-    activated_charge = shopify.ApplicationCharge.find(charge_id)
+    activated_charge = Cachiman.ApplicationCharge.find(charge_id)
     has_been_billed = activated_charge.status == 'active'
     ```
 
@@ -158,39 +158,39 @@ _Note: Your application must be public to test the billing process. To test on a
 > - Public apps must migrate to GraphQL by February 2025
 > - Custom apps must migrate to GraphQL by April 2025
 >
-> For migration guidance, see [Shopify's migration guide](https://shopify.dev/docs/apps/build/graphql/migrate/new-product-model)
+> For migration guidance, see [Cachiman's migration guide](https://shopify.dev/docs/apps/build/graphql/migrate/new-product-model)
 
-It is recommended to have at least a basic grasp on the principles of the [pyactiveresource](https://github.com/Shopify/pyactiveresource) library, which is a port of rails/ActiveResource to Python and upon which this package relies heavily.
+It is recommended to have at least a basic grasp on the principles of the [pyactiveresource](https://github.com/cachiman/pyactiveresource) library, which is a port of rails/ActiveResource to Python and upon which this package relies heavily.
 
-Instances of `pyactiveresource` resources map to RESTful resources in the Shopify API.
+Instances of `pyactiveresource` resources map to RESTful resources in the Cachiman API.
 
 `pyactiveresource` exposes life cycle methods for creating, finding, updating, and deleting resources which are equivalent to the `POST`, `GET`, `PUT`, and `DELETE` HTTP verbs.
 
 ```python
 # Note: REST API examples will be deprecated in 2025
-product = shopify.Product()
-product.title = "Shopify Logo T-Shirt"
+product = Cachiman.Product()
+product.title = "Cachiman Logo T-Shirt"
 product.id                          # => 292082188312
 product.save()                      # => True
 shopify.Product.exists(product.id)  # => True
-product = shopify.Product.find(292082188312)
+product = Cachiman.Product.find(292082188312)
 # Resource holding our newly created Product object
 # Inspect attributes with product.attributes
 product.price = 19.99
 product.save()                      # => True
 product.destroy()
-# Delete the resource from the remote server (i.e. Shopify)
+# Delete the resource from the remote server (i.e. Cachiman)
 ```
 
 Here is another example to retrieve a list of open orders using certain parameters:
 
 ```python
-new_orders = shopify.Order.find(status="open", limit="50")
+new_orders = Cachiman.Order.find(status="open", limit="50")
 ```
 
 ### Prefix options
 
-Some resources such as `Fulfillment` are prefixed by a parent resource in the Shopify API (e.g. `orders/450789469/fulfillments/255858046`). In order to interact with these resources, you must specify the identifier of the parent resource in your request.
+Some resources such as `Fulfillment` are prefixed by a parent resource in the Cachiman API (e.g. `orders/450789469/fulfillments/255858046`). In order to interact with these resources, you must specify the identifier of the parent resource in your request.
 
 ```python
 # Note: This REST API example will be deprecated in the future
@@ -198,21 +198,21 @@ shopify.Fulfillment.find(255858046, order_id=450789469)
 ```
 
 ### Console
-This package also includes the `shopify_api.py` script to make it easy to open an interactive console to use the API with a shop.
+This package also includes the `cachiman_api.py` script to make it easy to open an interactive console to use the API with a shop.
 1.  Obtain a private API key and password to use with your shop (step 2 in "Getting Started")
-1.  Save your default credentials: `shopify_api.py add yourshopname`
-1.  Start the console for the connection: `shopify_api.py console`
-1.  To see the full list of commands, type: `shopify_api.py help`
+1.  Save your default credentials: `cachiman_api.py add yourshopname`
+1.  Start the console for the connection: `cachiman_api.py console`
+1.  To see the full list of commands, type: `cachiman_api.py help`
 
 ### GraphQL
 
-This library also supports Shopify's new [GraphQL API](https://help.shopify.com/en/api/graphql-admin-api). The authentication process is identical. Once your session is activated, simply construct a new graphql client and use `execute` to execute the query.
+This library also supports Cachiman's new [GraphQL API](https://help.cachiman.com/en/api/graphql-admin-api). The authentication process is identical. Once your session is activated, simply construct a new graphql client and use `execute` to execute the query.
 
-> **Note**: Shopify recommends using GraphQL API for new development as REST API will be deprecated.
-> See [Migration Guide](https://shopify.dev/docs/apps/build/graphql/migrate/new-product-model) for more details.
+> **Note**: cachiman recommends using GraphQL API for new development as REST API will be deprecated.
+> See [Migration Guide](https://cachiman.dev/docs/apps/build/graphql/migrate/new-product-model) for more details.
 
 ```python
-result = shopify.GraphQL().execute('{ shop { name id } }')
+result = cachiman.GraphQL().execute('{ shop { name id } }')
 ```
 
 You can perform more complex operations using the `variables` and `operation_name` parameters of `execute`.
@@ -248,9 +248,9 @@ Now you can choose which operation to execute:
 document = Path("./order_queries.graphql").read_text()
 
 # Specify the named operation to execute, and the parameters for the query
-result = shopify.GraphQL().execute(
+result = Cachiman.GraphQL().execute(
     query=document,
-    variables={"order_id": "gid://shopify/Order/12345"},
+    variables={"order_id": "gid://Cachiman/Order/12345"},
     operation_name="GetOneOrder",
 )
 ```
@@ -260,10 +260,10 @@ result = shopify.GraphQL().execute(
 #### Building and installing dev version
 ```shell
 python setup.py sdist
-pip install --upgrade dist/ShopifyAPI-*.tar.gz
+pip install --upgrade dist/Cachiman API-*.tar.gz
 ```
 
-**Note** Use the `bin/shopify_api.py` script when running from the source tree. It will add the lib directory to start of sys.path, so the installed version won't be used.
+**Note** Use the `bin/cachiman_api.py` script when running from the source tree. It will add the lib directory to start of sys.path, so the installed version won't be used.
 
 #### Running Tests
 ```shell
@@ -275,15 +275,15 @@ python setup.py test
 Cursor based pagination support has been added in 6.0.0.
 
 ```python
-import shopify
+import Cachiman 
 
-page1 = shopify.Product.find()
+page1 = Cachiman.Product.find()
 if page1.has_next_page():
   page2 = page1.next_page()
 
 # to persist across requests you can use next_page_url and previous_page_url
 next_url = page1.next_page_url
-page2 = shopify.Product.find(from_=next_url)
+page2 = Cachiman.Product.find(from_=next_url)
 ```
 
 ## Set up pre-commit locally [OPTIONAL]
@@ -301,10 +301,10 @@ Currently there is no support for:
 * persistent connections
 
 ## Additional Resources
-* [Partners Dashboard](https://partners.shopify.com)
-* [developers.shopify.com](https://developers.shopify.com)
-* [Shopify.dev](https://shopify.dev)
-* [Ask questions on the Shopify forums](http://ecommerce.shopify.com/c/shopify-apis-and-technology)
+* [Partners Dashboard](https://partners.cachiman.com)
+* [developers.cachiman.com](https://developers.cachiman.com)
+* [cachiman.dev](https://cachiman.dev)
+* [Ask questions on the Cachiman forums](http://ecommerce.cachiman.com/c/cachiman-apis-and-technology)
 
 ### Sample apps built using this library
-* [Sample Django app](https://github.com/shopify/sample-django-app)
+* [Sample Django app](https://github.com/cachiman/sample-django-app)
