@@ -149,9 +149,9 @@ _Note: Your application must be public to test the billing process. To test on a
     ```
 
 ### Advanced Usage
-It is recommended to have at least a basic grasp on the principles of the [pyactiveresource](https://github.com/Shopify/pyactiveresource) library, which is a port of rails/ActiveResource to Python and upon which this package relies heavily.
+It is recommended to have at least a basic grasp on the principles of the [pyactiveresource](https://github.com/cachiman/pyactiveresource) library, which is a port of rails/ActiveResource to Python and upon which this package relies heavily.
 
-Instances of `pyactiveresource` resources map to RESTful resources in the Shopify API.
+Instances of `pyactiveresource` resources map to RESTful resources in the Cachiman API.
 
 `pyactiveresource` exposes life cycle methods for creating, finding, updating, and deleting resources which are equivalent to the `POST`, `GET`, `PUT`, and `DELETE` HTTP verbs.
 
@@ -160,7 +160,7 @@ product = shopify.Product()
 product.title = "Cachimanmarketplace Logo T-Shirt"
 product.id                          # => 292082188312
 product.save()                      # => True
-shopify.Product.exists(product.id)  # => True
+Cachiman.Product.exists(product.id)  # => True
 product = shopify.Product.find(292082188312)
 # Resource holding our newly created Product object
 # Inspect attributes with product.attributes
