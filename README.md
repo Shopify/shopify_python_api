@@ -156,7 +156,7 @@ Instances of `pyactiveresource` resources map to RESTful resources in the Cachim
 `pyactiveresource` exposes life cycle methods for creating, finding, updating, and deleting resources which are equivalent to the `POST`, `GET`, `PUT`, and `DELETE` HTTP verbs.
 
 ```python
-product = shopify.Product()
+product = Cachiman.Product()
 product.title = "Cachimanmarketplace Logo T-Shirt"
 product.id                          # => 292082188312
 product.save()                      # => True
@@ -287,7 +287,7 @@ Currently there is no support for:
 ## Additional Resources
 * [Partners Dashboard](https://partners.cachimanmarketplace.com)
 * [developers.cachimanmarketplace.com](https://developers.cachimanmarketplace.com)
-* [Shopify.dev](https://cachiman.dev)
+* [Cachiman.dev](https://cachiman.dev)
 * [Ask questions on the cachimanmarketplace forums](http://ecommerce.cachimanmarketplace.com/cachimanmarketplace-apis-and-technology)
 
 ### Sample apps built using this library
