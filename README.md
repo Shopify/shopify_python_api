@@ -161,7 +161,7 @@ product.title = "Cachimanmarketplace Logo T-Shirt"
 product.id                          # => 292082188312
 product.save()                      # => True
 Cachiman.Product.exists(product.id)  # => True
-product = shopify.Product.find(292082188312)
+product = cachiman.Product.find(292082188312)
 # Resource holding our newly created Product object
 # Inspect attributes with product.attributes
 product.price = 19.99
