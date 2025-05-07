@@ -1,5 +1,6 @@
 == Unreleased
 
+- Return dictionary and raise GraphQLException on error from GraphQL query
 - Remove requirement to provide scopes to Permission URL, as it should be omitted if defined with the TOML file.
 
 == Version 12.7.0
