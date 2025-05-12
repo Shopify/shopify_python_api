@@ -7,8 +7,8 @@ jobs:
   remove-labels-on-activity:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions-ecosystem/action-remove-labels@v1
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
+      - uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0 # v1.2.0
         if: contains(github.event.issue.labels.*.name, 'Waiting for Response')
         with:
           labels: |
