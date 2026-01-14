@@ -1,6 +1,14 @@
 == Unreleased
 
 - Remove requirement to provide scopes to Permission URL, as it should be omitted if defined with the TOML file.
+- Add OAuth 2.0 Client Credentials Grant support for server-to-server authentication (required for Shopify 2026-01+ API)
+  - New method: Session.request_token_client_credentials() - Exchange client credentials for access token
+  - New method: Session.request_access_token() - Automatically selects correct OAuth flow based on API version
+  - New exception: OAuthException for OAuth-specific errors
+  - Implements RFC 6749 Section 4.4 for apps created in Shopify Dev Dashboard
+  - Automatic version detection: API versions >= 2026-01 require client credentials flow
+  - Legacy request_token() raises ValidationException for API versions >= 2026-01
+  - Tokens from client credentials grant expire after 24 hours (86399 seconds)
 
 == Version 12.7.0
 

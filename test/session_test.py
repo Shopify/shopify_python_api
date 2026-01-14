@@ -319,3 +319,155 @@ class SessionTest(TestCase):
     def test_session_with_invalid_version(self):
         with self.assertRaises(shopify.VersionNotFoundError):
             shopify.Session("test.myshopify.com", "invalid-version", "token")
+
+    def test_request_token_client_credentials_success(self):
+        """Test successful client credentials token request"""
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "shpca_test_token_12345", "scope": "read_products,write_orders", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        token_response = session.request_token_client_credentials()
+
+        # Verify response structure
+        self.assertEqual(token_response["access_token"], "shpca_test_token_12345")
+        self.assertEqual(token_response["scope"], "read_products,write_orders")
+        self.assertEqual(token_response["expires_in"], 86399)
+
+        # Verify token stored in session
+        self.assertEqual(session.token, "shpca_test_token_12345")
+        self.assertEqual(str(session.access_scopes), "read_products,write_orders")
+
+    def test_request_token_client_credentials_missing_api_key(self):
+        """Test that ValidationException is raised when api_key is missing"""
+        shopify.Session.setup(api_key=None, secret="test_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        with self.assertRaises(shopify.ValidationException) as context:
+            session.request_token_client_credentials()
+
+        self.assertIn("api_key", str(context.exception))
+
+    def test_request_token_client_credentials_missing_secret(self):
+        """Test that ValidationException is raised when secret is missing"""
+        shopify.Session.setup(api_key="test_key", secret=None)
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        with self.assertRaises(shopify.ValidationException) as context:
+            session.request_token_client_credentials()
+
+        self.assertIn("secret", str(context.exception))
+
+    def test_request_token_client_credentials_http_error(self):
+        """Test that OAuthException is raised on HTTP error"""
+        shopify.Session.setup(api_key="test_key", secret="test_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            code=401,
+            body='{"error": "invalid_client", "error_description": "Client authentication failed"}',
+            has_user_agent=False,
+        )
+
+        with self.assertRaises(shopify.OAuthException) as context:
+            session.request_token_client_credentials()
+
+        self.assertIn("Client authentication failed", str(context.exception))
+        self.assertIn("401", str(context.exception))
+
+    def test_request_token_client_credentials_returns_existing_token(self):
+        """Test that existing token is returned without new request"""
+        shopify.Session.setup(api_key="test_key", secret="test_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01", "existing_token")
+
+        # Should return existing token without making HTTP request
+        token_response = session.request_token_client_credentials()
+
+        # Verify existing token returned
+        self.assertEqual(token_response["access_token"], "existing_token")
+        self.assertIsNone(token_response["expires_in"])
+
+    def test_requires_client_credentials_for_2026_01(self):
+        """Test that API version 2026-01 requires client credentials"""
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+        self.assertTrue(session._requires_client_credentials())
+
+    def test_requires_client_credentials_for_2026_04(self):
+        """Test that API version 2026-04 requires client credentials"""
+        session = shopify.Session("testshop.myshopify.com", "2026-04")
+        self.assertTrue(session._requires_client_credentials())
+
+    def test_does_not_require_client_credentials_for_2025_10(self):
+        """Test that API version 2025-10 does not require client credentials"""
+        session = shopify.Session("testshop.myshopify.com", "2025-10")
+        self.assertFalse(session._requires_client_credentials())
+
+    def test_does_not_require_client_credentials_for_2024_10(self):
+        """Test that API version 2024-10 does not require client credentials"""
+        session = shopify.Session("testshop.myshopify.com", "2024-10")
+        self.assertFalse(session._requires_client_credentials())
+
+    def test_request_token_fails_with_2026_01(self):
+        """Test that old request_token method raises error for 2026-01"""
+        shopify.Session.setup(api_key="test_key", secret="test_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        params = {"code": "test_code", "timestamp": time.time()}
+        hmac_value = shopify.Session.calculate_hmac(params)
+        params["hmac"] = hmac_value
+
+        with self.assertRaises(shopify.ValidationException) as context:
+            session.request_token(params)
+
+        self.assertIn("2026-01", str(context.exception))
+        self.assertIn("Client Credentials Grant", str(context.exception))
+
+    def test_request_access_token_auto_selects_client_credentials(self):
+        """Test that request_access_token automatically uses client credentials for 2026-01"""
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "shpca_auto_token", "scope": "read_products", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        # Should automatically use client credentials (no params needed)
+        token_response = session.request_access_token()
+
+        self.assertEqual(token_response["access_token"], "shpca_auto_token")
+        self.assertEqual(token_response["expires_in"], 86399)
+
+    def test_request_access_token_uses_authorization_code_for_old_version(self):
+        """Test that request_access_token uses authorization code for versions < 2026-01"""
+        shopify.Session.setup(api_key="test_key", secret="test_secret")
+        session = shopify.Session("testshop.myshopify.com", "2024-10")
+
+        params = {"code": "test_code", "timestamp": time.time()}
+        hmac_value = shopify.Session.calculate_hmac(params)
+        params["hmac"] = hmac_value
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "old_style_token", "scope": "read_products"}',
+            has_user_agent=False,
+        )
+
+        # Should use authorization code flow
+        token = session.request_access_token(params)
+
+        self.assertEqual(token, "old_style_token")
