@@ -16,6 +16,12 @@
   - Session now tracks token_obtained_at and token_expires_at timestamps for client credentials tokens
   - Default 5-minute buffer before expiration to ensure tokens are refreshed proactively
   - Auto-refresh only works with client credentials flow (API versions >= 2026-01)
+- Add scope filtering support for OAuth 2.0 Client Credentials Grant
+  - All OAuth methods now accept optional 'scope' parameter to request specific scopes
+  - Enables requesting only Admin API scopes when app has multiple API types configured (Admin, Customer Account, Storefront)
+  - Scope normalization: Comma-separated scopes automatically converted to space-separated for OAuth 2.0 spec compliance
+  - Methods supporting scope parameter: request_token_client_credentials(), request_access_token(), refresh_token_if_needed(), refresh_token()
+  - When scope parameter is omitted, Shopify grants all scopes configured for the app (default behavior)
 
 == Version 12.7.0
 

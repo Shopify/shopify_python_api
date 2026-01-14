@@ -138,7 +138,7 @@ class Session(object):
         else:
             raise Exception(response.msg)
 
-    def request_token_client_credentials(self):
+    def request_token_client_credentials(self, scope=None):
         """
         Exchange client credentials for an access token.
 
@@ -153,6 +153,12 @@ class Session(object):
         - Session.secret (client_secret) must be set
         - Shop URL must be valid
 
+        Args:
+            scope (str, optional): Space or comma-separated list of scopes to request.
+                                  If not provided, Shopify will grant all scopes configured
+                                  for the app. Use this to request only Admin API scopes
+                                  when your app has multiple API types configured.
+
         Returns:
             dict: Token response containing:
                 - access_token (str): The access token for API requests
@@ -166,7 +172,12 @@ class Session(object):
         Example:
             >>> session = shopify.Session("mystore.myshopify.com", "2026-01")
             >>> shopify.Session.setup(api_key="client_id", secret="client_secret")
+            >>> # Request all scopes
             >>> token_response = session.request_token_client_credentials()
+            >>> # Or request specific Admin API scopes only
+            >>> token_response = session.request_token_client_credentials(
+            ...     scope="read_products,write_products,read_orders"
+            ... )
             >>> session.token = token_response["access_token"]
             >>> shopify.ShopifyResource.activate_session(session)
         """
@@ -195,6 +206,12 @@ class Session(object):
             "client_id": self.api_key,
             "client_secret": self.secret
         }
+
+        # Add scope parameter if provided (to filter which scopes to request)
+        if scope:
+            # Normalize scope format (convert commas to spaces for OAuth spec)
+            normalized_scope = scope.replace(',', ' ')
+            data["scope"] = normalized_scope
 
         # Prepare request headers
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
@@ -250,7 +267,7 @@ class Session(object):
         except Exception as e:
             raise OAuthException("Unexpected error during OAuth request: %s" % str(e))
 
-    def request_access_token(self, params=None):
+    def request_access_token(self, params=None, scope=None):
         """
         Automatically select and execute the appropriate OAuth flow based on API version.
 
@@ -264,6 +281,9 @@ class Session(object):
             params: OAuth callback parameters (required for versions < 2026-01)
                    Should include 'code', 'hmac', 'timestamp' for authorization code flow.
                    Not used for client credentials flow (versions >= 2026-01).
+            scope (str, optional): Space or comma-separated list of scopes to request.
+                                  Only used for client credentials flow (versions >= 2026-01).
+                                  If not provided, Shopify grants all configured scopes.
 
         Returns:
             For versions >= 2026-01: dict with 'access_token', 'scope', 'expires_in'
@@ -286,7 +306,7 @@ class Session(object):
         """
         if self._requires_client_credentials():
             # API version 2026-01+: Use client credentials grant
-            return self.request_token_client_credentials()
+            return self.request_token_client_credentials(scope=scope)
         else:
             # Older API versions: Use authorization code grant
             if params is None:
@@ -342,7 +362,7 @@ class Session(object):
         # Token is expired if current time + buffer >= expiration time
         return now + buffer >= self.token_expires_at
 
-    def refresh_token_if_needed(self, buffer_seconds=300):
+    def refresh_token_if_needed(self, buffer_seconds=300, scope=None):
         """
         Automatically refresh the access token if expired or expiring soon.
 
@@ -354,6 +374,10 @@ class Session(object):
             buffer_seconds (int): Number of seconds before expiration to trigger
                                  refresh. Default is 300 (5 minutes). This ensures
                                  the token is refreshed before it expires.
+            scope (str, optional): Space or comma-separated list of scopes to request.
+                                  If not provided, Shopify grants all configured scopes.
+                                  Use this to request only Admin API scopes when your
+                                  app has multiple API types configured.
 
         Returns:
             dict or None:
@@ -381,13 +405,15 @@ class Session(object):
             ... else:
             ...     print("Token is still valid")
             >>>
-            >>> # Use custom buffer (refresh if expires within 10 minutes)
-            >>> session.refresh_token_if_needed(buffer_seconds=600)
+            >>> # Request only Admin API scopes when refreshing
+            >>> result = session.refresh_token_if_needed(
+            ...     scope="read_products,write_products,read_orders"
+            ... )
         """
         if self.is_token_expired(buffer_seconds=buffer_seconds):
             # Only refresh if we have credentials (client credentials flow)
             if self._requires_client_credentials():
-                return self.request_token_client_credentials()
+                return self.request_token_client_credentials(scope=scope)
             else:
                 # For authorization code flow, we can't auto-refresh
                 # because we need user interaction for the callback
@@ -396,7 +422,7 @@ class Session(object):
         # Token is still valid, no refresh needed
         return None
 
-    def refresh_token(self):
+    def refresh_token(self, scope=None):
         """
         Manually force a refresh of the access token.
 
@@ -407,6 +433,12 @@ class Session(object):
 
         For automatic refresh based on expiration, use refresh_token_if_needed()
         instead.
+
+        Args:
+            scope (str, optional): Space or comma-separated list of scopes to request.
+                                  If not provided, Shopify grants all configured scopes.
+                                  Use this to request only Admin API scopes when your
+                                  app has multiple API types configured.
 
         Returns:
             dict: Token response containing:
@@ -431,6 +463,11 @@ class Session(object):
             >>> new_token = session.refresh_token()
             >>> print(f"New token: {new_token['access_token']}")
             >>> print(f"Expires in: {new_token['expires_in']} seconds")
+            >>>
+            >>> # Request only Admin API scopes
+            >>> new_token = session.refresh_token(
+            ...     scope="read_products,write_products,read_orders"
+            ... )
         """
         # Only works with client credentials flow
         if not self._requires_client_credentials():
@@ -446,7 +483,7 @@ class Session(object):
         self.token_obtained_at = None
 
         # Request new token
-        return self.request_token_client_credentials()
+        return self.request_token_client_credentials(scope=scope)
 
     @property
     def api_version(self):

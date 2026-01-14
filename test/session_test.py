@@ -625,3 +625,139 @@ class SessionTest(TestCase):
         # Verify expires_at is approximately 24 hours from obtained_at
         expected_expiration = session.token_obtained_at + timedelta(seconds=86399)
         self.assertEqual(session.token_expires_at, expected_expiration)
+
+    def test_request_token_client_credentials_with_scope_parameter(self):
+        """Test that scope parameter is included in OAuth request when provided"""
+        import urllib.parse
+
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        # Mock the HTTP request and capture what was sent
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "test_token", "scope": "read_products write_products", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        # Request token with specific scopes (Admin API only)
+        token_response = session.request_token_client_credentials(scope="read_products write_products")
+
+        # Verify token received
+        self.assertEqual(token_response["access_token"], "test_token")
+        self.assertEqual(token_response["scope"], "read_products write_products")
+
+    def test_request_token_client_credentials_without_scope_parameter(self):
+        """Test that scope parameter is NOT included when not provided (default behavior)"""
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "test_token", "scope": "read_products write_products read_orders", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        # Request token without scope parameter (should grant all configured scopes)
+        token_response = session.request_token_client_credentials()
+
+        # Verify token received with all scopes
+        self.assertEqual(token_response["access_token"], "test_token")
+        # Without scope filter, Shopify returns all configured scopes
+        self.assertEqual(token_response["scope"], "read_products write_products read_orders")
+
+    def test_request_token_client_credentials_scope_normalization(self):
+        """Test that comma-separated scopes are normalized to space-separated for OAuth spec"""
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "test_token", "scope": "read_products write_products", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        # Request with comma-separated scopes (should be normalized to spaces)
+        token_response = session.request_token_client_credentials(scope="read_products,write_products")
+
+        # Verify token received
+        self.assertEqual(token_response["access_token"], "test_token")
+
+    def test_refresh_token_if_needed_with_scope_parameter(self):
+        """Test that refresh_token_if_needed passes scope parameter correctly"""
+        from datetime import datetime, timedelta
+
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        # Set expired token
+        session.token = "expired_token"
+        session.token_obtained_at = datetime.now() - timedelta(hours=24)
+        session.token_expires_at = datetime.now() - timedelta(minutes=10)
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "refreshed_token", "scope": "read_products write_products", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        # Refresh with specific scope
+        result = session.refresh_token_if_needed(scope="read_products write_products")
+
+        # Verify token was refreshed with correct scopes
+        self.assertIsNotNone(result)
+        self.assertEqual(result["access_token"], "refreshed_token")
+        self.assertEqual(result["scope"], "read_products write_products")
+        self.assertEqual(session.token, "refreshed_token")
+
+    def test_refresh_token_with_scope_parameter(self):
+        """Test that refresh_token passes scope parameter correctly"""
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        # Set existing token
+        session.token = "old_token"
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "new_token", "scope": "read_products", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        # Force refresh with specific scope (Admin API only)
+        result = session.refresh_token(scope="read_products")
+
+        # Verify token was refreshed with correct scopes
+        self.assertEqual(result["access_token"], "new_token")
+        self.assertEqual(result["scope"], "read_products")
+        self.assertEqual(session.token, "new_token")
+
+    def test_request_access_token_with_scope_parameter_2026_01(self):
+        """Test that request_access_token passes scope to client credentials flow for 2026-01+"""
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "test_token", "scope": "read_products", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        # Use smart method with scope parameter
+        result = session.request_access_token(scope="read_products")
+
+        # Verify correct token received
+        self.assertEqual(result["access_token"], "test_token")
+        self.assertEqual(result["scope"], "read_products")
