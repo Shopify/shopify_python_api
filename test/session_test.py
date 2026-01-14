@@ -471,3 +471,157 @@ class SessionTest(TestCase):
         token = session.request_access_token(params)
 
         self.assertEqual(token, "old_style_token")
+
+    def test_is_token_expired_with_no_token(self):
+        """Test that is_token_expired returns True when no token is set"""
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+        self.assertTrue(session.is_token_expired())
+
+    def test_is_token_expired_with_no_expiration(self):
+        """Test that is_token_expired returns True when token has no expiration tracking"""
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+        session.token = "test_token"
+        # token_expires_at is None
+        self.assertTrue(session.is_token_expired())
+
+    def test_is_token_expired_within_buffer(self):
+        """Test that is_token_expired returns True when token expires within buffer"""
+        from datetime import datetime, timedelta
+
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+        session.token = "test_token"
+
+        # Set token to expire in 4 minutes
+        session.token_expires_at = datetime.now() + timedelta(minutes=4)
+
+        # With default 5-minute buffer, should be considered expired
+        self.assertTrue(session.is_token_expired())
+
+        # With 3-minute buffer, should not be considered expired
+        self.assertFalse(session.is_token_expired(buffer_seconds=180))
+
+    def test_is_token_not_expired(self):
+        """Test that is_token_expired returns False when token is valid"""
+        from datetime import datetime, timedelta
+
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+        session.token = "test_token"
+
+        # Set token to expire in 1 hour
+        session.token_expires_at = datetime.now() + timedelta(hours=1)
+
+        # With default 5-minute buffer, should not be expired
+        self.assertFalse(session.is_token_expired())
+
+    def test_refresh_token_if_needed_refreshes_expired_token(self):
+        """Test that refresh_token_if_needed refreshes an expired token"""
+        from datetime import datetime, timedelta
+
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+        session.token = "old_token"
+
+        # Set token as expired
+        session.token_expires_at = datetime.now() - timedelta(minutes=1)
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "new_token", "scope": "read_products", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        result = session.refresh_token_if_needed()
+
+        # Should return token response
+        self.assertIsNotNone(result)
+        self.assertEqual(result["access_token"], "new_token")
+        self.assertEqual(session.token, "new_token")
+
+    def test_refresh_token_if_needed_does_not_refresh_valid_token(self):
+        """Test that refresh_token_if_needed does not refresh a valid token"""
+        from datetime import datetime, timedelta
+
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+        session.token = "valid_token"
+
+        # Set token to expire in 1 hour
+        session.token_expires_at = datetime.now() + timedelta(hours=1)
+
+        result = session.refresh_token_if_needed()
+
+        # Should return None (no refresh needed)
+        self.assertIsNone(result)
+        self.assertEqual(session.token, "valid_token")
+
+    def test_refresh_token_forces_refresh(self):
+        """Test that refresh_token forces a token refresh"""
+        from datetime import datetime, timedelta
+
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+        session.token = "old_valid_token"
+
+        # Set token to expire in 1 hour (still valid)
+        session.token_expires_at = datetime.now() + timedelta(hours=1)
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "forced_new_token", "scope": "read_products", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        result = session.refresh_token()
+
+        # Should force refresh even though token was valid
+        self.assertEqual(result["access_token"], "forced_new_token")
+        self.assertEqual(session.token, "forced_new_token")
+
+    def test_refresh_token_fails_for_old_api_version(self):
+        """Test that refresh_token raises error for API versions < 2026-01"""
+        shopify.Session.setup(api_key="test_key", secret="test_secret")
+        session = shopify.Session("testshop.myshopify.com", "2025-10")
+        session.token = "old_version_token"
+
+        with self.assertRaises(shopify.ValidationException) as context:
+            session.refresh_token()
+
+        self.assertIn("2026-01", str(context.exception))
+        self.assertIn("client credentials flow", str(context.exception))
+
+    def test_token_expiration_tracking_stored(self):
+        """Test that token expiration tracking is properly stored"""
+        from datetime import datetime, timedelta
+
+        shopify.Session.setup(api_key="test_client_id", secret="test_client_secret")
+        session = shopify.Session("testshop.myshopify.com", "2026-01")
+
+        before_request = datetime.now()
+
+        self.fake(
+            None,
+            url="https://testshop.myshopify.com/admin/oauth/access_token",
+            method="POST",
+            body='{"access_token": "test_token", "scope": "read_products", "expires_in": 86399}',
+            has_user_agent=False,
+        )
+
+        session.request_token_client_credentials()
+
+        after_request = datetime.now()
+
+        # Verify expiration tracking is set
+        self.assertIsNotNone(session.token_obtained_at)
+        self.assertIsNotNone(session.token_expires_at)
+
+        # Verify obtained_at is between before and after
+        self.assertGreaterEqual(session.token_obtained_at, before_request)
+        self.assertLessEqual(session.token_obtained_at, after_request)
+
+        # Verify expires_at is approximately 24 hours from obtained_at
+        expected_expiration = session.token_obtained_at + timedelta(seconds=86399)
+        self.assertEqual(session.token_expires_at, expected_expiration)

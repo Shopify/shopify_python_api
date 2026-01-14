@@ -9,6 +9,13 @@
   - Automatic version detection: API versions >= 2026-01 require client credentials flow
   - Legacy request_token() raises ValidationException for API versions >= 2026-01
   - Tokens from client credentials grant expire after 24 hours (86399 seconds)
+- Add token expiration tracking and automatic refresh functionality
+  - New method: Session.is_token_expired() - Check if token is expired or expiring soon (with configurable buffer)
+  - New method: Session.refresh_token_if_needed() - Automatically refresh token if expired or expiring within buffer time
+  - New method: Session.refresh_token() - Manually force token refresh regardless of expiration status
+  - Session now tracks token_obtained_at and token_expires_at timestamps for client credentials tokens
+  - Default 5-minute buffer before expiration to ensure tokens are refreshed proactively
+  - Auto-refresh only works with client credentials flow (API versions >= 2026-01)
 
 == Version 12.7.0
 

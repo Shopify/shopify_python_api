@@ -2,6 +2,7 @@ import time
 import hmac
 import json
 from hashlib import sha256
+from datetime import datetime, timedelta
 
 try:
     import simplejson as json
@@ -56,6 +57,8 @@ class Session(object):
         self.token = token
         self.version = ApiVersion.coerce_to_version(version)
         self.access_scopes = access_scopes
+        self.token_expires_at = None
+        self.token_obtained_at = None
         return
 
     def _requires_client_credentials(self):
@@ -215,11 +218,16 @@ class Session(object):
                 self.token = json_payload["access_token"]
                 self.access_scopes = json_payload.get("scope", "")
 
+                # Store expiration tracking information
+                expires_in = json_payload.get("expires_in", 86399)
+                self.token_obtained_at = datetime.now()
+                self.token_expires_at = self.token_obtained_at + timedelta(seconds=expires_in)
+
                 # Return full response for caller
                 return {
                     "access_token": self.token,
                     "scope": self.access_scopes,
-                    "expires_in": json_payload.get("expires_in", 86399)
+                    "expires_in": expires_in
                 }
             else:
                 raise OAuthException("OAuth request failed with status %d: %s" % (response.code, response.msg))
@@ -287,6 +295,158 @@ class Session(object):
                     "For API version 2026-01+, client credentials are used automatically."
                 )
             return self.request_token(params)
+
+    def is_token_expired(self, buffer_seconds=300):
+        """
+        Check if access token is expired or will expire soon.
+
+        This method checks whether the current access token has expired or will
+        expire within the specified buffer time. It's useful for proactively
+        refreshing tokens before they expire to avoid authentication failures.
+
+        Args:
+            buffer_seconds (int): Number of seconds before expiration to consider
+                                 the token as "expired". Default is 300 (5 minutes).
+                                 This buffer allows time to refresh the token before
+                                 it actually expires.
+
+        Returns:
+            bool: True if:
+                  - No token is set
+                  - No expiration time is available
+                  - Token has expired
+                  - Token will expire within buffer_seconds
+                  False if token is valid and won't expire soon
+
+        Example:
+            >>> session = shopify.Session("store.myshopify.com", "2026-01")
+            >>> session.request_token_client_credentials()
+            >>> if session.is_token_expired():
+            ...     session.refresh_token()
+            >>> # Or check with custom buffer (10 minutes)
+            >>> if session.is_token_expired(buffer_seconds=600):
+            ...     session.refresh_token()
+        """
+        # No token set - consider expired
+        if not self.token:
+            return True
+
+        # No expiration tracking available - consider expired for safety
+        if not self.token_expires_at:
+            return True
+
+        # Calculate if token is expired or expiring soon
+        now = datetime.now()
+        buffer = timedelta(seconds=buffer_seconds)
+
+        # Token is expired if current time + buffer >= expiration time
+        return now + buffer >= self.token_expires_at
+
+    def refresh_token_if_needed(self, buffer_seconds=300):
+        """
+        Automatically refresh the access token if expired or expiring soon.
+
+        This method checks if the token is expired or will expire within the buffer
+        time, and automatically refreshes it if needed. It's the recommended way to
+        ensure you always have a valid token without manually tracking expiration.
+
+        Args:
+            buffer_seconds (int): Number of seconds before expiration to trigger
+                                 refresh. Default is 300 (5 minutes). This ensures
+                                 the token is refreshed before it expires.
+
+        Returns:
+            dict or None:
+                - dict: Token response if refresh was performed, containing:
+                        - access_token (str): The new access token
+                        - scope (str): Comma-separated list of granted scopes
+                        - expires_in (int): Seconds until token expires
+                - None: If token is still valid and no refresh was needed
+
+        Raises:
+            ValidationException: If required credentials are missing
+            OAuthException: If OAuth refresh request fails
+
+        Example:
+            >>> session = shopify.Session("store.myshopify.com", "2026-01")
+            >>> shopify.Session.setup(api_key="client_id", secret="client_secret")
+            >>>
+            >>> # Initial token request
+            >>> session.request_token_client_credentials()
+            >>>
+            >>> # Later, before making API calls, ensure token is fresh
+            >>> result = session.refresh_token_if_needed()
+            >>> if result:
+            ...     print("Token was refreshed")
+            ... else:
+            ...     print("Token is still valid")
+            >>>
+            >>> # Use custom buffer (refresh if expires within 10 minutes)
+            >>> session.refresh_token_if_needed(buffer_seconds=600)
+        """
+        if self.is_token_expired(buffer_seconds=buffer_seconds):
+            # Only refresh if we have credentials (client credentials flow)
+            if self._requires_client_credentials():
+                return self.request_token_client_credentials()
+            else:
+                # For authorization code flow, we can't auto-refresh
+                # because we need user interaction for the callback
+                return None
+
+        # Token is still valid, no refresh needed
+        return None
+
+    def refresh_token(self):
+        """
+        Manually force a refresh of the access token.
+
+        This method unconditionally refreshes the access token, regardless of
+        whether it has expired or not. Use this when you need to force a token
+        refresh (e.g., after permission changes, for testing, or if you suspect
+        the token is invalid).
+
+        For automatic refresh based on expiration, use refresh_token_if_needed()
+        instead.
+
+        Returns:
+            dict: Token response containing:
+                  - access_token (str): The new access token
+                  - scope (str): Comma-separated list of granted scopes
+                  - expires_in (int): Seconds until token expires (typically 86399)
+
+        Raises:
+            ValidationException: If required credentials are missing or if this
+                               method is called on a session using authorization
+                               code flow (requires user interaction)
+            OAuthException: If OAuth refresh request fails
+
+        Example:
+            >>> session = shopify.Session("store.myshopify.com", "2026-01")
+            >>> shopify.Session.setup(api_key="client_id", secret="client_secret")
+            >>>
+            >>> # Initial token request
+            >>> session.request_token_client_credentials()
+            >>>
+            >>> # Force token refresh (e.g., after permission changes)
+            >>> new_token = session.refresh_token()
+            >>> print(f"New token: {new_token['access_token']}")
+            >>> print(f"Expires in: {new_token['expires_in']} seconds")
+        """
+        # Only works with client credentials flow
+        if not self._requires_client_credentials():
+            raise ValidationException(
+                "Manual token refresh is only supported for API versions >= 2026-01 "
+                "using client credentials flow. For authorization code flow, "
+                "users must re-authorize through the OAuth callback."
+            )
+
+        # Clear existing token to force new request
+        self.token = None
+        self.token_expires_at = None
+        self.token_obtained_at = None
+
+        # Request new token
+        return self.request_token_client_credentials()
 
     @property
     def api_version(self):
