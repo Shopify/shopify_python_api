@@ -1,3 +1,5 @@
+**Note:** We've released a new experimental package for Python. Please read [rethinking our support for PHP & Python packages](https://community.shopify.dev/t/rethinking-support-for-php-python-packages/28325). The new Python package supports the latest Shopify platform features and we'd love your feedback. Please see [shopifyapp](https://pypi.org/project/shopifyapp/) to get started.
+
 # Shopify API
 
 [![Build Status](https://github.com/Shopify/shopify_python_api/workflows/CI/badge.svg)](https://github.com/Shopify/shopify_python_api/actions)
