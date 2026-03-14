@@ -1,5 +1,4 @@
 import shopify
-import json
 from test.test_helper import TestCase
 
 
@@ -31,7 +30,7 @@ class GraphQLTest(TestCase):
             }
         """
         result = self.client.execute(query)
-        self.assertTrue(json.loads(result)["shop"]["name"] == "Apple Computers")
+        self.assertTrue(result["shop"]["name"] == "Apple Computers")
 
     def test_specify_operation_name(self):
         query = """
@@ -43,4 +42,4 @@ class GraphQLTest(TestCase):
             }
         """
         result = self.client.execute(query, operation_name="GetShop")
-        self.assertTrue(json.loads(result)["shop"]["name"] == "Apple Computers")
+        self.assertTrue(result["shop"]["name"] == "Apple Computers")
