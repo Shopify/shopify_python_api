@@ -1,10 +1,6 @@
 import re
 import sys
-
-if sys.version_info[0] < 3:  # Backwards compatibility for python < v3.0.0
-    from urlparse import urlparse
-else:
-    from urllib.parse import urlparse
+from urllib.parse import urlparse
 
 HOSTNAME_PATTERN = r"[a-z0-9][a-z0-9-]*[a-z0-9]"
 

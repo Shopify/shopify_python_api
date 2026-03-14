@@ -1,4 +1,5 @@
 == Unreleased
+- Remove remaining Python2 compability code and usage of the "six" library ([#753](https://github.com/Shopify/shopify_python_api/pull/753))
 
 - Remove requirement to provide scopes to Permission URL, as it should be omitted if defined with the TOML file.
 

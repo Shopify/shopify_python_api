@@ -5,8 +5,7 @@ import shopify.mixins as mixins
 import shopify
 import threading
 import sys
-from six.moves import urllib
-import six
+import urllib.parse
 
 from shopify.collection import PaginatedCollection
 from pyactiveresource.collection import Collection
@@ -152,8 +151,7 @@ class ShopifyResourceMeta(ResourceMeta):
     url = property(get_url, set_url, None, "Base URL including protocol and shopify domain")
 
 
-@six.add_metaclass(ShopifyResourceMeta)
-class ShopifyResource(ActiveResource, mixins.Countable):
+class ShopifyResource(ActiveResource, mixins.Countable, metaclass=ShopifyResourceMeta):
     _format = formats.JSONFormat
     _threadlocal = threading.local()
     _headers = {"User-Agent": "ShopifyPythonAPI/%s Python/%s" % (shopify.VERSION, sys.version.split(" ", 1)[0])}

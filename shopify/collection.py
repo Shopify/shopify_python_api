@@ -125,7 +125,7 @@ class PaginatedCollection(Collection):
         return count + super(PaginatedCollection, self).__len__()
 
 
-class PaginatedIterator(object):
+class PaginatedIterator:
     """
     This class implements an iterator over paginated collections which aims to
     be more memory-efficient by not keeping more than one page in memory at a

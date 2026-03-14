@@ -1,7 +1,7 @@
 import shopify.resources
 
 
-class Countable(object):
+class Countable:
     @classmethod
     def count(cls, _options=None, **kwargs):
         if _options is None:
@@ -9,7 +9,7 @@ class Countable(object):
         return int(cls.get("count", **_options))
 
 
-class Metafields(object):
+class Metafields:
     def metafields(self, _options=None, **kwargs):
         if _options is None:
             _options = kwargs
@@ -29,6 +29,6 @@ class Metafields(object):
         return metafield
 
 
-class Events(object):
+class Events:
     def events(self):
         return shopify.resources.Event.find(resource=self.__class__.plural, resource_id=self.id)

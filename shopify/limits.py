@@ -1,7 +1,7 @@
 import shopify
 
 
-class Limits(object):
+class Limits:
     """
     API Calls Limit
     https://help.shopify.com/en/api/getting-started/api-call-limit
