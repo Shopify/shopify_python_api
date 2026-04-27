@@ -14,4 +14,4 @@ jobs:
     - name: Setup
       uses: actions/setup-python@v4
     - name: Pre-commit
-      uses: pre-commit/action@v2.0.0
+      uses: pre-commit/action@0764670bf370aab253130d534e1eda7ff497dc60 # v2.0.0

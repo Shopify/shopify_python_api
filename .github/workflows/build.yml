@@ -24,7 +24,7 @@ jobs:
       - name: Run Tests
         run: python -m pytest -v
       - name: upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@29386c70ef20e286228c72b668a06fd0e8399192 # v1
         with:
           name: codecov-umbrella
           fail_ci_if_error: false
