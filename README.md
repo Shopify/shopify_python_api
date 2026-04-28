@@ -208,7 +208,7 @@ This package also includes the `shopify_api.py` script to make it easy to open a
 
 ### GraphQL
 
-This library also supports Shopify's new [GraphQL API](https://help.shopify.com/en/api/graphql-admin-api). The authentication process is identical. Once your session is activated, simply construct a new graphql client and use `execute` to execute the query.
+This library also supports Shopify's new [GraphQL API](https://shopify.dev/docs/api/admin-graphql/latest). The authentication process is identical. Once your session is activated, simply construct a new graphql client and use `execute` to execute the query.
 
 > **Note**: Shopify recommends using GraphQL API for new development as REST API will be deprecated.
 > See [Migration Guide](https://shopify.dev/docs/apps/build/graphql/migrate/new-product-model) for more details.
