@@ -1,6 +1,27 @@
 == Unreleased
 
 - Remove requirement to provide scopes to Permission URL, as it should be omitted if defined with the TOML file.
+- Add OAuth 2.0 Client Credentials Grant support for server-to-server authentication (required for Shopify 2026-01+ API)
+  - New method: Session.request_token_client_credentials() - Exchange client credentials for access token
+  - New method: Session.request_access_token() - Automatically selects correct OAuth flow based on API version
+  - New exception: OAuthException for OAuth-specific errors
+  - Implements RFC 6749 Section 4.4 for apps created in Shopify Dev Dashboard
+  - Automatic version detection: API versions >= 2026-01 require client credentials flow
+  - Legacy request_token() raises ValidationException for API versions >= 2026-01
+  - Tokens from client credentials grant expire after 24 hours (86399 seconds)
+- Add token expiration tracking and automatic refresh functionality
+  - New method: Session.is_token_expired() - Check if token is expired or expiring soon (with configurable buffer)
+  - New method: Session.refresh_token_if_needed() - Automatically refresh token if expired or expiring within buffer time
+  - New method: Session.refresh_token() - Manually force token refresh regardless of expiration status
+  - Session now tracks token_obtained_at and token_expires_at timestamps for client credentials tokens
+  - Default 5-minute buffer before expiration to ensure tokens are refreshed proactively
+  - Auto-refresh only works with client credentials flow (API versions >= 2026-01)
+- Add scope filtering support for OAuth 2.0 Client Credentials Grant
+  - All OAuth methods now accept optional 'scope' parameter to request specific scopes
+  - Enables requesting only Admin API scopes when app has multiple API types configured (Admin, Customer Account, Storefront)
+  - Scope normalization: Comma-separated scopes automatically converted to space-separated for OAuth 2.0 spec compliance
+  - Methods supporting scope parameter: request_token_client_credentials(), request_access_token(), refresh_token_if_needed(), refresh_token()
+  - When scope parameter is omitted, Shopify grants all scopes configured for the app (default behavior)
 
 == Version 12.7.0
 
