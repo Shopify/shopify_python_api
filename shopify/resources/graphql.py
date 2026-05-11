@@ -1,7 +1,15 @@
 import shopify
-from ..base import ShopifyResource
 from six.moves import urllib
 import json
+
+
+class GraphQLException(Exception):
+    def __init__(self, response):
+        self._response = response
+
+    @property
+    def errors(self):
+        return self._response['errors']
 
 
 class GraphQL:
@@ -16,7 +24,6 @@ class GraphQL:
         return merged_headers
 
     def execute(self, query, variables=None, operation_name=None):
-        endpoint = self.endpoint
         default_headers = {"Accept": "application/json", "Content-Type": "application/json"}
         headers = self.merge_headers(default_headers, self.headers)
         data = {"query": query, "variables": variables, "operationName": operation_name}
@@ -25,8 +32,9 @@ class GraphQL:
 
         try:
             response = urllib.request.urlopen(req)
-            return response.read().decode("utf-8")
+            result = json.loads(response.read().decode("utf-8"))
+            if result.get('errors'):
+                raise GraphQLException(result)
+            return result
         except urllib.error.HTTPError as e:
-            print((e.read()))
-            print("")
-            raise e
+            raise GraphQLException(json.load(e.fp))
