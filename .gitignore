@@ -5,6 +5,7 @@ tags
 /dist
 /MANIFEST
 /ShopifyAPI.egg-info
+temp_auto_push.bat
 *.egg
 /.idea
 .DS_Store
@@ -12,3 +13,5 @@ tags
 .python-version
 .cache
 .tox/
+.gitignore
+branch_structure.json
