@@ -1,4 +1,5 @@
-**Note:** We've released a new experimental package for Python. Please read [rethinking our support for PHP & Python packages](https://community.shopify.dev/t/rethinking-support-for-php-python-packages/28325). The new Python package supports the latest Shopify platform features and we'd love your feedback. Please see [shopifyapp](https://pypi.org/project/shopifyapp/) to get started.
+> [!WARNING]
+> **This package is deprecated and no longer maintained.** Use [`shopifyapp`](https://pypi.org/project/shopifyapp/) instead, which supports the latest Shopify platform features. It will keep working for existing users, but no new features or security fixes are planned. See the [`shopify-app-python` README](https://github.com/Shopify/shopify-app-python#readme) to upgrade. For background, see [rethinking our support for PHP & Python packages](https://community.shopify.dev/t/rethinking-support-for-php-python-packages/28325).
 
 # Shopify API
 

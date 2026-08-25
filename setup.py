@@ -4,6 +4,13 @@ NAME = "ShopifyAPI"
 exec(open("shopify/version.py").read())
 DESCRIPTION = "Shopify API for Python"
 LONG_DESCRIPTION = """\
+DEPRECATED: This package is no longer maintained. Use the shopifyapp
+package (https://pypi.org/project/shopifyapp/) instead, which supports the
+latest Shopify platform features. See the shopify-app-python README for how
+to upgrade: https://github.com/Shopify/shopify-app-python#readme. This
+package will keep working for existing users but will not receive new
+features or security fixes.
+
 The ShopifyAPI library allows python developers to programmatically
 access the admin section of stores using an ActiveResource like
 interface similar the ruby Shopify API gem. The library makes HTTP
@@ -34,7 +41,7 @@ setup(
     ],
     platforms="Any",
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        "Development Status :: 7 - Inactive",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
