@@ -1,5 +1,5 @@
 > [!WARNING]
-> **This package is deprecated and no longer maintained.** Use [`shopifyapp`](https://pypi.org/project/shopifyapp/) instead. It supports the latest Shopify platform features. For background, see [rethinking our support for PHP & Python packages](https://community.shopify.dev/t/rethinking-support-for-php-python-packages/28325).
+> **This package is deprecated and no longer maintained.** Use [`shopifyapp`](https://pypi.org/project/shopifyapp/) instead, which supports the latest Shopify platform features. It will keep working for existing users, but no new features or security fixes are planned. See the [`shopify-app-python` README](https://github.com/Shopify/shopify-app-python#readme) to upgrade. For background, see [rethinking our support for PHP & Python packages](https://community.shopify.dev/t/rethinking-support-for-php-python-packages/28325).
 
 # Shopify API
 
