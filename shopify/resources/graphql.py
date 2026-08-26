@@ -1,7 +1,9 @@
+import json
+import urllib.error
+import urllib.request
+
 import shopify
 from ..base import ShopifyResource
-from six.moves import urllib
-import json
 
 
 class GraphQL:

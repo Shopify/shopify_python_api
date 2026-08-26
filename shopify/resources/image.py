@@ -1,6 +1,6 @@
 from ..base import ShopifyResource
 from ..resources import Metafield
-from six.moves import urllib
+import urllib.parse
 import base64
 import re
 

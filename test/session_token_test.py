@@ -3,14 +3,10 @@ from test.test_helper import TestCase
 from datetime import datetime, timedelta
 
 import jwt
-import sys
-
-if sys.version_info[0] < 3:  # Backwards compatibility for python < v3.0.0
-    import time
 
 
 def timestamp(date):
-    return time.mktime(date.timetuple()) if sys.version_info[0] < 3 else date.timestamp()
+    return date.timestamp()
 
 
 class TestSessionTokenGetDecodedSessionToken(TestCase):

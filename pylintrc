@@ -335,7 +335,7 @@ callbacks=cb_,_cb
 
 # List of qualified module names which can have objects that can redefine
 # builtins.
-redefining-builtins-modules=six,six.moves,past.builtins,future.builtins,functools
+redefining-builtins-modules=future.builtins,functools
 
 
 [LOGGING]

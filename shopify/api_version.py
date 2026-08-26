@@ -9,7 +9,7 @@ class VersionNotFoundError(Exception):
     pass
 
 
-class ApiVersion(object):
+class ApiVersion:
     versions = {}
 
     @classmethod

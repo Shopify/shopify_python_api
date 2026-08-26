@@ -1,15 +1,9 @@
 import jwt
 import re
-import six
 import sys
+from urllib.parse import urljoin
 
 from shopify.utils import shop_url
-
-if sys.version_info[0] < 3:  # Backwards compatibility for python < v3.0.0
-    from urlparse import urljoin
-else:
-    from urllib.parse import urljoin
-
 
 ALGORITHM = "HS256"
 PREFIX = "Bearer "
@@ -61,7 +55,7 @@ def _decode_session_token(session_token, api_key, secret):
             options={"require": REQUIRED_FIELDS},
         )
     except jwt.exceptions.PyJWTError as exception:
-        six.raise_from(SessionTokenError(str(exception)), exception)
+        raise SessionTokenError(str(exception)) from exception
 
 
 def _validate_issuer(decoded_payload):

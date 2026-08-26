@@ -33,7 +33,6 @@ setup(
         "PyJWT >= 2.0.0",
         "PyYAML>=6.0.1; python_version>='3.12'",
         "PyYAML; python_version<'3.12'",
-        "six",
     ],
     test_suite="test",
     tests_require=[

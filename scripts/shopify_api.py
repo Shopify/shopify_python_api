@@ -9,8 +9,6 @@ import glob
 import subprocess
 import functools
 import yaml
-import six
-from six.moves import input, map
 
 
 def start_interpreter(**variables):
@@ -106,8 +104,7 @@ class TasksMeta(type):
             print(task_func.__doc__)
 
 
-@six.add_metaclass(TasksMeta)
-class Tasks(object):
+class Tasks(metaclass=TasksMeta):
     _shop_config_dir = os.path.join(os.environ["HOME"], ".shopify", "shops")
     _default_symlink = os.path.join(_shop_config_dir, "default")
     _default_api_version = "unstable"
