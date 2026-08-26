@@ -1,6 +1,6 @@
 # Session tokens
 
-The Shopify Python API library provides helper methods to decode [session tokens](https://shopify.dev/concepts/apps/building-embedded-apps-using-session-tokens). You can use the `decode_from_header` function to extract and decode a session token from an HTTP Authorization header.
+The Shopify Python API library provides helper methods to decode [session tokens](https://shopify.dev/concepts/apps/building-embedded-apps-using-session-tokens). You can use the `decode_from_header` function to extract and decode a session token from an HTTP Authorization header (it can be from a UI Extension or an embedded app).
 
 ## Basic usage
 
@@ -11,6 +11,7 @@ decoded_payload = session_token.decode_from_header(
     authorization_header=your_auth_request_header,
     api_key=your_api_key,
     secret=your_api_secret,
+    is_extension=True_or_False
 )
 ```
 
@@ -29,7 +30,8 @@ def session_token_required(func):
             decoded_session_token = session_token.decode_from_header(
                 authorization_header = request.headers.get('Authorization'),
                 api_key = SHOPIFY_API_KEY,
-                secret = SHOPIFY_API_SECRET
+                secret = SHOPIFY_API_SECRET,
+                is_extension=False
             )
             with shopify_session(decoded_session_token):
                 return func(*args, **kwargs)
