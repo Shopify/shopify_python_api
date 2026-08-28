@@ -15,7 +15,7 @@ class GraphQL:
             merged_headers.update(header)
         return merged_headers
 
-    def execute(self, query, variables=None, operation_name=None):
+    def execute(self, query, variables=None, operation_name=None, timeout=None):
         endpoint = self.endpoint
         default_headers = {"Accept": "application/json", "Content-Type": "application/json"}
         headers = self.merge_headers(default_headers, self.headers)
@@ -24,7 +24,7 @@ class GraphQL:
         req = urllib.request.Request(self.endpoint, json.dumps(data).encode("utf-8"), headers)
 
         try:
-            response = urllib.request.urlopen(req)
+            response = urllib.request.urlopen(req, timeout=timeout)
             return response.read().decode("utf-8")
         except urllib.error.HTTPError as e:
             print((e.read()))
